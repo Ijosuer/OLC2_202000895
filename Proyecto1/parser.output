@@ -1,0 +1,411 @@
+Terminales no usados en la gramática
+
+    ID
+
+
+Gramática
+
+    0 $accept: START END
+
+    1 START: MAIN
+
+    2 MAIN: TYPES RMAIN PARA PARC LLAVA LIST_INST LLAVC
+
+    3 LIST_INST: LIST_INST INSTRUCTION
+    4          | INSTRUCTION
+
+    5 INSTRUCTION: PRINT ';'
+
+    6 PRINT: PRINTF PARA EXP PARC
+
+    7 TYPES: VOID
+    8      | INT
+
+    9 EXP: EXP SUMA EXP
+   10    | EXP MENOS EXP
+   11    | EXP POR EXP
+   12    | EXP DIV EXP
+   13    | PARA EXP PARC
+   14    | PRIMITIVE
+
+   15 PRIMITIVE: NUMERO
+   16          | STRING
+
+
+Terminales con las reglas donde aparecen
+
+    END (0) 0
+    ';' (59) 5
+    error (256)
+    NUMERO <std::string> (258) 15
+    ID <std::string> (259)
+    STRING <std::string> (260) 16
+    SUMA <std::string> (261) 9
+    MENOS <std::string> (262) 10
+    POR <std::string> (263) 11
+    DIV <std::string> (264) 12
+    PRINTF <std::string> (265) 6
+    VOID <std::string> (266) 7
+    INT <std::string> (267) 8
+    PARA <std::string> (268) 2 6 13
+    PARC <std::string> (269) 2 6 13
+    RMAIN <std::string> (270) 2
+    LLAVA <std::string> (271) 2
+    LLAVC <std::string> (272) 2
+
+
+No terminales con las reglas donde aparecen
+
+    $accept (19)
+        on left: 0
+    START <func_main*> (20)
+        on left: 1
+        on right: 0
+    MAIN <func_main*> (21)
+        on left: 2
+        on right: 1
+    LIST_INST <list_instruction*> (22)
+        on left: 3 4
+        on right: 2 3
+    INSTRUCTION <instruction*> (23)
+        on left: 5
+        on right: 3 4
+    PRINT <instruction*> (24)
+        on left: 6
+        on right: 5
+    TYPES <std::string> (25)
+        on left: 7 8
+        on right: 2
+    EXP <expression*> (26)
+        on left: 9 10 11 12 13 14
+        on right: 6 9 10 11 12 13
+    PRIMITIVE <expression*> (27)
+        on left: 15 16
+        on right: 14
+
+
+Estado 0
+
+    0 $accept: • START END
+
+    VOID  desplazar e ir al estado 1
+    INT   desplazar e ir al estado 2
+
+    START  ir al estado 3
+    MAIN   ir al estado 4
+    TYPES  ir al estado 5
+
+
+Estado 1
+
+    7 TYPES: VOID •
+
+    $default  reduce usando la regla 7 (TYPES)
+
+
+Estado 2
+
+    8 TYPES: INT •
+
+    $default  reduce usando la regla 8 (TYPES)
+
+
+Estado 3
+
+    0 $accept: START • END
+
+    END  desplazar e ir al estado 6
+
+
+Estado 4
+
+    1 START: MAIN •
+
+    $default  reduce usando la regla 1 (START)
+
+
+Estado 5
+
+    2 MAIN: TYPES • RMAIN PARA PARC LLAVA LIST_INST LLAVC
+
+    RMAIN  desplazar e ir al estado 7
+
+
+Estado 6
+
+    0 $accept: START END •
+
+    $default  aceptar
+
+
+Estado 7
+
+    2 MAIN: TYPES RMAIN • PARA PARC LLAVA LIST_INST LLAVC
+
+    PARA  desplazar e ir al estado 8
+
+
+Estado 8
+
+    2 MAIN: TYPES RMAIN PARA • PARC LLAVA LIST_INST LLAVC
+
+    PARC  desplazar e ir al estado 9
+
+
+Estado 9
+
+    2 MAIN: TYPES RMAIN PARA PARC • LLAVA LIST_INST LLAVC
+
+    LLAVA  desplazar e ir al estado 10
+
+
+Estado 10
+
+    2 MAIN: TYPES RMAIN PARA PARC LLAVA • LIST_INST LLAVC
+
+    PRINTF  desplazar e ir al estado 11
+
+    LIST_INST    ir al estado 12
+    INSTRUCTION  ir al estado 13
+    PRINT        ir al estado 14
+
+
+Estado 11
+
+    6 PRINT: PRINTF • PARA EXP PARC
+
+    PARA  desplazar e ir al estado 15
+
+
+Estado 12
+
+    2 MAIN: TYPES RMAIN PARA PARC LLAVA LIST_INST • LLAVC
+    3 LIST_INST: LIST_INST • INSTRUCTION
+
+    PRINTF  desplazar e ir al estado 11
+    LLAVC   desplazar e ir al estado 16
+
+    INSTRUCTION  ir al estado 17
+    PRINT        ir al estado 14
+
+
+Estado 13
+
+    4 LIST_INST: INSTRUCTION •
+
+    $default  reduce usando la regla 4 (LIST_INST)
+
+
+Estado 14
+
+    5 INSTRUCTION: PRINT • ';'
+
+    ';'  desplazar e ir al estado 18
+
+
+Estado 15
+
+    6 PRINT: PRINTF PARA • EXP PARC
+
+    NUMERO  desplazar e ir al estado 19
+    STRING  desplazar e ir al estado 20
+    PARA    desplazar e ir al estado 21
+
+    EXP        ir al estado 22
+    PRIMITIVE  ir al estado 23
+
+
+Estado 16
+
+    2 MAIN: TYPES RMAIN PARA PARC LLAVA LIST_INST LLAVC •
+
+    $default  reduce usando la regla 2 (MAIN)
+
+
+Estado 17
+
+    3 LIST_INST: LIST_INST INSTRUCTION •
+
+    $default  reduce usando la regla 3 (LIST_INST)
+
+
+Estado 18
+
+    5 INSTRUCTION: PRINT ';' •
+
+    $default  reduce usando la regla 5 (INSTRUCTION)
+
+
+Estado 19
+
+   15 PRIMITIVE: NUMERO •
+
+    $default  reduce usando la regla 15 (PRIMITIVE)
+
+
+Estado 20
+
+   16 PRIMITIVE: STRING •
+
+    $default  reduce usando la regla 16 (PRIMITIVE)
+
+
+Estado 21
+
+   13 EXP: PARA • EXP PARC
+
+    NUMERO  desplazar e ir al estado 19
+    STRING  desplazar e ir al estado 20
+    PARA    desplazar e ir al estado 21
+
+    EXP        ir al estado 24
+    PRIMITIVE  ir al estado 23
+
+
+Estado 22
+
+    6 PRINT: PRINTF PARA EXP • PARC
+    9 EXP: EXP • SUMA EXP
+   10    | EXP • MENOS EXP
+   11    | EXP • POR EXP
+   12    | EXP • DIV EXP
+
+    SUMA   desplazar e ir al estado 25
+    MENOS  desplazar e ir al estado 26
+    POR    desplazar e ir al estado 27
+    DIV    desplazar e ir al estado 28
+    PARC   desplazar e ir al estado 29
+
+
+Estado 23
+
+   14 EXP: PRIMITIVE •
+
+    $default  reduce usando la regla 14 (EXP)
+
+
+Estado 24
+
+    9 EXP: EXP • SUMA EXP
+   10    | EXP • MENOS EXP
+   11    | EXP • POR EXP
+   12    | EXP • DIV EXP
+   13    | PARA EXP • PARC
+
+    SUMA   desplazar e ir al estado 25
+    MENOS  desplazar e ir al estado 26
+    POR    desplazar e ir al estado 27
+    DIV    desplazar e ir al estado 28
+    PARC   desplazar e ir al estado 30
+
+
+Estado 25
+
+    9 EXP: EXP SUMA • EXP
+
+    NUMERO  desplazar e ir al estado 19
+    STRING  desplazar e ir al estado 20
+    PARA    desplazar e ir al estado 21
+
+    EXP        ir al estado 31
+    PRIMITIVE  ir al estado 23
+
+
+Estado 26
+
+   10 EXP: EXP MENOS • EXP
+
+    NUMERO  desplazar e ir al estado 19
+    STRING  desplazar e ir al estado 20
+    PARA    desplazar e ir al estado 21
+
+    EXP        ir al estado 32
+    PRIMITIVE  ir al estado 23
+
+
+Estado 27
+
+   11 EXP: EXP POR • EXP
+
+    NUMERO  desplazar e ir al estado 19
+    STRING  desplazar e ir al estado 20
+    PARA    desplazar e ir al estado 21
+
+    EXP        ir al estado 33
+    PRIMITIVE  ir al estado 23
+
+
+Estado 28
+
+   12 EXP: EXP DIV • EXP
+
+    NUMERO  desplazar e ir al estado 19
+    STRING  desplazar e ir al estado 20
+    PARA    desplazar e ir al estado 21
+
+    EXP        ir al estado 34
+    PRIMITIVE  ir al estado 23
+
+
+Estado 29
+
+    6 PRINT: PRINTF PARA EXP PARC •
+
+    $default  reduce usando la regla 6 (PRINT)
+
+
+Estado 30
+
+   13 EXP: PARA EXP PARC •
+
+    $default  reduce usando la regla 13 (EXP)
+
+
+Estado 31
+
+    9 EXP: EXP • SUMA EXP
+    9    | EXP SUMA EXP •
+   10    | EXP • MENOS EXP
+   11    | EXP • POR EXP
+   12    | EXP • DIV EXP
+
+    POR  desplazar e ir al estado 27
+    DIV  desplazar e ir al estado 28
+
+    $default  reduce usando la regla 9 (EXP)
+
+
+Estado 32
+
+    9 EXP: EXP • SUMA EXP
+   10    | EXP • MENOS EXP
+   10    | EXP MENOS EXP •
+   11    | EXP • POR EXP
+   12    | EXP • DIV EXP
+
+    POR  desplazar e ir al estado 27
+    DIV  desplazar e ir al estado 28
+
+    $default  reduce usando la regla 10 (EXP)
+
+
+Estado 33
+
+    9 EXP: EXP • SUMA EXP
+   10    | EXP • MENOS EXP
+   11    | EXP • POR EXP
+   11    | EXP POR EXP •
+   12    | EXP • DIV EXP
+
+    $default  reduce usando la regla 11 (EXP)
+
+
+Estado 34
+
+    9 EXP: EXP • SUMA EXP
+   10    | EXP • MENOS EXP
+   11    | EXP • POR EXP
+   12    | EXP • DIV EXP
+   12    | EXP DIV EXP •
+
+    $default  reduce usando la regla 12 (EXP)
