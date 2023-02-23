@@ -11,6 +11,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+//    ui->textEdit->setText("int main(){\n\n}");
 }
 
 MainWindow::~MainWindow()
@@ -18,9 +19,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-
-void MainWindow::on_pushButton_clicked()
-{
+void anterior(){
     QMessageBox *msg = new QMessageBox();
     //creando entorno global
     environment *GlobalEnv = new environment();
@@ -28,7 +27,7 @@ void MainWindow::on_pushButton_clicked()
     ast *Root = new ast();
     //ejecuta el analizador
     OCL2Calc::ParserCtx analizador;
-    analizador.Analizar(ui->textEdit->toPlainText().toStdString());
+//    analizador.Analizar(ui->textEdit->toPlainText().toStdString());
     //ejecutar main
     analizador.Main->ejecutar(GlobalEnv, Root);
     //valio errores
@@ -37,16 +36,24 @@ void MainWindow::on_pushButton_clicked()
         //despliega el mensaje
         msg->setText(QString::fromStdString(analizador.Salida));
         msg->exec();
-        ui->Consola->setText(QString::fromStdString(Root->ConsoleOut));
+//        ui->Consola->setText(QString::fromStdString(Root->ConsoleOut));
     }
     else
     {
         //despliega el mensaje
         msg->setText(QString::fromStdString("Se encontraron algunos errores.."));
         msg->exec();
-        ui->Consola->setText(QString::fromStdString(Root->ErrorOut));
+//        ui->Consola->setText(QString::fromStdString(Root->ErrorOut));
     }
+}
 
+void MainWindow::on_pushButton_clicked()
+{
+
+    //ejecuta el analizador
+    OCL2Calc::ParserCtx analizador;
+    analizador.Analizar(ui->textEdit->toPlainText().toStdString());
+    cout<<analizador.Salida<<endl;
 }
 
 

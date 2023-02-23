@@ -3,8 +3,8 @@
 /*%option outfile="lexer.cpp" */
 /* %option header-file="lexer.hpp"*/
 
+/*%option debug*/
 %option reentrant noyywrap nounput batch noinput
-%option debug 
 
 %{
     #include <iostream>
@@ -37,7 +37,7 @@
 DIGITO [0-9]
 LETRAS [a-zA-ZñÑ]
 NUMERO {DIGITO}+
-ID  {LETRAS}({DIGITO}|{LETRAS}|"_")*
+ID  (["_"]+|{LETRAS})({DIGITO}|{LETRAS}|"_")*
 %%
 
 %{
@@ -48,36 +48,43 @@ ID  {LETRAS}({DIGITO}|{LETRAS}|"_")*
 
 "//"[^\n]*\n            ; /* comentarios de una linea */
 
+"/*""/"*([^*/]|[^*]"/"|"*"[^/])*"*"*"*/"; /* comentarios de multi linea */
+
 [ \t\v\r\n\f]             ; /* caracteres en blanco */
     /* Lexemas */
     /* defincion moderna
         token::ID ID sin caracteres especiales
     */
 
-"+"     return Parser::symbol_type( token::SUMA, loc );
-"-"     return Parser::symbol_type( token::MENOS, loc );
-"*"     return Parser::symbol_type( token::POR, loc );
-"/"     return Parser::symbol_type( token::DIV, loc );
+"+"     return Parser::symbol_type( token::suma, loc );
+"-"     return Parser::symbol_type( token::menos, loc );
+"*"     return Parser::symbol_type( token::mult, loc );
+"/"     return Parser::symbol_type( token::div, loc );
 
     /* defincion clásica / para caracteres especiales */
 ";"     return Parser::symbol_type( token_type(';'), loc );
+"="     return Parser::symbol_type( token_type('='), loc );
 
 
-"("     return Parser::symbol_type( token::PARA, loc );
-")"     return Parser::symbol_type( token::PARC, loc );
-"{"     return Parser::symbol_type( token::LLAVA, loc );
-"}"     return Parser::symbol_type( token::LLAVC, loc );
+"("     return Parser::symbol_type( token::tk_PARA, loc );
+")"     return Parser::symbol_type( token::tk_PARC, loc );
+"{"     return Parser::symbol_type( token::tk_LLAVA, loc );
+"}"     return Parser::symbol_type( token::tk_LLAVC, loc );
 
 
     /* TOKENS  */
 "printf"    return Parser::symbol_type( token::PRINTF, loc );
-"void"    return Parser::symbol_type( token::VOID, loc );
-"int"    return Parser::symbol_type( token::INT, loc );
-"main"    return Parser::symbol_type( token::RMAIN, loc );
+"void"    return Parser::symbol_type( token::tk_void, loc );
+"main"    return Parser::symbol_type( token::rmain, loc );
+    /* datos prim  */
+"int"    return Parser::symbol_type( token::tk_int, loc );
+"string"    return Parser::symbol_type( token::tk_string, loc );
+"float"    return Parser::symbol_type( token::tk_float, loc );
+"bool"    return Parser::symbol_type( token::tk_bool, loc );
 
-{ID}  return Parser::make_ID(yytext, loc);
+{ID}  return Parser::make_id(yytext, loc);
 {NUMERO} return Parser::make_NUMERO(yytext, loc);
-\"(\\.|[^"\\])*\" return Parser::make_STRING (yytext, loc);
+\"(\\.|[^"\\])*\" return Parser::make_CADENA (yytext, loc);
 
 .   {std::cerr<<loc <<": "<<"error token no esperado"<<  std::endl; }
 

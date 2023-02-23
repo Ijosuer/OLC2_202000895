@@ -58,12 +58,12 @@
 %token END 0;
 
 /*tokens*/
-%token <std::string> NUMERO ID STRING SUMA MENOS POR DIV PRINTF VOID INT PARA PARC RMAIN LLAVA LLAVC
-%token ';'
+%token <std::string> NUMERO id CADENA suma menos mult div PRINTF tk_void tk_int tk_string tk_float tk_bool tk_PARA tk_PARC rmain tk_LLAVA tk_LLAVC
+%token ';' '='
 
 /* precedencia de operadores */
-%left SUMA MENOS
-%left POR DIV
+%left suma menos
+%left mult div
 
 /* instancia de la clase que creamos */
 %lex-param {void *scanner} {yy::location& loc} { class OCL2Calc::ParserCtx & ctx }
@@ -77,6 +77,7 @@
 %type<func_main*> MAIN;
 %type<instruction*> INSTRUCTION;
 %type<instruction*> PRINT;
+%type<instruction*> DECLARAR;
 %type<std::string> TYPES;
 
 /* printer */
@@ -89,13 +90,17 @@
 
 START : MAIN
     {
-        ctx.Main = $1;
+       ctx.Main = $1;
         ctx.Salida = "!Ejecución realizada con éxito!";
-        $$ = $1;
+       $$ = $1;
     }
 ;
 
-MAIN : TYPES RMAIN PARA PARC LLAVA LIST_INST LLAVC
+//PRUEBA : DECLARAR;
+
+
+//START : MAIN
+MAIN : TYPES rmain tk_PARA tk_PARC tk_LLAVA LIST_INST tk_LLAVC
 {
     $$ = new func_main(0, 0, $1, $6);
 }
@@ -114,28 +119,35 @@ LIST_INST : LIST_INST INSTRUCTION
 ;
 
 INSTRUCTION : PRINT ';' { $$ = $1; }
+            | DECLARAR {$$=$1;}
 ;
 
-PRINT : PRINTF PARA EXP PARC { $$ = new print(0,0,$3); }
+DECLARAR: TYPES id '=' EXP ';' {std::cout<<"Declarando "<<$2<<std::endl;}
 ;
 
-TYPES : VOID { $$ = "void"; }
-    | INT { $$ = "int"; }
+PRINT : PRINTF tk_PARA EXP tk_PARC { $$ = new print(0,0,$3); }
 ;
 
-EXP : EXP SUMA EXP { $$ = new operation(0, 0, $1, $3, "+"); }
-    | EXP MENOS EXP { $$ = new operation(0, 0, $1, $3, "-"); }
-    | EXP POR EXP { $$ = new operation(0, 0, $1, $3, "*"); }
-    | EXP DIV EXP { $$ = new operation(0, 0, $1, $3, "/"); }
-    | PARA EXP PARC { $$ = $2; }
+TYPES : tk_void { $$ = "void"; }
+    | tk_int { $$ = "int"; }
+    | tk_string { $$ = "string"; }
+    | tk_float { $$ = "float"; }
+    | tk_bool { $$ = "bool"; }
+;
+
+EXP : EXP suma EXP { $$ = new operation(0, 0, $1, $3, "+"); }
+    | EXP menos EXP { $$ = new operation(0, 0, $1, $3, "-"); }
+    | EXP mult EXP { $$ = new operation(0, 0, $1, $3, "*"); }
+    | EXP div EXP { $$ = new operation(0, 0, $1, $3, "/"); }
+    | tk_PARA EXP tk_PARC { $$ = $2; }
     | PRIMITIVE { $$ = $1; }
 ;
 
 PRIMITIVE : NUMERO { $$ = new primitive(0,0,INTEGER, "", std::stod($1)); }
-        | STRING
+        | CADENA
         {
-            std::string cadena = $1.erase(0,1);
-            $$ = new primitive(0,0,STRING, cadena.erase(cadena.length()-1,1), 0);
+            std::string cadenita = $1.erase(0,1);
+            $$ = new primitive(0,0,STRING, cadenita.erase(cadenita.length()-1,1), 0);
         }
 ;
 
