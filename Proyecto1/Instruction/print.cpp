@@ -1,5 +1,5 @@
 #include "print.hpp"
-
+#include <iostream>
 print::print(int line, int col, expression *valor)
 {
     this->Line = line;

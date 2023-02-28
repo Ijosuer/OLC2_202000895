@@ -58,10 +58,19 @@
 %token END 0;
 
 /*tokens*/
-%token <std::string> NUMERO id CADENA suma menos mult div PRINTF tk_void tk_int tk_string tk_float tk_bool tk_PARA tk_PARC rmain tk_LLAVA tk_LLAVC
+%token <std::string> NUMERO id CADENA DECIMAL suma menos mult div PRINTF tk_void tk_int tk_string tk_float tk_bool tk_PARA tk_PARC rmain tk_LLAVA tk_LLAVC
+%token <std::string> tk_true tk_false tk_igualq tk_diferenteq tk_mayor_igual tk_menor_igual tk_CORCHA tk_CORCHC
+%token <std::string> tk_menorq tk_mayorq tk_and tk_or tk_not res_IF res_ELSE res_WHILE res_FOR res_BREAK res_CONTINUE res_RETURN res_pushB res_pushF 
+%token <std::string> res_get res_remove res_size res_struct res_mean res_median res_mode res_atoi res_atof res_iota res_VECTOR mas_mas menos_menos
 %token ';' '='
 
+
 /* precedencia de operadores */
+%left tk_or
+%left tk_and
+%right tk_not
+%left tk_menorq tk_mayorq tk_menor_igual tk_igualq tk_diferenteq
+
 %left suma menos
 %left mult div
 
@@ -70,15 +79,24 @@
 %parse-param {void *scanner} {yy::location& loc} { class OCL2Calc::ParserCtx & ctx }
 
 /* definicion de no terminales */
-%type<expression*> PRIMITIVE;
-%type<expression*> EXP;
-%type<func_main*> START;
-%type<list_instruction*> LIST_INST;
-%type<func_main*> MAIN;
-%type<instruction*> INSTRUCTION;
-%type<instruction*> PRINT;
-%type<instruction*> DECLARAR;
-%type<std::string> TYPES;
+%type<expression*> PRIMITIVE
+%type<expression*> EXP
+%type<func_main*> START
+%type<list_instruction*> LIST_INST
+%type<func_main*> MAIN
+%type<instruction*> INSTRUCTION
+%type<instruction*> PRINT
+%type<instruction*> DECLARAR
+%type<instruction*> ASIGNAR
+%type<instruction*> IF
+%type<instruction*> WHILE
+%type<instruction*> FOR
+%type<instruction*> INCREMENTO
+%type<instruction*> VECTOR
+%type<instruction*> FUNC
+%type<instruction*> LLAMADAF
+%type<instruction*> RETORNO
+%type<std::string> TYPES
 
 /* printer */
 %printer { yyoutput << $$; } <*>;
@@ -90,16 +108,14 @@
 
 START : MAIN
     {
-       ctx.Main = $1;
+      ctx.Main = $1;
         ctx.Salida = "!Ejecución realizada con éxito!";
-       $$ = $1;
+      $$ = $1;
     }
 ;
 
-//PRUEBA : DECLARAR;
+// PRUEBA : LIST_INST;
 
-
-//START : MAIN
 MAIN : TYPES rmain tk_PARA tk_PARC tk_LLAVA LIST_INST tk_LLAVC
 {
     $$ = new func_main(0, 0, $1, $6);
@@ -119,13 +135,66 @@ LIST_INST : LIST_INST INSTRUCTION
 ;
 
 INSTRUCTION : PRINT ';' { $$ = $1; }
-            | DECLARAR {$$=$1;}
+            | DECLARAR ';' {$$=$1;}
+            | ASIGNAR ';' {$$=$1;}
+            | VECTOR ';' {$$=$1;}
+            | INCREMENTO ';' {$$=$1;}
+            | LLAMADAF ';' {$$=$1;}
+            | FUNC  {$$=$1;}
+            | WHILE  {$$=$1;}
+            | RETORNO ';'  {$$=$1;}
+            | FOR  {$$=$1;}
+            | IF  {$$=$1;}
+            | error ';'
 ;
 
-DECLARAR: TYPES id '=' EXP ';' {std::cout<<"Declarando "<<$2<<std::endl;}
+DECLARAR: TYPES id  {std::cout<<"Declarando "<<$2<<std::endl;}
+        | TYPES id '=' EXP {std::cout<<"Declarando con valor a "<<$2<<std::endl;}
+;
+
+ASIGNAR:  id '=' EXP {std::cout<<"Asignando valor a "<<$1<<std::endl;}
+        | id tk_LLAVA  EXP tk_LLAVC '=' tk_LLAVA  EXP tk_LLAVC {std::cout<<"Asignando valor vector a: "<<$1<<std::endl;} 
+
+;
+// IF
+
+IF  : res_IF tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC {std::cout<<"If sin nada "<<std::endl;}
+    | res_IF tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC res_ELSE IF {std::cout<<"If con elseif "<<std::endl;}
+    | res_IF tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC res_ELSE tk_LLAVA LIST_INST tk_LLAVC {std::cout<<"If con else "<<std::endl;}
+;
+// While
+WHILE: res_WHILE tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC {std::cout<<"While "<<std::endl;}
+;
+        
+// For
+FOR:  res_FOR tk_PARA DECLARAR ';' EXP ';' INCREMENTO tk_PARC tk_LLAVA LIST_INST tk_LLAVC {std::cout<<"FOR "<<std::endl;}
+;
+
+// Vector
+VECTOR: res_VECTOR tk_menorq TYPES tk_mayorq id '=' tk_CORCHA LISTAEXP tk_CORCHC {std::cout<<"VECTOR con valores "<<std::endl;}
+      | res_VECTOR tk_menorq TYPES tk_mayorq id {std::cout<<"VECTOR empty "<<std::endl;}
+      | id '.' res_pushB tk_PARA EXP tk_PARC {std::cout<<"VECTOR.pushB "<<std::endl;}
+      | id '.' res_pushF tk_PARA EXP tk_PARC {std::cout<<"VECTOR.pushF "<<std::endl;}
+      | id '.' res_get tk_PARA EXP tk_PARC {std::cout<<"VECTOR.get "<<std::endl;}
+      | id '.' res_remove tk_PARA EXP tk_PARC {std::cout<<"VECTOR.remove "<<std::endl;}
+      | id '.' res_size tk_PARA  tk_PARC {std::cout<<"VECTOR.size "<<std::endl;}
 ;
 
 PRINT : PRINTF tk_PARA EXP tk_PARC { $$ = new print(0,0,$3); }
+;
+
+INCREMENTO: id mas_mas  {std::cout<<"masmas "<<std::endl;}
+            | id menos_menos {std::cout<<"menosmenos "<<std::endl;}
+;
+
+FUNC: TYPES id tk_PARA LISTPARAM tk_PARC tk_LLAVA LIST_INST tk_LLAVC {std::cout<<"funcion: "<<$2<<std::endl;}
+    | TYPES id tk_PARA tk_PARC tk_LLAVA LIST_INST tk_LLAVC {std::cout<<"funcion: "<<$2<<std::endl;}
+;
+
+LLAMADAF: id tk_PARA LISTAEXP tk_PARC {std::cout<<"Llamando funcion: "<<$1<<std::endl;}
+;
+
+RETORNO: res_RETURN EXP {std::cout<<"returno de : "<<$2<<std::endl;}
 ;
 
 TYPES : tk_void { $$ = "void"; }
@@ -135,10 +204,27 @@ TYPES : tk_void { $$ = "void"; }
     | tk_bool { $$ = "bool"; }
 ;
 
+LISTAEXP: LISTAEXP ',' EXP 
+        |   EXP
+;
+
+LISTPARAM: LISTPARAM ','  TYPES id
+         | TYPES id
+;
+
 EXP : EXP suma EXP { $$ = new operation(0, 0, $1, $3, "+"); }
     | EXP menos EXP { $$ = new operation(0, 0, $1, $3, "-"); }
     | EXP mult EXP { $$ = new operation(0, 0, $1, $3, "*"); }
     | EXP div EXP { $$ = new operation(0, 0, $1, $3, "/"); }
+    | EXP tk_menor_igual EXP { $$ = new operation(0, 0, $1, $3, "<="); }
+    | EXP tk_menorq EXP { $$ = new operation(0, 0, $1, $3, "<"); }
+    | EXP tk_mayor_igual EXP { $$ = new operation(0, 0, $1, $3, ">="); }
+    | EXP tk_mayorq EXP { $$ = new operation(0, 0, $1, $3, ">"); }
+    | EXP tk_igualq EXP { $$ = new operation(0, 0, $1, $3, "=="); }
+    | EXP tk_diferenteq EXP { $$ = new operation(0, 0, $1, $3, "!="); }
+    | EXP tk_and EXP { $$ = new operation(0, 0, $1, $3, "&&"); }
+    | EXP tk_or EXP { $$ = new operation(0, 0, $1, $3, "||"); }
+    | EXP tk_not EXP { $$ = new operation(0, 0, $1, $3, "!"); }
     | tk_PARA EXP tk_PARC { $$ = $2; }
     | PRIMITIVE { $$ = $1; }
 ;
@@ -149,6 +235,13 @@ PRIMITIVE : NUMERO { $$ = new primitive(0,0,INTEGER, "", std::stod($1)); }
             std::string cadenita = $1.erase(0,1);
             $$ = new primitive(0,0,STRING, cadenita.erase(cadenita.length()-1,1), 0);
         }
+        | id   {}
+        | DECIMAL   {}
+        | tk_true   
+        | tk_false  
+        | res_mean tk_PARA id tk_PARC {std::cout<<"Media de: "<<$3<<std::endl;}
+        | res_median tk_PARA id tk_PARC {std::cout<<"Mediana de: "<<$3<<std::endl;}
+        | res_mode tk_PARA id tk_PARC {std::cout<<"Moda de: "<<$3<<std::endl;}
 ;
 
 %%

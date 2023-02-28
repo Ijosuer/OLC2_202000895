@@ -26,6 +26,7 @@ symbol operation::ejecutar(environment *env, ast *tree)
 
     if(this->Operator == "+")
     {
+        std::cout<<"entra en: "<<this->Operator<<std::endl;
         if(Dominante == INTEGER)
         {
             sym = *new symbol(this->Line,this->Col,"",op1.Tipo,"",op1.NumVal+op2.NumVal);
@@ -74,6 +75,15 @@ symbol operation::ejecutar(environment *env, ast *tree)
         {
             //se reporta un error
             tree->ErrorOut += "Error: tipo incorrecto";
+        }
+    }
+    else if(this->Operator == ">")
+    {
+        std::cout<<"Entra en mayor"<<std::endl;
+        if (op1.NumVal > op2.NumVal) {
+            std::cout<<"true"<<std::endl;
+        }else{
+            std::cout<<"false"<<std::endl;
         }
     }
     return sym;

@@ -1,0 +1,63 @@
+int main(){
+//Declaracion de variables
+
+
+printf(15>10);
+printf(1+3+4+5);
+
+//Instruccion IF
+if(3>=4){
+    printf("hi");
+    int a;
+}else if(3+3-(5*4) != 0){
+    printf("adios");
+}else if(true){
+    printf("hi");
+}else{
+    printf("hi");
+    int i = 2;
+}
+
+//Instruccion while
+while(3+3>0){
+    printf("hi");
+}
+
+//Instruccion FOR
+for(int a = 1; 3>=1; x++){
+    printf("hi");
+}
+
+//vector con valores
+vector<int> vec1 = [10,20,30,40,50];
+//vector vacío
+vector<float> vec2;
+
+//int a = 3>3;
+//inserta 1 al principio
+vec1.push_front(1); // [1,10,20,30,40,50 ]
+
+//inserta 100 al final
+vec2.push_back(100); //[1,10,20,30,40,50,100]
+
+//inserciones en vacíos
+vec2.push_front(1.0); // [1.0]
+vec3.push_back("cadena"); // {"cadena"}
+
+
+bool hola(int id, string id2, float id3){
+    //elimina la primera posición
+    vec1.remove(0); //[10,20,30,40,50,100]
+
+    float media1 =5 // la función mean nos retorna 19
+    int mediana1 = median(vec1); // la función median nos retorna 1
+
+    //Instruccion while
+    while(3+3>0){
+int moda1 = mode(vec1); // la función median nos retorna 16
+printf("hi");
+    }
+ }
+
+adios(1,2,3);
+}

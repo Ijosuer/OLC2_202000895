@@ -49,11 +49,31 @@ void anterior(){
 
 void MainWindow::on_pushButton_clicked()
 {
-
+    QMessageBox *msg = new QMessageBox();
+    //creando entorno global
+    environment *GlobalEnv = new environment();
+    //creando ast
+    ast *Root = new ast();
     //ejecuta el analizador
     OCL2Calc::ParserCtx analizador;
     analizador.Analizar(ui->textEdit->toPlainText().toStdString());
-    cout<<analizador.Salida<<endl;
+    //ejecutar main
+    analizador.Main->ejecutar(GlobalEnv, Root);
+    //valio errores
+    if(Root->ErrorOut == "")
+    {
+        //despliega el mensaje
+        msg->setText(QString::fromStdString(analizador.Salida));
+        msg->exec();
+        ui->Consola->setText(QString::fromStdString(Root->ConsoleOut));
+    }
+    else
+    {
+        //despliega el mensaje
+        msg->setText(QString::fromStdString("Se encontraron algunos errores.."));
+        msg->exec();
+        ui->Consola->setText(QString::fromStdString(Root->ErrorOut));
+    }
 }
 
 
