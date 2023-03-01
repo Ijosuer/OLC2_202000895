@@ -55,6 +55,7 @@
 
     /* expresiones */
     #include "../Expression/primitive.hpp"
+    #include "../Expression/access.hpp"
     #include "../Expression/operation.hpp"
     #include "../Environment/type.h"
     #include "../Interfaces/expression.hpp"
@@ -62,11 +63,12 @@
     /* instrucciones */
     #include "../Interfaces/instruction.hpp"
     #include "../Instruction/print.hpp"
+    #include "../Instruction/declaracion.hpp"
     #include "../Instruction/list_instruction.hpp"
     #include "../Instruction/func_main.hpp"
 
 
-#line 70 "parser.hpp"
+#line 72 "parser.hpp"
 
 
 # include <cstdlib> // std::abort
@@ -201,7 +203,7 @@
 #endif
 
 namespace yy {
-#line 205 "parser.hpp"
+#line 207 "parser.hpp"
 
 
 
@@ -397,13 +399,16 @@ namespace yy {
     /// An auxiliary type to compute the largest semantic type.
     union union_type
     {
+      // TYPES
+      char dummy1[sizeof (TipoDato)];
+
       // EXP
       // PRIMITIVE
-      char dummy1[sizeof (expression*)];
+      char dummy2[sizeof (expression*)];
 
       // START
       // MAIN
-      char dummy2[sizeof (func_main*)];
+      char dummy3[sizeof (func_main*)];
 
       // INSTRUCTION
       // DECLARAR
@@ -411,16 +416,18 @@ namespace yy {
       // IF
       // WHILE
       // FOR
+      // BREAK
+      // CONT
       // VECTOR
       // PRINT
       // INCREMENTO
       // FUNC
       // LLAMADAF
       // RETORNO
-      char dummy3[sizeof (instruction*)];
+      char dummy4[sizeof (instruction*)];
 
       // LIST_INST
-      char dummy4[sizeof (list_instruction*)];
+      char dummy5[sizeof (list_instruction*)];
 
       // NUMERO
       // id
@@ -476,8 +483,7 @@ namespace yy {
       // res_VECTOR
       // mas_mas
       // menos_menos
-      // TYPES
-      char dummy5[sizeof (std::string)];
+      char dummy6[sizeof (std::string)];
     };
 
     /// The size of the largest semantic type.
@@ -658,8 +664,8 @@ namespace yy {
         S_menos_menos = 56,                      // menos_menos
         S_57_ = 57,                              // ';'
         S_58_ = 58,                              // '='
-        S_59_ = 59,                              // '.'
-        S_60_ = 60,                              // ','
+        S_59_ = 59,                              // ','
+        S_60_ = 60,                              // '.'
         S_YYACCEPT = 61,                         // $accept
         S_START = 62,                            // START
         S_MAIN = 63,                             // MAIN
@@ -670,17 +676,19 @@ namespace yy {
         S_IF = 68,                               // IF
         S_WHILE = 69,                            // WHILE
         S_FOR = 70,                              // FOR
-        S_VECTOR = 71,                           // VECTOR
-        S_PRINT = 72,                            // PRINT
-        S_INCREMENTO = 73,                       // INCREMENTO
-        S_FUNC = 74,                             // FUNC
-        S_LLAMADAF = 75,                         // LLAMADAF
-        S_RETORNO = 76,                          // RETORNO
-        S_TYPES = 77,                            // TYPES
-        S_LISTAEXP = 78,                         // LISTAEXP
-        S_LISTPARAM = 79,                        // LISTPARAM
-        S_EXP = 80,                              // EXP
-        S_PRIMITIVE = 81                         // PRIMITIVE
+        S_BREAK = 71,                            // BREAK
+        S_CONT = 72,                             // CONT
+        S_VECTOR = 73,                           // VECTOR
+        S_PRINT = 74,                            // PRINT
+        S_INCREMENTO = 75,                       // INCREMENTO
+        S_FUNC = 76,                             // FUNC
+        S_LLAMADAF = 77,                         // LLAMADAF
+        S_RETORNO = 78,                          // RETORNO
+        S_TYPES = 79,                            // TYPES
+        S_LISTAEXP = 80,                         // LISTAEXP
+        S_LISTPARAM = 81,                        // LISTPARAM
+        S_EXP = 82,                              // EXP
+        S_PRIMITIVE = 83                         // PRIMITIVE
       };
     };
 
@@ -717,6 +725,10 @@ namespace yy {
       {
         switch (this->kind ())
     {
+      case symbol_kind::S_TYPES: // TYPES
+        value.move< TipoDato > (std::move (that.value));
+        break;
+
       case symbol_kind::S_EXP: // EXP
       case symbol_kind::S_PRIMITIVE: // PRIMITIVE
         value.move< expression* > (std::move (that.value));
@@ -733,6 +745,8 @@ namespace yy {
       case symbol_kind::S_IF: // IF
       case symbol_kind::S_WHILE: // WHILE
       case symbol_kind::S_FOR: // FOR
+      case symbol_kind::S_BREAK: // BREAK
+      case symbol_kind::S_CONT: // CONT
       case symbol_kind::S_VECTOR: // VECTOR
       case symbol_kind::S_PRINT: // PRINT
       case symbol_kind::S_INCREMENTO: // INCREMENTO
@@ -800,7 +814,6 @@ namespace yy {
       case symbol_kind::S_res_VECTOR: // res_VECTOR
       case symbol_kind::S_mas_mas: // mas_mas
       case symbol_kind::S_menos_menos: // menos_menos
-      case symbol_kind::S_TYPES: // TYPES
         value.move< std::string > (std::move (that.value));
         break;
 
@@ -823,6 +836,20 @@ namespace yy {
 #else
       basic_symbol (typename Base::kind_type t, const location_type& l)
         : Base (t)
+        , location (l)
+      {}
+#endif
+
+#if 201103L <= YY_CPLUSPLUS
+      basic_symbol (typename Base::kind_type t, TipoDato&& v, location_type&& l)
+        : Base (t)
+        , value (std::move (v))
+        , location (std::move (l))
+      {}
+#else
+      basic_symbol (typename Base::kind_type t, const TipoDato& v, const location_type& l)
+        : Base (t)
+        , value (v)
         , location (l)
       {}
 #endif
@@ -921,6 +948,10 @@ namespace yy {
         // Value type destructor.
 switch (yykind)
     {
+      case symbol_kind::S_TYPES: // TYPES
+        value.template destroy< TipoDato > ();
+        break;
+
       case symbol_kind::S_EXP: // EXP
       case symbol_kind::S_PRIMITIVE: // PRIMITIVE
         value.template destroy< expression* > ();
@@ -937,6 +968,8 @@ switch (yykind)
       case symbol_kind::S_IF: // IF
       case symbol_kind::S_WHILE: // WHILE
       case symbol_kind::S_FOR: // FOR
+      case symbol_kind::S_BREAK: // BREAK
+      case symbol_kind::S_CONT: // CONT
       case symbol_kind::S_VECTOR: // VECTOR
       case symbol_kind::S_PRINT: // PRINT
       case symbol_kind::S_INCREMENTO: // INCREMENTO
@@ -1004,7 +1037,6 @@ switch (yykind)
       case symbol_kind::S_res_VECTOR: // res_VECTOR
       case symbol_kind::S_mas_mas: // mas_mas
       case symbol_kind::S_menos_menos: // menos_menos
-      case symbol_kind::S_TYPES: // TYPES
         value.template destroy< std::string > ();
         break;
 
@@ -2118,7 +2150,7 @@ switch (yykind)
 
 #if YYDEBUG
     // YYRLINE[YYN] -- Source line where rule number YYN was defined.
-    static const unsigned char yyrline_[];
+    static const short yyrline_[];
     /// Report on the debug stream that the rule \a r is going to be reduced.
     virtual void yy_reduce_print_ (int r) const;
     /// Print the state stack on the debug stream.
@@ -2345,9 +2377,9 @@ switch (yykind)
     /// Constants.
     enum
     {
-      yylast_ = 702,     ///< Last index in yytable_.
-      yynnts_ = 21,  ///< Number of nonterminal symbols.
-      yyfinal_ = 9 ///< Termination state number.
+      yylast_ = 693,     ///< Last index in yytable_.
+      yynnts_ = 23,  ///< Number of nonterminal symbols.
+      yyfinal_ = 5 ///< Termination state number.
     };
 
 
@@ -2372,7 +2404,7 @@ switch (yykind)
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,    60,     2,    59,     2,     2,     2,
+       2,     2,     2,     2,    59,     2,    60,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,    57,
        2,    58,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -2421,6 +2453,10 @@ switch (yykind)
   {
     switch (this->kind ())
     {
+      case symbol_kind::S_TYPES: // TYPES
+        value.copy< TipoDato > (YY_MOVE (that.value));
+        break;
+
       case symbol_kind::S_EXP: // EXP
       case symbol_kind::S_PRIMITIVE: // PRIMITIVE
         value.copy< expression* > (YY_MOVE (that.value));
@@ -2437,6 +2473,8 @@ switch (yykind)
       case symbol_kind::S_IF: // IF
       case symbol_kind::S_WHILE: // WHILE
       case symbol_kind::S_FOR: // FOR
+      case symbol_kind::S_BREAK: // BREAK
+      case symbol_kind::S_CONT: // CONT
       case symbol_kind::S_VECTOR: // VECTOR
       case symbol_kind::S_PRINT: // PRINT
       case symbol_kind::S_INCREMENTO: // INCREMENTO
@@ -2504,7 +2542,6 @@ switch (yykind)
       case symbol_kind::S_res_VECTOR: // res_VECTOR
       case symbol_kind::S_mas_mas: // mas_mas
       case symbol_kind::S_menos_menos: // menos_menos
-      case symbol_kind::S_TYPES: // TYPES
         value.copy< std::string > (YY_MOVE (that.value));
         break;
 
@@ -2539,6 +2576,10 @@ switch (yykind)
     super_type::move (s);
     switch (this->kind ())
     {
+      case symbol_kind::S_TYPES: // TYPES
+        value.move< TipoDato > (YY_MOVE (s.value));
+        break;
+
       case symbol_kind::S_EXP: // EXP
       case symbol_kind::S_PRIMITIVE: // PRIMITIVE
         value.move< expression* > (YY_MOVE (s.value));
@@ -2555,6 +2596,8 @@ switch (yykind)
       case symbol_kind::S_IF: // IF
       case symbol_kind::S_WHILE: // WHILE
       case symbol_kind::S_FOR: // FOR
+      case symbol_kind::S_BREAK: // BREAK
+      case symbol_kind::S_CONT: // CONT
       case symbol_kind::S_VECTOR: // VECTOR
       case symbol_kind::S_PRINT: // PRINT
       case symbol_kind::S_INCREMENTO: // INCREMENTO
@@ -2622,7 +2665,6 @@ switch (yykind)
       case symbol_kind::S_res_VECTOR: // res_VECTOR
       case symbol_kind::S_mas_mas: // mas_mas
       case symbol_kind::S_menos_menos: // menos_menos
-      case symbol_kind::S_TYPES: // TYPES
         value.move< std::string > (YY_MOVE (s.value));
         break;
 
@@ -2692,7 +2734,7 @@ switch (yykind)
 
 
 } // yy
-#line 2696 "parser.hpp"
+#line 2738 "parser.hpp"
 
 
 

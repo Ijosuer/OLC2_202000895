@@ -39,6 +39,7 @@
 
     /* expresiones */
     #include "../Expression/primitive.hpp"
+    #include "../Expression/access.hpp"
     #include "../Expression/operation.hpp"
     #include "../Environment/type.h"
     #include "../Interfaces/expression.hpp"
@@ -46,6 +47,7 @@
     /* instrucciones */
     #include "../Interfaces/instruction.hpp"
     #include "../Instruction/print.hpp"
+    #include "../Instruction/declaracion.hpp"
     #include "../Instruction/list_instruction.hpp"
     #include "../Instruction/func_main.hpp"
 
@@ -62,7 +64,7 @@
 %token <std::string> tk_true tk_false tk_igualq tk_diferenteq tk_mayor_igual tk_menor_igual tk_CORCHA tk_CORCHC
 %token <std::string> tk_menorq tk_mayorq tk_and tk_or tk_not res_IF res_ELSE res_WHILE res_FOR res_BREAK res_CONTINUE res_RETURN res_pushB res_pushF 
 %token <std::string> res_get res_remove res_size res_struct res_mean res_median res_mode res_atoi res_atof res_iota res_VECTOR mas_mas menos_menos
-%token ';' '='
+%token ';' '=' ',' '.'  
 
 
 /* precedencia de operadores */
@@ -90,13 +92,15 @@
 %type<instruction*> ASIGNAR
 %type<instruction*> IF
 %type<instruction*> WHILE
+%type<instruction*> BREAK
+%type<instruction*> CONT
 %type<instruction*> FOR
 %type<instruction*> INCREMENTO
 %type<instruction*> VECTOR
 %type<instruction*> FUNC
 %type<instruction*> LLAMADAF
 %type<instruction*> RETORNO
-%type<std::string> TYPES
+%type<TipoDato> TYPES
 
 /* printer */
 %printer { yyoutput << $$; } <*>;
@@ -116,7 +120,7 @@ START : MAIN
 
 // PRUEBA : LIST_INST;
 
-MAIN : TYPES rmain tk_PARA tk_PARC tk_LLAVA LIST_INST tk_LLAVC
+MAIN : tk_void rmain tk_PARA tk_PARC tk_LLAVA LIST_INST tk_LLAVC
 {
     $$ = new func_main(0, 0, $1, $6);
 }
@@ -138,18 +142,21 @@ INSTRUCTION : PRINT ';' { $$ = $1; }
             | DECLARAR ';' {$$=$1;}
             | ASIGNAR ';' {$$=$1;}
             | VECTOR ';' {$$=$1;}
+            | BREAK ';' {$$=$1;}
+            | CONT ';' {$$=$1;}
+            | RETORNO ';'  {$$=$1;}
             | INCREMENTO ';' {$$=$1;}
             | LLAMADAF ';' {$$=$1;}
             | FUNC  {$$=$1;}
             | WHILE  {$$=$1;}
-            | RETORNO ';'  {$$=$1;}
             | FOR  {$$=$1;}
             | IF  {$$=$1;}
             | error ';'
 ;
 
-DECLARAR: TYPES id  {std::cout<<"Declarando "<<$2<<std::endl;}
-        | TYPES id '=' EXP {std::cout<<"Declarando con valor a "<<$2<<std::endl;}
+DECLARAR: TYPES id  {std::cout<<"Declarando "<<$2<<std::endl; }
+        | TYPES id '=' EXP {std::cout<<"Declarando con valor a "<<$2<<std::endl;
+                            $$ = new declaracion(0,0,$1,$2,$4);}
 ;
 
 ASIGNAR:  id '=' EXP {std::cout<<"Asignando valor a "<<$1<<std::endl;}
@@ -168,6 +175,12 @@ WHILE: res_WHILE tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC {std::cout<<"Wh
         
 // For
 FOR:  res_FOR tk_PARA DECLARAR ';' EXP ';' INCREMENTO tk_PARC tk_LLAVA LIST_INST tk_LLAVC {std::cout<<"FOR "<<std::endl;}
+;
+
+// Break - Continue
+BREAK: res_BREAK {std::cout<<"Break"<<std::endl;}
+;
+CONT: res_CONTINUE {std::cout<<"continue"<<std::endl;}
 ;
 
 // Vector
@@ -197,11 +210,11 @@ LLAMADAF: id tk_PARA LISTAEXP tk_PARC {std::cout<<"Llamando funcion: "<<$1<<std:
 RETORNO: res_RETURN EXP {std::cout<<"returno de : "<<$2<<std::endl;}
 ;
 
-TYPES : tk_void { $$ = "void"; }
-    | tk_int { $$ = "int"; }
-    | tk_string { $$ = "string"; }
-    | tk_float { $$ = "float"; }
-    | tk_bool { $$ = "bool"; }
+TYPES :tk_int { $$ = INTEGER; }
+    | tk_string { $$ = STRING; }
+    | tk_float { $$ = FLOAT; }
+    | tk_bool { $$ = BOOL; }
+    // |tk_void { $$ = "void"; }
 ;
 
 LISTAEXP: LISTAEXP ',' EXP 
@@ -229,16 +242,17 @@ EXP : EXP suma EXP { $$ = new operation(0, 0, $1, $3, "+"); }
     | PRIMITIVE { $$ = $1; }
 ;
 
-PRIMITIVE : NUMERO { $$ = new primitive(0,0,INTEGER, "", std::stod($1)); }
+PRIMITIVE : NUMERO {  int num = stoi($1); $$ = new primitive(0,0,INTEGER, "",num,false); }
         | CADENA
         {
-            std::string cadenita = $1.erase(0,1);
-            $$ = new primitive(0,0,STRING, cadenita.erase(cadenita.length()-1,1), 0);
+            std::string str1 = $1.erase(0,1);
+            std::string str2 = str1.erase(str1.length()-1,1);
+            $$ = new primitive(0,0,STRING,str2,0, false);
         }
-        | id   {}
+        | id   {$$ = new access(0,0,$1);}
         | DECIMAL   {}
-        | tk_true   
-        | tk_false  
+        | tk_true   { $$ = new primitive(0,0,BOOL,"",0,true); }
+        | tk_false  { $$ = new primitive(0,0,BOOL,"",0,false); }
         | res_mean tk_PARA id tk_PARC {std::cout<<"Media de: "<<$3<<std::endl;}
         | res_median tk_PARA id tk_PARC {std::cout<<"Mediana de: "<<$3<<std::endl;}
         | res_mode tk_PARA id tk_PARC {std::cout<<"Moda de: "<<$3<<std::endl;}

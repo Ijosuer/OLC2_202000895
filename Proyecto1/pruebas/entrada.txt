@@ -1,4 +1,4 @@
-int main(){
+void main(){
 //Declaracion de variables
 
 
@@ -49,7 +49,7 @@ bool hola(int id, string id2, float id3){
     //elimina la primera posición
     vec1.remove(0); //[10,20,30,40,50,100]
 
-    float media1 =5 // la función mean nos retorna 19
+    float media1 =5; // la función mean nos retorna 19
     int mediana1 = median(vec1); // la función median nos retorna 1
 
     //Instruccion while

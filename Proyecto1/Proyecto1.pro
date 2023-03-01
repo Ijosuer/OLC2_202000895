@@ -16,10 +16,12 @@ Environment/ast.cpp \
     Environment/environment.cpp \
     Environment/symbol.cpp \
     Expression/operation.cpp \
+    Expression/access.cpp \
     Expression/primitive.cpp \
     Instruction/func_main.cpp \
     Instruction/list_instruction.cpp \
     Instruction/print.cpp \
+    Instruction/declaracion.cpp \
     Interfaces/expression.cpp \
     Interfaces/expression.cpp \
     Interfaces/instruction.cpp \
@@ -34,11 +36,13 @@ HEADERS += \
    Environment/environment.hpp \
    Environment/symbol.hpp \
    Environment/type.h \
+   Expression/access.hpp \
    Expression/operation.hpp \
    Expression/primitive.hpp \
    Instruction/func_main.hpp \
    Instruction/list_instruction.hpp \
    Instruction/print.hpp \
+   Instruction/declaracion.hpp \
    Interfaces/expression.hpp \
    Interfaces/expression.hpp \
    Interfaces/instruction.hpp \
@@ -48,8 +52,8 @@ HEADERS += \
    parser/parser.y \
    parser/position.hh \
    parser/stack.hh \
-    mainwindow.h\
-    parserctx.hpp
+   mainwindow.h\
+   parserctx.hpp
 
 FORMS += \
     mainwindow.ui

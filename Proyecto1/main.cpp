@@ -1,4 +1,4 @@
-//#include "mainwindow.h"
+#include "mainwindow.h"
 
 #include "Environment/ast.hpp"
 #include "parserctx.hpp"
@@ -55,11 +55,11 @@ void leer(){
 int main(int argc, char *argv[])
 {
 
-    leer();
-    return 0;
+//    ejecutar();
+//    return 0;
 
-//    QApplication a(argc, argv);
-//    MainWindow w;
-//    w.show();
-//    return a.exec();
+    QApplication a(argc, argv);
+    MainWindow w;
+    w.show();
+    return a.exec();
 }

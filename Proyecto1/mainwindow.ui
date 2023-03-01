@@ -53,8 +53,8 @@ color: rgb(36, 31, 49);</string>
    <widget class="QTextEdit" name="Consola">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>280</y>
+      <x>10</x>
+      <y>290</y>
       <width>431</width>
       <height>161</height>
      </rect>

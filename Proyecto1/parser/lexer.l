@@ -25,6 +25,8 @@
     //typedefs (abreviaturas DefLarga DefCorta) para definiciones de tokens
     typedef yy::Parser::token token;
     typedef yy::Parser::token_type token_type;
+    
+    //Iniciar lectura
 /// código adicinoal aquí
 
 %}
