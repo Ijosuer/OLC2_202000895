@@ -10,9 +10,10 @@ public:
     TipoDato Tipo;
     std::string strVal;
     int numVal;
+    float floatVal;
     bool boolVal;
 
-    primitive(int, int, TipoDato, std::string, int, bool);
+    primitive(int, int, TipoDato, std::string, int, float, bool);
     symbol ejecutar(environment *env, ast *tree) override;
 };
 

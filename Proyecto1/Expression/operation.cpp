@@ -33,13 +33,13 @@ symbol operation::ejecutar(environment *env, ast *tree)
         {
             if(op1.Tipo == BOOL || op2.Tipo == BOOL)
             {
-            std::cout<<"val1:"<<*static_cast<int*>(op1.Value)<<" Val2:"<<*static_cast<int*>(op2.Value)<<std::endl;
+//            std::cout<<"val1:"<<*static_cast<int*>(op1.Value)<<" Val2:"<<*static_cast<int*>(op2.Value)<<std::endl;
             int result = *static_cast<bool*>(op1.Value) + *static_cast<bool*>(op2.Value);
             sym = symbol(Line,Col,"",Dominante,&result);
             }
             else
             {
-            std::cout<<"val1:"<<*static_cast<int*>(op1.Value)<<" Val2:"<<*static_cast<int*>(op2.Value)<<std::endl;
+//            std::cout<<"val1:"<<*static_cast<int*>(op1.Value)<<" Val2:"<<*static_cast<int*>(op2.Value)<<std::endl;
             int result = *static_cast<int*>(op1.Value) + *static_cast<int*>(op2.Value);
             sym = symbol(Line,Col,"",Dominante,&result);
             }
@@ -60,21 +60,66 @@ symbol operation::ejecutar(environment *env, ast *tree)
                 bool b = *static_cast<bool*>(op2.Value);
                 std::string s = (b)? "true" : "false";
                 std::string d = *static_cast<std::string*>(op1.Value);
-                std::cout<<"val2:"<<s<<std::endl;
+//                std::cout<<"val2:"<<s<<std::endl;
                 std::string result = d+s;
+                sym = symbol(Line,Col,"",Dominante,&result);
+            }
+            else if(op1.Tipo == INTEGER)
+            {
+                int d = *static_cast<int*>(op1.Value);
+                std::string val1 = std::to_string(d);
+                std::string *val2 = (std::string *)op2.Value;
+                std::string result = val1 + *val2;
+                sym = symbol(Line,Col,"",Dominante,&result);
+            }
+            else if(op2.Tipo == INTEGER)
+            {
+                int d = *static_cast<int*>(op2.Value);
+                std::cout<<d<<std::endl;
+                std::string val2 = std::to_string(d);
+                std::string *val1 = (std::string *)op1.Value;
+                std::string result =*val1+ val2 ;
                 sym = symbol(Line,Col,"",Dominante,&result);
             }
             else
             {
+//                std::cout<<op1.Value<<std::endl;
+//                std::cout<<op2.Value<<std::endl;
                 std::string *val1 = (std::string *)op1.Value;
                 std::string *val2 = (std::string *)op2.Value;
-                std::string result = *val1 + *val2;
+                std::string result = val1->append(*val2);
                 sym = symbol(Line,Col,"",op1.Tipo,&result);
             }
         }
         else if(Dominante == FLOAT)
         {
-
+            if(op1.Tipo == FLOAT && op2.Tipo == FLOAT)
+            {
+                float result = *static_cast<float*>(op1.Value) + *static_cast<float*>(op2.Value);
+                sym = symbol(Line,Col,"",Dominante,&result);
+            }else if(op1.Tipo == FLOAT && op2.Tipo == INTEGER)
+            {
+                int temp1 = *static_cast<int*>(op2.Value);
+                float result = *static_cast<float*>(op1.Value) + temp1;
+                sym = symbol(Line,Col,"",Dominante,&result);
+            }else if(op2.Tipo == FLOAT && op1.Tipo == INTEGER)
+            {
+                int temp1 = *static_cast<int*>(op1.Value);
+                float result = *static_cast<float*>(op2.Value) + temp1;
+                sym = symbol(Line,Col,"",Dominante,&result);
+            }
+            else if(op1.Tipo == FLOAT && op2.Tipo == BOOL)
+            {
+                int temp1 = *static_cast<bool*>(op2.Value);
+                float result = *static_cast<float*>(op1.Value) + temp1;
+                sym = symbol(Line,Col,"",Dominante,&result);
+            }
+            else if(op1.Tipo == BOOL && op2.Tipo == FLOAT)
+            {
+                int temp1 = *static_cast<bool*>(op1.Value);
+                float result = *static_cast<float*>(op2.Value) + temp1;
+                sym = symbol(Line,Col,"",Dominante,&result);
+            }
         }
         else
         {

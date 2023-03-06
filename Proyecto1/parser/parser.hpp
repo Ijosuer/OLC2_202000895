@@ -64,11 +64,12 @@
     #include "../Interfaces/instruction.hpp"
     #include "../Instruction/print.hpp"
     #include "../Instruction/declaracion.hpp"
+    #include "../Instruction/asignacion.hpp"
     #include "../Instruction/list_instruction.hpp"
     #include "../Instruction/func_main.hpp"
 
 
-#line 72 "parser.hpp"
+#line 73 "parser.hpp"
 
 
 # include <cstdlib> // std::abort
@@ -203,7 +204,7 @@
 #endif
 
 namespace yy {
-#line 207 "parser.hpp"
+#line 208 "parser.hpp"
 
 
 
@@ -2734,7 +2735,7 @@ switch (yykind)
 
 
 } // yy
-#line 2738 "parser.hpp"
+#line 2739 "parser.hpp"
 
 
 

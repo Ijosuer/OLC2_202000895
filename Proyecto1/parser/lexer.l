@@ -51,7 +51,8 @@ DECIMAL ({NUMERO})"."({NUMERO})
 
 "//"[^\n]*\n            ; /* comentarios de una linea */
 
-"/*""/"*([^*/]|[^*]"/"|"*"[^/])*"*"*"*/"; /* comentarios de multi linea */
+
+\/\*(.|\n)*?\*\/      ; /* comentarios de multi linea */
 
 [ \t\v\r\n\f]             ; /* caracteres en blanco */
     /* Lexemas */

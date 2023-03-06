@@ -22,6 +22,7 @@ Environment/ast.cpp \
     Instruction/list_instruction.cpp \
     Instruction/print.cpp \
     Instruction/declaracion.cpp \
+    Instruction/asignacion.cpp \
     Interfaces/expression.cpp \
     Interfaces/expression.cpp \
     Interfaces/instruction.cpp \
@@ -43,6 +44,7 @@ HEADERS += \
    Instruction/list_instruction.hpp \
    Instruction/print.hpp \
    Instruction/declaracion.hpp \
+   Instruction/asignacion.hpp \
    Interfaces/expression.hpp \
    Interfaces/expression.hpp \
    Interfaces/instruction.hpp \

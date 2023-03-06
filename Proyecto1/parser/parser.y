@@ -48,6 +48,7 @@
     #include "../Interfaces/instruction.hpp"
     #include "../Instruction/print.hpp"
     #include "../Instruction/declaracion.hpp"
+    #include "../Instruction/asignacion.hpp"
     #include "../Instruction/list_instruction.hpp"
     #include "../Instruction/func_main.hpp"
 
@@ -159,7 +160,7 @@ DECLARAR: TYPES id  {std::cout<<"Declarando "<<$2<<std::endl; }
                             $$ = new declaracion(0,0,$1,$2,$4);}
 ;
 
-ASIGNAR:  id '=' EXP {std::cout<<"Asignando valor a "<<$1<<std::endl;}
+ASIGNAR:  id '=' EXP {std::cout<<"Asignando valor a "<<$1<<std::endl; $$ = new asignacion(0,0,$1,$3);}
         | id tk_LLAVA  EXP tk_LLAVC '=' tk_LLAVA  EXP tk_LLAVC {std::cout<<"Asignando valor vector a: "<<$1<<std::endl;} 
 
 ;
@@ -242,17 +243,17 @@ EXP : EXP suma EXP { $$ = new operation(0, 0, $1, $3, "+"); }
     | PRIMITIVE { $$ = $1; }
 ;
 
-PRIMITIVE : NUMERO {  int num = stoi($1); $$ = new primitive(0,0,INTEGER, "",num,false); }
+PRIMITIVE : NUMERO {  int num = stoi($1); $$ = new primitive(0,0,INTEGER, "",num,0.0,false); }
         | CADENA
         {
             std::string str1 = $1.erase(0,1);
             std::string str2 = str1.erase(str1.length()-1,1);
-            $$ = new primitive(0,0,STRING,str2,0, false);
+            $$ = new primitive(0,0,STRING,str2,0,0.0, false);
         }
         | id   {$$ = new access(0,0,$1);}
-        | DECIMAL   {}
-        | tk_true   { $$ = new primitive(0,0,BOOL,"",0,true); }
-        | tk_false  { $$ = new primitive(0,0,BOOL,"",0,false); }
+        | DECIMAL   {float num = stof($1); $$ = new primitive(0,0,FLOAT, "",0,num,false);}
+        | tk_true   { $$ = new primitive(0,0,BOOL,"",0,0.0,true); }
+        | tk_false  { $$ = new primitive(0,0,BOOL,"",0,0.0,false); }
         | res_mean tk_PARA id tk_PARC {std::cout<<"Media de: "<<$3<<std::endl;}
         | res_median tk_PARA id tk_PARC {std::cout<<"Mediana de: "<<$3<<std::endl;}
         | res_mode tk_PARA id tk_PARC {std::cout<<"Moda de: "<<$3<<std::endl;}

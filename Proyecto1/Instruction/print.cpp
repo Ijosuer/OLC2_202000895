@@ -26,6 +26,9 @@ void print::ejecutar(environment *env, ast *tree)
             tree->ConsoleOut += "false\n";
         }
         break;
+    case FLOAT:
+        tree->ConsoleOut+=std::to_string(*static_cast<float*>(sym.Value))+ "\n";
+        break;
     default:
         break;
     }

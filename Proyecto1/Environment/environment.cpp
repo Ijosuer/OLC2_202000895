@@ -38,3 +38,8 @@ symbol environment::GetVariable(std::string id, ast *tree)
     }
     return sym;
 }
+
+void environment::ActualizarVariable(std::string id, symbol valor, ast *tree)
+{
+    Tabla[id].Value = valor.Value;
+}
