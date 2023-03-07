@@ -67,9 +67,10 @@
     #include "../Instruction/asignacion.hpp"
     #include "../Instruction/list_instruction.hpp"
     #include "../Instruction/func_main.hpp"
+    #include "../Instruction/func_if.hpp"
 
 
-#line 73 "parser.hpp"
+#line 74 "parser.hpp"
 
 
 # include <cstdlib> // std::abort
@@ -204,7 +205,7 @@
 #endif
 
 namespace yy {
-#line 208 "parser.hpp"
+#line 209 "parser.hpp"
 
 
 
@@ -415,6 +416,7 @@ namespace yy {
       // DECLARAR
       // ASIGNAR
       // IF
+      // ELIF
       // WHILE
       // FOR
       // BREAK
@@ -428,6 +430,8 @@ namespace yy {
       char dummy4[sizeof (instruction*)];
 
       // LIST_INST
+      // ELIF_LIST
+      // ELSE
       char dummy5[sizeof (list_instruction*)];
 
       // NUMERO
@@ -675,21 +679,24 @@ namespace yy {
         S_DECLARAR = 66,                         // DECLARAR
         S_ASIGNAR = 67,                          // ASIGNAR
         S_IF = 68,                               // IF
-        S_WHILE = 69,                            // WHILE
-        S_FOR = 70,                              // FOR
-        S_BREAK = 71,                            // BREAK
-        S_CONT = 72,                             // CONT
-        S_VECTOR = 73,                           // VECTOR
-        S_PRINT = 74,                            // PRINT
-        S_INCREMENTO = 75,                       // INCREMENTO
-        S_FUNC = 76,                             // FUNC
-        S_LLAMADAF = 77,                         // LLAMADAF
-        S_RETORNO = 78,                          // RETORNO
-        S_TYPES = 79,                            // TYPES
-        S_LISTAEXP = 80,                         // LISTAEXP
-        S_LISTPARAM = 81,                        // LISTPARAM
-        S_EXP = 82,                              // EXP
-        S_PRIMITIVE = 83                         // PRIMITIVE
+        S_ELIF_LIST = 69,                        // ELIF_LIST
+        S_ELIF = 70,                             // ELIF
+        S_ELSE = 71,                             // ELSE
+        S_WHILE = 72,                            // WHILE
+        S_FOR = 73,                              // FOR
+        S_BREAK = 74,                            // BREAK
+        S_CONT = 75,                             // CONT
+        S_VECTOR = 76,                           // VECTOR
+        S_PRINT = 77,                            // PRINT
+        S_INCREMENTO = 78,                       // INCREMENTO
+        S_FUNC = 79,                             // FUNC
+        S_LLAMADAF = 80,                         // LLAMADAF
+        S_RETORNO = 81,                          // RETORNO
+        S_TYPES = 82,                            // TYPES
+        S_LISTAEXP = 83,                         // LISTAEXP
+        S_LISTPARAM = 84,                        // LISTPARAM
+        S_EXP = 85,                              // EXP
+        S_PRIMITIVE = 86                         // PRIMITIVE
       };
     };
 
@@ -744,6 +751,7 @@ namespace yy {
       case symbol_kind::S_DECLARAR: // DECLARAR
       case symbol_kind::S_ASIGNAR: // ASIGNAR
       case symbol_kind::S_IF: // IF
+      case symbol_kind::S_ELIF: // ELIF
       case symbol_kind::S_WHILE: // WHILE
       case symbol_kind::S_FOR: // FOR
       case symbol_kind::S_BREAK: // BREAK
@@ -758,6 +766,8 @@ namespace yy {
         break;
 
       case symbol_kind::S_LIST_INST: // LIST_INST
+      case symbol_kind::S_ELIF_LIST: // ELIF_LIST
+      case symbol_kind::S_ELSE: // ELSE
         value.move< list_instruction* > (std::move (that.value));
         break;
 
@@ -967,6 +977,7 @@ switch (yykind)
       case symbol_kind::S_DECLARAR: // DECLARAR
       case symbol_kind::S_ASIGNAR: // ASIGNAR
       case symbol_kind::S_IF: // IF
+      case symbol_kind::S_ELIF: // ELIF
       case symbol_kind::S_WHILE: // WHILE
       case symbol_kind::S_FOR: // FOR
       case symbol_kind::S_BREAK: // BREAK
@@ -981,6 +992,8 @@ switch (yykind)
         break;
 
       case symbol_kind::S_LIST_INST: // LIST_INST
+      case symbol_kind::S_ELIF_LIST: // ELIF_LIST
+      case symbol_kind::S_ELSE: // ELSE
         value.template destroy< list_instruction* > ();
         break;
 
@@ -2378,8 +2391,8 @@ switch (yykind)
     /// Constants.
     enum
     {
-      yylast_ = 693,     ///< Last index in yytable_.
-      yynnts_ = 23,  ///< Number of nonterminal symbols.
+      yylast_ = 761,     ///< Last index in yytable_.
+      yynnts_ = 26,  ///< Number of nonterminal symbols.
       yyfinal_ = 5 ///< Termination state number.
     };
 
@@ -2472,6 +2485,7 @@ switch (yykind)
       case symbol_kind::S_DECLARAR: // DECLARAR
       case symbol_kind::S_ASIGNAR: // ASIGNAR
       case symbol_kind::S_IF: // IF
+      case symbol_kind::S_ELIF: // ELIF
       case symbol_kind::S_WHILE: // WHILE
       case symbol_kind::S_FOR: // FOR
       case symbol_kind::S_BREAK: // BREAK
@@ -2486,6 +2500,8 @@ switch (yykind)
         break;
 
       case symbol_kind::S_LIST_INST: // LIST_INST
+      case symbol_kind::S_ELIF_LIST: // ELIF_LIST
+      case symbol_kind::S_ELSE: // ELSE
         value.copy< list_instruction* > (YY_MOVE (that.value));
         break;
 
@@ -2595,6 +2611,7 @@ switch (yykind)
       case symbol_kind::S_DECLARAR: // DECLARAR
       case symbol_kind::S_ASIGNAR: // ASIGNAR
       case symbol_kind::S_IF: // IF
+      case symbol_kind::S_ELIF: // ELIF
       case symbol_kind::S_WHILE: // WHILE
       case symbol_kind::S_FOR: // FOR
       case symbol_kind::S_BREAK: // BREAK
@@ -2609,6 +2626,8 @@ switch (yykind)
         break;
 
       case symbol_kind::S_LIST_INST: // LIST_INST
+      case symbol_kind::S_ELIF_LIST: // ELIF_LIST
+      case symbol_kind::S_ELSE: // ELSE
         value.move< list_instruction* > (YY_MOVE (s.value));
         break;
 
@@ -2735,7 +2754,7 @@ switch (yykind)
 
 
 } // yy
-#line 2739 "parser.hpp"
+#line 2758 "parser.hpp"
 
 
 

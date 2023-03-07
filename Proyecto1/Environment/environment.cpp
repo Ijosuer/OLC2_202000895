@@ -1,14 +1,16 @@
 #include "environment.hpp"
 
-environment::environment()
-{
-
+environment::environment(environment *back, std::string id)
+{   
+    Anterior = back;
+    Id = id;
 }
 
 void environment::SaveVariable(symbol sym, std::string id, ast *tree)
 {
     if (Tabla.find(id) == Tabla.end())
     {
+        std::cout<<"guarda"<<std::endl;
         Tabla[id] = sym;
     }
     else
@@ -18,24 +20,40 @@ void environment::SaveVariable(symbol sym, std::string id, ast *tree)
     }
 }
 
-symbol environment::GetVariable(std::string id, ast *tree)
+symbol environment::GetVariable(std::string id, environment *env, ast *tree)
 {
     symbol sym (0,0,"",NULO,nullptr);
-    //return sym;
-    if (Tabla.find(id) == Tabla.end())
+    environment tmpEnv = *env;
+
+    for( ; ;)
     {
-        //se reporta un error
-        tree->ErrorOut += "No existe la variable "+id;
+        if (tmpEnv.Tabla.find(id) == tmpEnv.Tabla.end())
+        {
+            std::cout<<"Entra aca"<<std::endl;
+            if(tmpEnv.Anterior == nullptr)
+            {
+            std::cout<<"Entra aca en break"<<std::endl;
+                break;
+            }
+            else
+            {
+                tmpEnv = *tmpEnv.Anterior;
+            }
+        }
+        else
+        {
+            std::cout<<"nel aca"<<std::endl;
+            symbol tempSym (tmpEnv.Tabla[id].Line,
+                            tmpEnv.Tabla[id].Col,
+                            tmpEnv.Tabla[id].Id,
+                            tmpEnv.Tabla[id].Tipo,
+                            tmpEnv.Tabla[id].Value);
+            sym = tempSym;
+            break;
+        }
+
     }
-    else
-    {
-        symbol tempSym (Tabla[id].Line,
-                        Tabla[id].Col,
-                        Tabla[id].Id,
-                        Tabla[id].Tipo,
-                        Tabla[id].Value);
-        sym = tempSym;
-    }
+
     return sym;
 }
 

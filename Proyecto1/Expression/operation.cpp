@@ -298,5 +298,34 @@ symbol operation::ejecutar(environment *env, ast *tree)
             tree->ErrorOut += "Error: tipo incorrecto para multiplicación";
         }
     }
+    else if (Operator == "&&")
+    {
+        if(op1.Tipo == BOOL && op2.Tipo == BOOL)
+        {
+            bool *val1 = (bool *)op1.Value;
+            bool *val2 = (bool *)op2.Value;
+            int result = *val1 && *val2;
+            sym = symbol(Line,Col,"",BOOL,&result);
+        }
+        else
+        {
+            tree->ErrorOut+="Error: tipo incorrecto en exp logica";
+        }
+    }
+    else if (Operator == "||")
+    {
+        if(Dominante == BOOL)
+        {
+            bool *val1 = (bool *)op1.Value;
+            bool *val2 = (bool *)op2.Value;
+            int result = *val1 || *val2;
+            sym = symbol(Line,Col,"",BOOL,&result);
+        }
+        else
+        {
+            tree->ErrorOut+="Error: tipo incorrecto en exp logica";
+        }
+    }
+    
     return sym;
 }

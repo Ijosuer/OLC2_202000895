@@ -51,6 +51,7 @@
     #include "../Instruction/asignacion.hpp"
     #include "../Instruction/list_instruction.hpp"
     #include "../Instruction/func_main.hpp"
+    #include "../Instruction/func_if.hpp"
 
 }
 
@@ -92,6 +93,9 @@
 %type<instruction*> DECLARAR
 %type<instruction*> ASIGNAR
 %type<instruction*> IF
+%type<instruction*> ELIF
+%type<list_instruction*> ELSE
+%type<list_instruction*> ELIF_LIST
 %type<instruction*> WHILE
 %type<instruction*> BREAK
 %type<instruction*> CONT
@@ -152,7 +156,7 @@ INSTRUCTION : PRINT ';' { $$ = $1; }
             | WHILE  {$$=$1;}
             | FOR  {$$=$1;}
             | IF  {$$=$1;}
-            | error ';'
+            | error ';'{}
 ;
 
 DECLARAR: TYPES id  {std::cout<<"Declarando "<<$2<<std::endl; }
@@ -164,12 +168,26 @@ ASIGNAR:  id '=' EXP {std::cout<<"Asignando valor a "<<$1<<std::endl; $$ = new a
         | id tk_LLAVA  EXP tk_LLAVC '=' tk_LLAVA  EXP tk_LLAVC {std::cout<<"Asignando valor vector a: "<<$1<<std::endl;} 
 
 ;
-// IF
 
-IF  : res_IF tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC {std::cout<<"If sin nada "<<std::endl;}
-    | res_IF tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC res_ELSE IF {std::cout<<"If con elseif "<<std::endl;}
-    | res_IF tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC res_ELSE tk_LLAVA LIST_INST tk_LLAVC {std::cout<<"If con else "<<std::endl;}
+// IF
+IF  : res_IF tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC ELIF_LIST ELSE {$$ = new func_if(0,0,$3,$6,$8,$9);}
+    | res_IF tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC ELSE {$$ = new func_if(0,0,$3,$6,nullptr,$8);}
 ;
+
+ELIF_LIST: ELIF_LIST ELIF { $1->newInst($2); $$=$1; }
+         | ELIF           { $$=new list_instruction(); $$->newInst($1); }
+;
+
+ELIF: res_ELSE res_IF tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC
+        {
+            $$ = new func_if(0,0,$4,$7, nullptr, nullptr);
+        }
+;
+
+ELSE: res_ELSE tk_LLAVA LIST_INST tk_LLAVC { $$=$3; }
+    | %empty {}
+;
+
 // While
 WHILE: res_WHILE tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC {std::cout<<"While "<<std::endl;}
 ;

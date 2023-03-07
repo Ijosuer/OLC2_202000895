@@ -2,7 +2,8 @@
 #define DECLARACION_HPP
 #include "Interfaces/expression.hpp"
 #include "Interfaces/instruction.hpp"
-
+#include <cmath>
+    
 class declaracion : public instruction
 {
 public:

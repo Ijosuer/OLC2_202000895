@@ -53,138 +53,145 @@ Gramática
    21 ASIGNAR: id '=' EXP
    22        | id tk_LLAVA EXP tk_LLAVC '=' tk_LLAVA EXP tk_LLAVC
 
-   23 IF: res_IF tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC
-   24   | res_IF tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC res_ELSE IF
-   25   | res_IF tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC res_ELSE tk_LLAVA LIST_INST tk_LLAVC
+   23 IF: res_IF tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC ELIF_LIST ELSE
+   24   | res_IF tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC ELSE
 
-   26 WHILE: res_WHILE tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC
+   25 ELIF_LIST: ELIF_LIST ELIF
+   26          | ELIF
 
-   27 FOR: res_FOR tk_PARA DECLARAR ';' EXP ';' INCREMENTO tk_PARC tk_LLAVA LIST_INST tk_LLAVC
+   27 ELIF: res_ELSE res_IF tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC
 
-   28 BREAK: res_BREAK
+   28 ELSE: res_ELSE tk_LLAVA LIST_INST tk_LLAVC
+   29     | ε
 
-   29 CONT: res_CONTINUE
+   30 WHILE: res_WHILE tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC
 
-   30 VECTOR: res_VECTOR tk_menorq TYPES tk_mayorq id '=' tk_CORCHA LISTAEXP tk_CORCHC
-   31       | res_VECTOR tk_menorq TYPES tk_mayorq id
-   32       | id '.' res_pushB tk_PARA EXP tk_PARC
-   33       | id '.' res_pushF tk_PARA EXP tk_PARC
-   34       | id '.' res_get tk_PARA EXP tk_PARC
-   35       | id '.' res_remove tk_PARA EXP tk_PARC
-   36       | id '.' res_size tk_PARA tk_PARC
+   31 FOR: res_FOR tk_PARA DECLARAR ';' EXP ';' INCREMENTO tk_PARC tk_LLAVA LIST_INST tk_LLAVC
 
-   37 PRINT: PRINTF tk_PARA EXP tk_PARC
+   32 BREAK: res_BREAK
 
-   38 INCREMENTO: id mas_mas
-   39           | id menos_menos
+   33 CONT: res_CONTINUE
 
-   40 FUNC: TYPES id tk_PARA LISTPARAM tk_PARC tk_LLAVA LIST_INST tk_LLAVC
-   41     | TYPES id tk_PARA tk_PARC tk_LLAVA LIST_INST tk_LLAVC
+   34 VECTOR: res_VECTOR tk_menorq TYPES tk_mayorq id '=' tk_CORCHA LISTAEXP tk_CORCHC
+   35       | res_VECTOR tk_menorq TYPES tk_mayorq id
+   36       | id '.' res_pushB tk_PARA EXP tk_PARC
+   37       | id '.' res_pushF tk_PARA EXP tk_PARC
+   38       | id '.' res_get tk_PARA EXP tk_PARC
+   39       | id '.' res_remove tk_PARA EXP tk_PARC
+   40       | id '.' res_size tk_PARA tk_PARC
 
-   42 LLAMADAF: id tk_PARA LISTAEXP tk_PARC
+   41 PRINT: PRINTF tk_PARA EXP tk_PARC
 
-   43 RETORNO: res_RETURN EXP
+   42 INCREMENTO: id mas_mas
+   43           | id menos_menos
 
-   44 TYPES: tk_int
-   45      | tk_string
-   46      | tk_float
-   47      | tk_bool
+   44 FUNC: TYPES id tk_PARA LISTPARAM tk_PARC tk_LLAVA LIST_INST tk_LLAVC
+   45     | TYPES id tk_PARA tk_PARC tk_LLAVA LIST_INST tk_LLAVC
 
-   48 LISTAEXP: LISTAEXP ',' EXP
-   49         | EXP
+   46 LLAMADAF: id tk_PARA LISTAEXP tk_PARC
 
-   50 LISTPARAM: LISTPARAM ',' TYPES id
-   51          | TYPES id
+   47 RETORNO: res_RETURN EXP
 
-   52 EXP: EXP suma EXP
-   53    | EXP menos EXP
-   54    | EXP mult EXP
-   55    | EXP div EXP
-   56    | EXP tk_menor_igual EXP
-   57    | EXP tk_menorq EXP
-   58    | EXP tk_mayor_igual EXP
-   59    | EXP tk_mayorq EXP
-   60    | EXP tk_igualq EXP
-   61    | EXP tk_diferenteq EXP
-   62    | EXP tk_and EXP
-   63    | EXP tk_or EXP
-   64    | EXP tk_not EXP
-   65    | tk_PARA EXP tk_PARC
-   66    | PRIMITIVE
+   48 TYPES: tk_int
+   49      | tk_string
+   50      | tk_float
+   51      | tk_bool
 
-   67 PRIMITIVE: NUMERO
-   68          | CADENA
-   69          | id
-   70          | DECIMAL
-   71          | tk_true
-   72          | tk_false
-   73          | res_mean tk_PARA id tk_PARC
-   74          | res_median tk_PARA id tk_PARC
-   75          | res_mode tk_PARA id tk_PARC
+   52 LISTAEXP: LISTAEXP ',' EXP
+   53         | EXP
+
+   54 LISTPARAM: LISTPARAM ',' TYPES id
+   55          | TYPES id
+
+   56 EXP: EXP suma EXP
+   57    | EXP menos EXP
+   58    | EXP mult EXP
+   59    | EXP div EXP
+   60    | EXP tk_menor_igual EXP
+   61    | EXP tk_menorq EXP
+   62    | EXP tk_mayor_igual EXP
+   63    | EXP tk_mayorq EXP
+   64    | EXP tk_igualq EXP
+   65    | EXP tk_diferenteq EXP
+   66    | EXP tk_and EXP
+   67    | EXP tk_or EXP
+   68    | EXP tk_not EXP
+   69    | tk_PARA EXP tk_PARC
+   70    | PRIMITIVE
+
+   71 PRIMITIVE: NUMERO
+   72          | CADENA
+   73          | id
+   74          | DECIMAL
+   75          | tk_true
+   76          | tk_false
+   77          | res_mean tk_PARA id tk_PARC
+   78          | res_median tk_PARA id tk_PARC
+   79          | res_mode tk_PARA id tk_PARC
 
 
 Terminales con las reglas donde aparecen
 
     END (0) 0
-    ',' (44) 48 50
-    '.' (46) 32 33 34 35 36
-    ';' (59) 5 6 7 8 9 10 11 12 13 18 27
-    '=' (61) 20 21 22 30
+    ',' (44) 52 54
+    '.' (46) 36 37 38 39 40
+    ';' (59) 5 6 7 8 9 10 11 12 13 18 31
+    '=' (61) 20 21 22 34
     error (256) 18
-    NUMERO <std::string> (258) 67
-    id <std::string> (259) 19 20 21 22 30 31 32 33 34 35 36 38 39 40 41 42 50 51 69 73 74 75
-    CADENA <std::string> (260) 68
-    DECIMAL <std::string> (261) 70
-    suma <std::string> (262) 52
-    menos <std::string> (263) 53
-    mult <std::string> (264) 54
-    div <std::string> (265) 55
-    PRINTF <std::string> (266) 37
+    NUMERO <std::string> (258) 71
+    id <std::string> (259) 19 20 21 22 34 35 36 37 38 39 40 42 43 44 45 46 54 55 73 77 78 79
+    CADENA <std::string> (260) 72
+    DECIMAL <std::string> (261) 74
+    suma <std::string> (262) 56
+    menos <std::string> (263) 57
+    mult <std::string> (264) 58
+    div <std::string> (265) 59
+    PRINTF <std::string> (266) 41
     tk_void <std::string> (267) 2
-    tk_int <std::string> (268) 44
-    tk_string <std::string> (269) 45
-    tk_float <std::string> (270) 46
-    tk_bool <std::string> (271) 47
-    tk_PARA <std::string> (272) 2 23 24 25 26 27 32 33 34 35 36 37 40 41 42 65 73 74 75
-    tk_PARC <std::string> (273) 2 23 24 25 26 27 32 33 34 35 36 37 40 41 42 65 73 74 75
+    tk_int <std::string> (268) 48
+    tk_string <std::string> (269) 49
+    tk_float <std::string> (270) 50
+    tk_bool <std::string> (271) 51
+    tk_PARA <std::string> (272) 2 23 24 27 30 31 36 37 38 39 40 41 44 45 46 69 77 78 79
+    tk_PARC <std::string> (273) 2 23 24 27 30 31 36 37 38 39 40 41 44 45 46 69 77 78 79
     rmain <std::string> (274) 2
-    tk_LLAVA <std::string> (275) 2 22 23 24 25 26 27 40 41
-    tk_LLAVC <std::string> (276) 2 22 23 24 25 26 27 40 41
-    tk_true <std::string> (277) 71
-    tk_false <std::string> (278) 72
-    tk_igualq <std::string> (279) 60
-    tk_diferenteq <std::string> (280) 61
-    tk_mayor_igual <std::string> (281) 58
-    tk_menor_igual <std::string> (282) 56
-    tk_CORCHA <std::string> (283) 30
-    tk_CORCHC <std::string> (284) 30
-    tk_menorq <std::string> (285) 30 31 57
-    tk_mayorq <std::string> (286) 30 31 59
-    tk_and <std::string> (287) 62
-    tk_or <std::string> (288) 63
-    tk_not <std::string> (289) 64
-    res_IF <std::string> (290) 23 24 25
-    res_ELSE <std::string> (291) 24 25
-    res_WHILE <std::string> (292) 26
-    res_FOR <std::string> (293) 27
-    res_BREAK <std::string> (294) 28
-    res_CONTINUE <std::string> (295) 29
-    res_RETURN <std::string> (296) 43
-    res_pushB <std::string> (297) 32
-    res_pushF <std::string> (298) 33
-    res_get <std::string> (299) 34
-    res_remove <std::string> (300) 35
-    res_size <std::string> (301) 36
+    tk_LLAVA <std::string> (275) 2 22 23 24 27 28 30 31 44 45
+    tk_LLAVC <std::string> (276) 2 22 23 24 27 28 30 31 44 45
+    tk_true <std::string> (277) 75
+    tk_false <std::string> (278) 76
+    tk_igualq <std::string> (279) 64
+    tk_diferenteq <std::string> (280) 65
+    tk_mayor_igual <std::string> (281) 62
+    tk_menor_igual <std::string> (282) 60
+    tk_CORCHA <std::string> (283) 34
+    tk_CORCHC <std::string> (284) 34
+    tk_menorq <std::string> (285) 34 35 61
+    tk_mayorq <std::string> (286) 34 35 63
+    tk_and <std::string> (287) 66
+    tk_or <std::string> (288) 67
+    tk_not <std::string> (289) 68
+    res_IF <std::string> (290) 23 24 27
+    res_ELSE <std::string> (291) 27 28
+    res_WHILE <std::string> (292) 30
+    res_FOR <std::string> (293) 31
+    res_BREAK <std::string> (294) 32
+    res_CONTINUE <std::string> (295) 33
+    res_RETURN <std::string> (296) 47
+    res_pushB <std::string> (297) 36
+    res_pushF <std::string> (298) 37
+    res_get <std::string> (299) 38
+    res_remove <std::string> (300) 39
+    res_size <std::string> (301) 40
     res_struct <std::string> (302)
-    res_mean <std::string> (303) 73
-    res_median <std::string> (304) 74
-    res_mode <std::string> (305) 75
+    res_mean <std::string> (303) 77
+    res_median <std::string> (304) 78
+    res_mode <std::string> (305) 79
     res_atoi <std::string> (306)
     res_atof <std::string> (307)
     res_iota <std::string> (308)
-    res_VECTOR <std::string> (309) 30 31
-    mas_mas <std::string> (310) 38
-    menos_menos <std::string> (311) 39
+    res_VECTOR <std::string> (309) 34 35
+    mas_mas <std::string> (310) 42
+    menos_menos <std::string> (311) 43
 
 
 No terminales con las reglas donde aparecen
@@ -199,64 +206,73 @@ No terminales con las reglas donde aparecen
         on right: 1
     LIST_INST <list_instruction*> (64)
         on left: 3 4
-        on right: 2 3 23 24 25 26 27 40 41
+        on right: 2 3 23 24 27 28 30 31 44 45
     INSTRUCTION <instruction*> (65)
         on left: 5 6 7 8 9 10 11 12 13 14 15 16 17 18
         on right: 3 4
     DECLARAR <instruction*> (66)
         on left: 19 20
-        on right: 6 27
+        on right: 6 31
     ASIGNAR <instruction*> (67)
         on left: 21 22
         on right: 7
     IF <instruction*> (68)
-        on left: 23 24 25
-        on right: 17 24
-    WHILE <instruction*> (69)
-        on left: 26
-        on right: 15
-    FOR <instruction*> (70)
+        on left: 23 24
+        on right: 17
+    ELIF_LIST <list_instruction*> (69)
+        on left: 25 26
+        on right: 23 25
+    ELIF <instruction*> (70)
         on left: 27
+        on right: 25 26
+    ELSE <list_instruction*> (71)
+        on left: 28 29
+        on right: 23 24
+    WHILE <instruction*> (72)
+        on left: 30
+        on right: 15
+    FOR <instruction*> (73)
+        on left: 31
         on right: 16
-    BREAK <instruction*> (71)
-        on left: 28
+    BREAK <instruction*> (74)
+        on left: 32
         on right: 9
-    CONT <instruction*> (72)
-        on left: 29
+    CONT <instruction*> (75)
+        on left: 33
         on right: 10
-    VECTOR <instruction*> (73)
-        on left: 30 31 32 33 34 35 36
+    VECTOR <instruction*> (76)
+        on left: 34 35 36 37 38 39 40
         on right: 8
-    PRINT <instruction*> (74)
-        on left: 37
+    PRINT <instruction*> (77)
+        on left: 41
         on right: 5
-    INCREMENTO <instruction*> (75)
-        on left: 38 39
-        on right: 12 27
-    FUNC <instruction*> (76)
-        on left: 40 41
+    INCREMENTO <instruction*> (78)
+        on left: 42 43
+        on right: 12 31
+    FUNC <instruction*> (79)
+        on left: 44 45
         on right: 14
-    LLAMADAF <instruction*> (77)
-        on left: 42
+    LLAMADAF <instruction*> (80)
+        on left: 46
         on right: 13
-    RETORNO <instruction*> (78)
-        on left: 43
+    RETORNO <instruction*> (81)
+        on left: 47
         on right: 11
-    TYPES <TipoDato> (79)
-        on left: 44 45 46 47
-        on right: 19 20 30 31 40 41 50 51
-    LISTAEXP (80)
-        on left: 48 49
-        on right: 30 42 48
-    LISTPARAM (81)
-        on left: 50 51
-        on right: 40 50
-    EXP <expression*> (82)
-        on left: 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66
-        on right: 20 21 22 23 24 25 26 27 32 33 34 35 37 43 48 49 52 53 54 55 56 57 58 59 60 61 62 63 64 65
-    PRIMITIVE <expression*> (83)
-        on left: 67 68 69 70 71 72 73 74 75
-        on right: 66
+    TYPES <TipoDato> (82)
+        on left: 48 49 50 51
+        on right: 19 20 34 35 44 45 54 55
+    LISTAEXP (83)
+        on left: 52 53
+        on right: 34 46 52
+    LISTPARAM (84)
+        on left: 54 55
+        on right: 44 54
+    EXP <expression*> (85)
+        on left: 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70
+        on right: 20 21 22 23 24 27 30 31 36 37 38 39 41 47 52 53 56 57 58 59 60 61 62 63 64 65 66 67 68 69
+    PRIMITIVE <expression*> (86)
+        on left: 71 72 73 74 75 76 77 78 79
+        on right: 70
 
 
 Estado 0
@@ -366,14 +382,14 @@ Estado 10
 
    21 ASIGNAR: id • '=' EXP
    22        | id • tk_LLAVA EXP tk_LLAVC '=' tk_LLAVA EXP tk_LLAVC
-   32 VECTOR: id • '.' res_pushB tk_PARA EXP tk_PARC
-   33       | id • '.' res_pushF tk_PARA EXP tk_PARC
-   34       | id • '.' res_get tk_PARA EXP tk_PARC
-   35       | id • '.' res_remove tk_PARA EXP tk_PARC
-   36       | id • '.' res_size tk_PARA tk_PARC
-   38 INCREMENTO: id • mas_mas
-   39           | id • menos_menos
-   42 LLAMADAF: id • tk_PARA LISTAEXP tk_PARC
+   36 VECTOR: id • '.' res_pushB tk_PARA EXP tk_PARC
+   37       | id • '.' res_pushF tk_PARA EXP tk_PARC
+   38       | id • '.' res_get tk_PARA EXP tk_PARC
+   39       | id • '.' res_remove tk_PARA EXP tk_PARC
+   40       | id • '.' res_size tk_PARA tk_PARC
+   42 INCREMENTO: id • mas_mas
+   43           | id • menos_menos
+   46 LLAMADAF: id • tk_PARA LISTAEXP tk_PARC
 
     tk_PARA      desplazar e ir al estado 40
     tk_LLAVA     desplazar e ir al estado 41
@@ -385,79 +401,78 @@ Estado 10
 
 Estado 11
 
-   37 PRINT: PRINTF • tk_PARA EXP tk_PARC
+   41 PRINT: PRINTF • tk_PARA EXP tk_PARC
 
     tk_PARA  desplazar e ir al estado 46
 
 
 Estado 12
 
-   44 TYPES: tk_int •
+   48 TYPES: tk_int •
 
-    $default  reduce usando la regla 44 (TYPES)
+    $default  reduce usando la regla 48 (TYPES)
 
 
 Estado 13
 
-   45 TYPES: tk_string •
+   49 TYPES: tk_string •
 
-    $default  reduce usando la regla 45 (TYPES)
+    $default  reduce usando la regla 49 (TYPES)
 
 
 Estado 14
 
-   46 TYPES: tk_float •
+   50 TYPES: tk_float •
 
-    $default  reduce usando la regla 46 (TYPES)
+    $default  reduce usando la regla 50 (TYPES)
 
 
 Estado 15
 
-   47 TYPES: tk_bool •
+   51 TYPES: tk_bool •
 
-    $default  reduce usando la regla 47 (TYPES)
+    $default  reduce usando la regla 51 (TYPES)
 
 
 Estado 16
 
-   23 IF: res_IF • tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC
-   24   | res_IF • tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC res_ELSE IF
-   25   | res_IF • tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC res_ELSE tk_LLAVA LIST_INST tk_LLAVC
+   23 IF: res_IF • tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC ELIF_LIST ELSE
+   24   | res_IF • tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC ELSE
 
     tk_PARA  desplazar e ir al estado 47
 
 
 Estado 17
 
-   26 WHILE: res_WHILE • tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC
+   30 WHILE: res_WHILE • tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC
 
     tk_PARA  desplazar e ir al estado 48
 
 
 Estado 18
 
-   27 FOR: res_FOR • tk_PARA DECLARAR ';' EXP ';' INCREMENTO tk_PARC tk_LLAVA LIST_INST tk_LLAVC
+   31 FOR: res_FOR • tk_PARA DECLARAR ';' EXP ';' INCREMENTO tk_PARC tk_LLAVA LIST_INST tk_LLAVC
 
     tk_PARA  desplazar e ir al estado 49
 
 
 Estado 19
 
-   28 BREAK: res_BREAK •
+   32 BREAK: res_BREAK •
 
-    $default  reduce usando la regla 28 (BREAK)
+    $default  reduce usando la regla 32 (BREAK)
 
 
 Estado 20
 
-   29 CONT: res_CONTINUE •
+   33 CONT: res_CONTINUE •
 
-    $default  reduce usando la regla 29 (CONT)
+    $default  reduce usando la regla 33 (CONT)
 
 
 Estado 21
 
-   43 RETORNO: res_RETURN • EXP
+   47 RETORNO: res_RETURN • EXP
 
     NUMERO      desplazar e ir al estado 50
     id          desplazar e ir al estado 51
@@ -476,8 +491,8 @@ Estado 21
 
 Estado 22
 
-   30 VECTOR: res_VECTOR • tk_menorq TYPES tk_mayorq id '=' tk_CORCHA LISTAEXP tk_CORCHC
-   31       | res_VECTOR • tk_menorq TYPES tk_mayorq id
+   34 VECTOR: res_VECTOR • tk_menorq TYPES tk_mayorq id '=' tk_CORCHA LISTAEXP tk_CORCHC
+   35       | res_VECTOR • tk_menorq TYPES tk_mayorq id
 
     tk_menorq  desplazar e ir al estado 62
 
@@ -622,8 +637,8 @@ Estado 38
 
    19 DECLARAR: TYPES • id
    20         | TYPES • id '=' EXP
-   40 FUNC: TYPES • id tk_PARA LISTPARAM tk_PARC tk_LLAVA LIST_INST tk_LLAVC
-   41     | TYPES • id tk_PARA tk_PARC tk_LLAVA LIST_INST tk_LLAVC
+   44 FUNC: TYPES • id tk_PARA LISTPARAM tk_PARC tk_LLAVA LIST_INST tk_LLAVC
+   45     | TYPES • id tk_PARA tk_PARC tk_LLAVA LIST_INST tk_LLAVC
 
     id  desplazar e ir al estado 74
 
@@ -637,7 +652,7 @@ Estado 39
 
 Estado 40
 
-   42 LLAMADAF: id tk_PARA • LISTAEXP tk_PARC
+   46 LLAMADAF: id tk_PARA • LISTAEXP tk_PARC
 
     NUMERO      desplazar e ir al estado 50
     id          desplazar e ir al estado 51
@@ -676,16 +691,16 @@ Estado 41
 
 Estado 42
 
-   38 INCREMENTO: id mas_mas •
+   42 INCREMENTO: id mas_mas •
 
-    $default  reduce usando la regla 38 (INCREMENTO)
+    $default  reduce usando la regla 42 (INCREMENTO)
 
 
 Estado 43
 
-   39 INCREMENTO: id menos_menos •
+   43 INCREMENTO: id menos_menos •
 
-    $default  reduce usando la regla 39 (INCREMENTO)
+    $default  reduce usando la regla 43 (INCREMENTO)
 
 
 Estado 44
@@ -709,11 +724,11 @@ Estado 44
 
 Estado 45
 
-   32 VECTOR: id '.' • res_pushB tk_PARA EXP tk_PARC
-   33       | id '.' • res_pushF tk_PARA EXP tk_PARC
-   34       | id '.' • res_get tk_PARA EXP tk_PARC
-   35       | id '.' • res_remove tk_PARA EXP tk_PARC
-   36       | id '.' • res_size tk_PARA tk_PARC
+   36 VECTOR: id '.' • res_pushB tk_PARA EXP tk_PARC
+   37       | id '.' • res_pushF tk_PARA EXP tk_PARC
+   38       | id '.' • res_get tk_PARA EXP tk_PARC
+   39       | id '.' • res_remove tk_PARA EXP tk_PARC
+   40       | id '.' • res_size tk_PARA tk_PARC
 
     res_pushB   desplazar e ir al estado 79
     res_pushF   desplazar e ir al estado 80
@@ -724,7 +739,7 @@ Estado 45
 
 Estado 46
 
-   37 PRINT: PRINTF tk_PARA • EXP tk_PARC
+   41 PRINT: PRINTF tk_PARA • EXP tk_PARC
 
     NUMERO      desplazar e ir al estado 50
     id          desplazar e ir al estado 51
@@ -743,9 +758,8 @@ Estado 46
 
 Estado 47
 
-   23 IF: res_IF tk_PARA • EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC
-   24   | res_IF tk_PARA • EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC res_ELSE IF
-   25   | res_IF tk_PARA • EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC res_ELSE tk_LLAVA LIST_INST tk_LLAVC
+   23 IF: res_IF tk_PARA • EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC ELIF_LIST ELSE
+   24   | res_IF tk_PARA • EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC ELSE
 
     NUMERO      desplazar e ir al estado 50
     id          desplazar e ir al estado 51
@@ -764,7 +778,7 @@ Estado 47
 
 Estado 48
 
-   26 WHILE: res_WHILE tk_PARA • EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC
+   30 WHILE: res_WHILE tk_PARA • EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC
 
     NUMERO      desplazar e ir al estado 50
     id          desplazar e ir al estado 51
@@ -783,7 +797,7 @@ Estado 48
 
 Estado 49
 
-   27 FOR: res_FOR tk_PARA • DECLARAR ';' EXP ';' INCREMENTO tk_PARC tk_LLAVA LIST_INST tk_LLAVC
+   31 FOR: res_FOR tk_PARA • DECLARAR ';' EXP ';' INCREMENTO tk_PARC tk_LLAVA LIST_INST tk_LLAVC
 
     tk_int     desplazar e ir al estado 12
     tk_string  desplazar e ir al estado 13
@@ -796,35 +810,35 @@ Estado 49
 
 Estado 50
 
-   67 PRIMITIVE: NUMERO •
+   71 PRIMITIVE: NUMERO •
 
-    $default  reduce usando la regla 67 (PRIMITIVE)
+    $default  reduce usando la regla 71 (PRIMITIVE)
 
 
 Estado 51
 
-   69 PRIMITIVE: id •
+   73 PRIMITIVE: id •
 
-    $default  reduce usando la regla 69 (PRIMITIVE)
+    $default  reduce usando la regla 73 (PRIMITIVE)
 
 
 Estado 52
 
-   68 PRIMITIVE: CADENA •
+   72 PRIMITIVE: CADENA •
 
-    $default  reduce usando la regla 68 (PRIMITIVE)
+    $default  reduce usando la regla 72 (PRIMITIVE)
 
 
 Estado 53
 
-   70 PRIMITIVE: DECIMAL •
+   74 PRIMITIVE: DECIMAL •
 
-    $default  reduce usando la regla 70 (PRIMITIVE)
+    $default  reduce usando la regla 74 (PRIMITIVE)
 
 
 Estado 54
 
-   65 EXP: tk_PARA • EXP tk_PARC
+   69 EXP: tk_PARA • EXP tk_PARC
 
     NUMERO      desplazar e ir al estado 50
     id          desplazar e ir al estado 51
@@ -843,55 +857,55 @@ Estado 54
 
 Estado 55
 
-   71 PRIMITIVE: tk_true •
+   75 PRIMITIVE: tk_true •
 
-    $default  reduce usando la regla 71 (PRIMITIVE)
+    $default  reduce usando la regla 75 (PRIMITIVE)
 
 
 Estado 56
 
-   72 PRIMITIVE: tk_false •
+   76 PRIMITIVE: tk_false •
 
-    $default  reduce usando la regla 72 (PRIMITIVE)
+    $default  reduce usando la regla 76 (PRIMITIVE)
 
 
 Estado 57
 
-   73 PRIMITIVE: res_mean • tk_PARA id tk_PARC
+   77 PRIMITIVE: res_mean • tk_PARA id tk_PARC
 
     tk_PARA  desplazar e ir al estado 90
 
 
 Estado 58
 
-   74 PRIMITIVE: res_median • tk_PARA id tk_PARC
+   78 PRIMITIVE: res_median • tk_PARA id tk_PARC
 
     tk_PARA  desplazar e ir al estado 91
 
 
 Estado 59
 
-   75 PRIMITIVE: res_mode • tk_PARA id tk_PARC
+   79 PRIMITIVE: res_mode • tk_PARA id tk_PARC
 
     tk_PARA  desplazar e ir al estado 92
 
 
 Estado 60
 
-   43 RETORNO: res_RETURN EXP •
-   52 EXP: EXP • suma EXP
-   53    | EXP • menos EXP
-   54    | EXP • mult EXP
-   55    | EXP • div EXP
-   56    | EXP • tk_menor_igual EXP
-   57    | EXP • tk_menorq EXP
-   58    | EXP • tk_mayor_igual EXP
-   59    | EXP • tk_mayorq EXP
-   60    | EXP • tk_igualq EXP
-   61    | EXP • tk_diferenteq EXP
-   62    | EXP • tk_and EXP
-   63    | EXP • tk_or EXP
-   64    | EXP • tk_not EXP
+   47 RETORNO: res_RETURN EXP •
+   56 EXP: EXP • suma EXP
+   57    | EXP • menos EXP
+   58    | EXP • mult EXP
+   59    | EXP • div EXP
+   60    | EXP • tk_menor_igual EXP
+   61    | EXP • tk_menorq EXP
+   62    | EXP • tk_mayor_igual EXP
+   63    | EXP • tk_mayorq EXP
+   64    | EXP • tk_igualq EXP
+   65    | EXP • tk_diferenteq EXP
+   66    | EXP • tk_and EXP
+   67    | EXP • tk_or EXP
+   68    | EXP • tk_not EXP
 
     suma            desplazar e ir al estado 93
     menos           desplazar e ir al estado 94
@@ -907,20 +921,20 @@ Estado 60
     tk_or           desplazar e ir al estado 104
     tk_not          desplazar e ir al estado 105
 
-    $default  reduce usando la regla 43 (RETORNO)
+    $default  reduce usando la regla 47 (RETORNO)
 
 
 Estado 61
 
-   66 EXP: PRIMITIVE •
+   70 EXP: PRIMITIVE •
 
-    $default  reduce usando la regla 66 (EXP)
+    $default  reduce usando la regla 70 (EXP)
 
 
 Estado 62
 
-   30 VECTOR: res_VECTOR tk_menorq • TYPES tk_mayorq id '=' tk_CORCHA LISTAEXP tk_CORCHC
-   31       | res_VECTOR tk_menorq • TYPES tk_mayorq id
+   34 VECTOR: res_VECTOR tk_menorq • TYPES tk_mayorq id '=' tk_CORCHA LISTAEXP tk_CORCHC
+   35       | res_VECTOR tk_menorq • TYPES tk_mayorq id
 
     tk_int     desplazar e ir al estado 12
     tk_string  desplazar e ir al estado 13
@@ -1011,8 +1025,8 @@ Estado 74
 
    19 DECLARAR: TYPES id •
    20         | TYPES id • '=' EXP
-   40 FUNC: TYPES id • tk_PARA LISTPARAM tk_PARC tk_LLAVA LIST_INST tk_LLAVC
-   41     | TYPES id • tk_PARA tk_PARC tk_LLAVA LIST_INST tk_LLAVC
+   44 FUNC: TYPES id • tk_PARA LISTPARAM tk_PARC tk_LLAVA LIST_INST tk_LLAVC
+   45     | TYPES id • tk_PARA tk_PARC tk_LLAVA LIST_INST tk_LLAVC
 
     tk_PARA  desplazar e ir al estado 107
     '='      desplazar e ir al estado 108
@@ -1022,8 +1036,8 @@ Estado 74
 
 Estado 75
 
-   42 LLAMADAF: id tk_PARA LISTAEXP • tk_PARC
-   48 LISTAEXP: LISTAEXP • ',' EXP
+   46 LLAMADAF: id tk_PARA LISTAEXP • tk_PARC
+   52 LISTAEXP: LISTAEXP • ',' EXP
 
     tk_PARC  desplazar e ir al estado 109
     ','      desplazar e ir al estado 110
@@ -1031,20 +1045,20 @@ Estado 75
 
 Estado 76
 
-   49 LISTAEXP: EXP •
-   52 EXP: EXP • suma EXP
-   53    | EXP • menos EXP
-   54    | EXP • mult EXP
-   55    | EXP • div EXP
-   56    | EXP • tk_menor_igual EXP
-   57    | EXP • tk_menorq EXP
-   58    | EXP • tk_mayor_igual EXP
-   59    | EXP • tk_mayorq EXP
-   60    | EXP • tk_igualq EXP
-   61    | EXP • tk_diferenteq EXP
-   62    | EXP • tk_and EXP
-   63    | EXP • tk_or EXP
-   64    | EXP • tk_not EXP
+   53 LISTAEXP: EXP •
+   56 EXP: EXP • suma EXP
+   57    | EXP • menos EXP
+   58    | EXP • mult EXP
+   59    | EXP • div EXP
+   60    | EXP • tk_menor_igual EXP
+   61    | EXP • tk_menorq EXP
+   62    | EXP • tk_mayor_igual EXP
+   63    | EXP • tk_mayorq EXP
+   64    | EXP • tk_igualq EXP
+   65    | EXP • tk_diferenteq EXP
+   66    | EXP • tk_and EXP
+   67    | EXP • tk_or EXP
+   68    | EXP • tk_not EXP
 
     suma            desplazar e ir al estado 93
     menos           desplazar e ir al estado 94
@@ -1060,25 +1074,25 @@ Estado 76
     tk_or           desplazar e ir al estado 104
     tk_not          desplazar e ir al estado 105
 
-    $default  reduce usando la regla 49 (LISTAEXP)
+    $default  reduce usando la regla 53 (LISTAEXP)
 
 
 Estado 77
 
    22 ASIGNAR: id tk_LLAVA EXP • tk_LLAVC '=' tk_LLAVA EXP tk_LLAVC
-   52 EXP: EXP • suma EXP
-   53    | EXP • menos EXP
-   54    | EXP • mult EXP
-   55    | EXP • div EXP
-   56    | EXP • tk_menor_igual EXP
-   57    | EXP • tk_menorq EXP
-   58    | EXP • tk_mayor_igual EXP
-   59    | EXP • tk_mayorq EXP
-   60    | EXP • tk_igualq EXP
-   61    | EXP • tk_diferenteq EXP
-   62    | EXP • tk_and EXP
-   63    | EXP • tk_or EXP
-   64    | EXP • tk_not EXP
+   56 EXP: EXP • suma EXP
+   57    | EXP • menos EXP
+   58    | EXP • mult EXP
+   59    | EXP • div EXP
+   60    | EXP • tk_menor_igual EXP
+   61    | EXP • tk_menorq EXP
+   62    | EXP • tk_mayor_igual EXP
+   63    | EXP • tk_mayorq EXP
+   64    | EXP • tk_igualq EXP
+   65    | EXP • tk_diferenteq EXP
+   66    | EXP • tk_and EXP
+   67    | EXP • tk_or EXP
+   68    | EXP • tk_not EXP
 
     suma            desplazar e ir al estado 93
     menos           desplazar e ir al estado 94
@@ -1099,19 +1113,19 @@ Estado 77
 Estado 78
 
    21 ASIGNAR: id '=' EXP •
-   52 EXP: EXP • suma EXP
-   53    | EXP • menos EXP
-   54    | EXP • mult EXP
-   55    | EXP • div EXP
-   56    | EXP • tk_menor_igual EXP
-   57    | EXP • tk_menorq EXP
-   58    | EXP • tk_mayor_igual EXP
-   59    | EXP • tk_mayorq EXP
-   60    | EXP • tk_igualq EXP
-   61    | EXP • tk_diferenteq EXP
-   62    | EXP • tk_and EXP
-   63    | EXP • tk_or EXP
-   64    | EXP • tk_not EXP
+   56 EXP: EXP • suma EXP
+   57    | EXP • menos EXP
+   58    | EXP • mult EXP
+   59    | EXP • div EXP
+   60    | EXP • tk_menor_igual EXP
+   61    | EXP • tk_menorq EXP
+   62    | EXP • tk_mayor_igual EXP
+   63    | EXP • tk_mayorq EXP
+   64    | EXP • tk_igualq EXP
+   65    | EXP • tk_diferenteq EXP
+   66    | EXP • tk_and EXP
+   67    | EXP • tk_or EXP
+   68    | EXP • tk_not EXP
 
     suma            desplazar e ir al estado 93
     menos           desplazar e ir al estado 94
@@ -1132,55 +1146,55 @@ Estado 78
 
 Estado 79
 
-   32 VECTOR: id '.' res_pushB • tk_PARA EXP tk_PARC
+   36 VECTOR: id '.' res_pushB • tk_PARA EXP tk_PARC
 
     tk_PARA  desplazar e ir al estado 112
 
 
 Estado 80
 
-   33 VECTOR: id '.' res_pushF • tk_PARA EXP tk_PARC
+   37 VECTOR: id '.' res_pushF • tk_PARA EXP tk_PARC
 
     tk_PARA  desplazar e ir al estado 113
 
 
 Estado 81
 
-   34 VECTOR: id '.' res_get • tk_PARA EXP tk_PARC
+   38 VECTOR: id '.' res_get • tk_PARA EXP tk_PARC
 
     tk_PARA  desplazar e ir al estado 114
 
 
 Estado 82
 
-   35 VECTOR: id '.' res_remove • tk_PARA EXP tk_PARC
+   39 VECTOR: id '.' res_remove • tk_PARA EXP tk_PARC
 
     tk_PARA  desplazar e ir al estado 115
 
 
 Estado 83
 
-   36 VECTOR: id '.' res_size • tk_PARA tk_PARC
+   40 VECTOR: id '.' res_size • tk_PARA tk_PARC
 
     tk_PARA  desplazar e ir al estado 116
 
 
 Estado 84
 
-   37 PRINT: PRINTF tk_PARA EXP • tk_PARC
-   52 EXP: EXP • suma EXP
-   53    | EXP • menos EXP
-   54    | EXP • mult EXP
-   55    | EXP • div EXP
-   56    | EXP • tk_menor_igual EXP
-   57    | EXP • tk_menorq EXP
-   58    | EXP • tk_mayor_igual EXP
-   59    | EXP • tk_mayorq EXP
-   60    | EXP • tk_igualq EXP
-   61    | EXP • tk_diferenteq EXP
-   62    | EXP • tk_and EXP
-   63    | EXP • tk_or EXP
-   64    | EXP • tk_not EXP
+   41 PRINT: PRINTF tk_PARA EXP • tk_PARC
+   56 EXP: EXP • suma EXP
+   57    | EXP • menos EXP
+   58    | EXP • mult EXP
+   59    | EXP • div EXP
+   60    | EXP • tk_menor_igual EXP
+   61    | EXP • tk_menorq EXP
+   62    | EXP • tk_mayor_igual EXP
+   63    | EXP • tk_mayorq EXP
+   64    | EXP • tk_igualq EXP
+   65    | EXP • tk_diferenteq EXP
+   66    | EXP • tk_and EXP
+   67    | EXP • tk_or EXP
+   68    | EXP • tk_not EXP
 
     suma            desplazar e ir al estado 93
     menos           desplazar e ir al estado 94
@@ -1200,22 +1214,21 @@ Estado 84
 
 Estado 85
 
-   23 IF: res_IF tk_PARA EXP • tk_PARC tk_LLAVA LIST_INST tk_LLAVC
-   24   | res_IF tk_PARA EXP • tk_PARC tk_LLAVA LIST_INST tk_LLAVC res_ELSE IF
-   25   | res_IF tk_PARA EXP • tk_PARC tk_LLAVA LIST_INST tk_LLAVC res_ELSE tk_LLAVA LIST_INST tk_LLAVC
-   52 EXP: EXP • suma EXP
-   53    | EXP • menos EXP
-   54    | EXP • mult EXP
-   55    | EXP • div EXP
-   56    | EXP • tk_menor_igual EXP
-   57    | EXP • tk_menorq EXP
-   58    | EXP • tk_mayor_igual EXP
-   59    | EXP • tk_mayorq EXP
-   60    | EXP • tk_igualq EXP
-   61    | EXP • tk_diferenteq EXP
-   62    | EXP • tk_and EXP
-   63    | EXP • tk_or EXP
-   64    | EXP • tk_not EXP
+   23 IF: res_IF tk_PARA EXP • tk_PARC tk_LLAVA LIST_INST tk_LLAVC ELIF_LIST ELSE
+   24   | res_IF tk_PARA EXP • tk_PARC tk_LLAVA LIST_INST tk_LLAVC ELSE
+   56 EXP: EXP • suma EXP
+   57    | EXP • menos EXP
+   58    | EXP • mult EXP
+   59    | EXP • div EXP
+   60    | EXP • tk_menor_igual EXP
+   61    | EXP • tk_menorq EXP
+   62    | EXP • tk_mayor_igual EXP
+   63    | EXP • tk_mayorq EXP
+   64    | EXP • tk_igualq EXP
+   65    | EXP • tk_diferenteq EXP
+   66    | EXP • tk_and EXP
+   67    | EXP • tk_or EXP
+   68    | EXP • tk_not EXP
 
     suma            desplazar e ir al estado 93
     menos           desplazar e ir al estado 94
@@ -1235,20 +1248,20 @@ Estado 85
 
 Estado 86
 
-   26 WHILE: res_WHILE tk_PARA EXP • tk_PARC tk_LLAVA LIST_INST tk_LLAVC
-   52 EXP: EXP • suma EXP
-   53    | EXP • menos EXP
-   54    | EXP • mult EXP
-   55    | EXP • div EXP
-   56    | EXP • tk_menor_igual EXP
-   57    | EXP • tk_menorq EXP
-   58    | EXP • tk_mayor_igual EXP
-   59    | EXP • tk_mayorq EXP
-   60    | EXP • tk_igualq EXP
-   61    | EXP • tk_diferenteq EXP
-   62    | EXP • tk_and EXP
-   63    | EXP • tk_or EXP
-   64    | EXP • tk_not EXP
+   30 WHILE: res_WHILE tk_PARA EXP • tk_PARC tk_LLAVA LIST_INST tk_LLAVC
+   56 EXP: EXP • suma EXP
+   57    | EXP • menos EXP
+   58    | EXP • mult EXP
+   59    | EXP • div EXP
+   60    | EXP • tk_menor_igual EXP
+   61    | EXP • tk_menorq EXP
+   62    | EXP • tk_mayor_igual EXP
+   63    | EXP • tk_mayorq EXP
+   64    | EXP • tk_igualq EXP
+   65    | EXP • tk_diferenteq EXP
+   66    | EXP • tk_and EXP
+   67    | EXP • tk_or EXP
+   68    | EXP • tk_not EXP
 
     suma            desplazar e ir al estado 93
     menos           desplazar e ir al estado 94
@@ -1268,7 +1281,7 @@ Estado 86
 
 Estado 87
 
-   27 FOR: res_FOR tk_PARA DECLARAR • ';' EXP ';' INCREMENTO tk_PARC tk_LLAVA LIST_INST tk_LLAVC
+   31 FOR: res_FOR tk_PARA DECLARAR • ';' EXP ';' INCREMENTO tk_PARC tk_LLAVA LIST_INST tk_LLAVC
 
     ';'  desplazar e ir al estado 120
 
@@ -1283,20 +1296,20 @@ Estado 88
 
 Estado 89
 
-   52 EXP: EXP • suma EXP
-   53    | EXP • menos EXP
-   54    | EXP • mult EXP
-   55    | EXP • div EXP
-   56    | EXP • tk_menor_igual EXP
-   57    | EXP • tk_menorq EXP
-   58    | EXP • tk_mayor_igual EXP
-   59    | EXP • tk_mayorq EXP
-   60    | EXP • tk_igualq EXP
-   61    | EXP • tk_diferenteq EXP
-   62    | EXP • tk_and EXP
-   63    | EXP • tk_or EXP
-   64    | EXP • tk_not EXP
-   65    | tk_PARA EXP • tk_PARC
+   56 EXP: EXP • suma EXP
+   57    | EXP • menos EXP
+   58    | EXP • mult EXP
+   59    | EXP • div EXP
+   60    | EXP • tk_menor_igual EXP
+   61    | EXP • tk_menorq EXP
+   62    | EXP • tk_mayor_igual EXP
+   63    | EXP • tk_mayorq EXP
+   64    | EXP • tk_igualq EXP
+   65    | EXP • tk_diferenteq EXP
+   66    | EXP • tk_and EXP
+   67    | EXP • tk_or EXP
+   68    | EXP • tk_not EXP
+   69    | tk_PARA EXP • tk_PARC
 
     suma            desplazar e ir al estado 93
     menos           desplazar e ir al estado 94
@@ -1316,28 +1329,28 @@ Estado 89
 
 Estado 90
 
-   73 PRIMITIVE: res_mean tk_PARA • id tk_PARC
+   77 PRIMITIVE: res_mean tk_PARA • id tk_PARC
 
     id  desplazar e ir al estado 123
 
 
 Estado 91
 
-   74 PRIMITIVE: res_median tk_PARA • id tk_PARC
+   78 PRIMITIVE: res_median tk_PARA • id tk_PARC
 
     id  desplazar e ir al estado 124
 
 
 Estado 92
 
-   75 PRIMITIVE: res_mode tk_PARA • id tk_PARC
+   79 PRIMITIVE: res_mode tk_PARA • id tk_PARC
 
     id  desplazar e ir al estado 125
 
 
 Estado 93
 
-   52 EXP: EXP suma • EXP
+   56 EXP: EXP suma • EXP
 
     NUMERO      desplazar e ir al estado 50
     id          desplazar e ir al estado 51
@@ -1356,7 +1369,7 @@ Estado 93
 
 Estado 94
 
-   53 EXP: EXP menos • EXP
+   57 EXP: EXP menos • EXP
 
     NUMERO      desplazar e ir al estado 50
     id          desplazar e ir al estado 51
@@ -1375,7 +1388,7 @@ Estado 94
 
 Estado 95
 
-   54 EXP: EXP mult • EXP
+   58 EXP: EXP mult • EXP
 
     NUMERO      desplazar e ir al estado 50
     id          desplazar e ir al estado 51
@@ -1394,7 +1407,7 @@ Estado 95
 
 Estado 96
 
-   55 EXP: EXP div • EXP
+   59 EXP: EXP div • EXP
 
     NUMERO      desplazar e ir al estado 50
     id          desplazar e ir al estado 51
@@ -1413,7 +1426,7 @@ Estado 96
 
 Estado 97
 
-   60 EXP: EXP tk_igualq • EXP
+   64 EXP: EXP tk_igualq • EXP
 
     NUMERO      desplazar e ir al estado 50
     id          desplazar e ir al estado 51
@@ -1432,7 +1445,7 @@ Estado 97
 
 Estado 98
 
-   61 EXP: EXP tk_diferenteq • EXP
+   65 EXP: EXP tk_diferenteq • EXP
 
     NUMERO      desplazar e ir al estado 50
     id          desplazar e ir al estado 51
@@ -1451,7 +1464,7 @@ Estado 98
 
 Estado 99
 
-   58 EXP: EXP tk_mayor_igual • EXP
+   62 EXP: EXP tk_mayor_igual • EXP
 
     NUMERO      desplazar e ir al estado 50
     id          desplazar e ir al estado 51
@@ -1470,7 +1483,7 @@ Estado 99
 
 Estado 100
 
-   56 EXP: EXP tk_menor_igual • EXP
+   60 EXP: EXP tk_menor_igual • EXP
 
     NUMERO      desplazar e ir al estado 50
     id          desplazar e ir al estado 51
@@ -1489,7 +1502,7 @@ Estado 100
 
 Estado 101
 
-   57 EXP: EXP tk_menorq • EXP
+   61 EXP: EXP tk_menorq • EXP
 
     NUMERO      desplazar e ir al estado 50
     id          desplazar e ir al estado 51
@@ -1508,7 +1521,7 @@ Estado 101
 
 Estado 102
 
-   59 EXP: EXP tk_mayorq • EXP
+   63 EXP: EXP tk_mayorq • EXP
 
     NUMERO      desplazar e ir al estado 50
     id          desplazar e ir al estado 51
@@ -1527,7 +1540,7 @@ Estado 102
 
 Estado 103
 
-   62 EXP: EXP tk_and • EXP
+   66 EXP: EXP tk_and • EXP
 
     NUMERO      desplazar e ir al estado 50
     id          desplazar e ir al estado 51
@@ -1546,7 +1559,7 @@ Estado 103
 
 Estado 104
 
-   63 EXP: EXP tk_or • EXP
+   67 EXP: EXP tk_or • EXP
 
     NUMERO      desplazar e ir al estado 50
     id          desplazar e ir al estado 51
@@ -1565,7 +1578,7 @@ Estado 104
 
 Estado 105
 
-   64 EXP: EXP tk_not • EXP
+   68 EXP: EXP tk_not • EXP
 
     NUMERO      desplazar e ir al estado 50
     id          desplazar e ir al estado 51
@@ -1584,16 +1597,16 @@ Estado 105
 
 Estado 106
 
-   30 VECTOR: res_VECTOR tk_menorq TYPES • tk_mayorq id '=' tk_CORCHA LISTAEXP tk_CORCHC
-   31       | res_VECTOR tk_menorq TYPES • tk_mayorq id
+   34 VECTOR: res_VECTOR tk_menorq TYPES • tk_mayorq id '=' tk_CORCHA LISTAEXP tk_CORCHC
+   35       | res_VECTOR tk_menorq TYPES • tk_mayorq id
 
     tk_mayorq  desplazar e ir al estado 139
 
 
 Estado 107
 
-   40 FUNC: TYPES id tk_PARA • LISTPARAM tk_PARC tk_LLAVA LIST_INST tk_LLAVC
-   41     | TYPES id tk_PARA • tk_PARC tk_LLAVA LIST_INST tk_LLAVC
+   44 FUNC: TYPES id tk_PARA • LISTPARAM tk_PARC tk_LLAVA LIST_INST tk_LLAVC
+   45     | TYPES id tk_PARA • tk_PARC tk_LLAVA LIST_INST tk_LLAVC
 
     tk_int     desplazar e ir al estado 12
     tk_string  desplazar e ir al estado 13
@@ -1626,14 +1639,14 @@ Estado 108
 
 Estado 109
 
-   42 LLAMADAF: id tk_PARA LISTAEXP tk_PARC •
+   46 LLAMADAF: id tk_PARA LISTAEXP tk_PARC •
 
-    $default  reduce usando la regla 42 (LLAMADAF)
+    $default  reduce usando la regla 46 (LLAMADAF)
 
 
 Estado 110
 
-   48 LISTAEXP: LISTAEXP ',' • EXP
+   52 LISTAEXP: LISTAEXP ',' • EXP
 
     NUMERO      desplazar e ir al estado 50
     id          desplazar e ir al estado 51
@@ -1659,7 +1672,7 @@ Estado 111
 
 Estado 112
 
-   32 VECTOR: id '.' res_pushB tk_PARA • EXP tk_PARC
+   36 VECTOR: id '.' res_pushB tk_PARA • EXP tk_PARC
 
     NUMERO      desplazar e ir al estado 50
     id          desplazar e ir al estado 51
@@ -1678,7 +1691,7 @@ Estado 112
 
 Estado 113
 
-   33 VECTOR: id '.' res_pushF tk_PARA • EXP tk_PARC
+   37 VECTOR: id '.' res_pushF tk_PARA • EXP tk_PARC
 
     NUMERO      desplazar e ir al estado 50
     id          desplazar e ir al estado 51
@@ -1697,7 +1710,7 @@ Estado 113
 
 Estado 114
 
-   34 VECTOR: id '.' res_get tk_PARA • EXP tk_PARC
+   38 VECTOR: id '.' res_get tk_PARA • EXP tk_PARC
 
     NUMERO      desplazar e ir al estado 50
     id          desplazar e ir al estado 51
@@ -1716,7 +1729,7 @@ Estado 114
 
 Estado 115
 
-   35 VECTOR: id '.' res_remove tk_PARA • EXP tk_PARC
+   39 VECTOR: id '.' res_remove tk_PARA • EXP tk_PARC
 
     NUMERO      desplazar e ir al estado 50
     id          desplazar e ir al estado 51
@@ -1735,37 +1748,36 @@ Estado 115
 
 Estado 116
 
-   36 VECTOR: id '.' res_size tk_PARA • tk_PARC
+   40 VECTOR: id '.' res_size tk_PARA • tk_PARC
 
     tk_PARC  desplazar e ir al estado 150
 
 
 Estado 117
 
-   37 PRINT: PRINTF tk_PARA EXP tk_PARC •
+   41 PRINT: PRINTF tk_PARA EXP tk_PARC •
 
-    $default  reduce usando la regla 37 (PRINT)
+    $default  reduce usando la regla 41 (PRINT)
 
 
 Estado 118
 
-   23 IF: res_IF tk_PARA EXP tk_PARC • tk_LLAVA LIST_INST tk_LLAVC
-   24   | res_IF tk_PARA EXP tk_PARC • tk_LLAVA LIST_INST tk_LLAVC res_ELSE IF
-   25   | res_IF tk_PARA EXP tk_PARC • tk_LLAVA LIST_INST tk_LLAVC res_ELSE tk_LLAVA LIST_INST tk_LLAVC
+   23 IF: res_IF tk_PARA EXP tk_PARC • tk_LLAVA LIST_INST tk_LLAVC ELIF_LIST ELSE
+   24   | res_IF tk_PARA EXP tk_PARC • tk_LLAVA LIST_INST tk_LLAVC ELSE
 
     tk_LLAVA  desplazar e ir al estado 151
 
 
 Estado 119
 
-   26 WHILE: res_WHILE tk_PARA EXP tk_PARC • tk_LLAVA LIST_INST tk_LLAVC
+   30 WHILE: res_WHILE tk_PARA EXP tk_PARC • tk_LLAVA LIST_INST tk_LLAVC
 
     tk_LLAVA  desplazar e ir al estado 152
 
 
 Estado 120
 
-   27 FOR: res_FOR tk_PARA DECLARAR ';' • EXP ';' INCREMENTO tk_PARC tk_LLAVA LIST_INST tk_LLAVC
+   31 FOR: res_FOR tk_PARA DECLARAR ';' • EXP ';' INCREMENTO tk_PARC tk_LLAVA LIST_INST tk_LLAVC
 
     NUMERO      desplazar e ir al estado 50
     id          desplazar e ir al estado 51
@@ -1794,144 +1806,144 @@ Estado 121
 
 Estado 122
 
-   65 EXP: tk_PARA EXP tk_PARC •
+   69 EXP: tk_PARA EXP tk_PARC •
 
-    $default  reduce usando la regla 65 (EXP)
+    $default  reduce usando la regla 69 (EXP)
 
 
 Estado 123
 
-   73 PRIMITIVE: res_mean tk_PARA id • tk_PARC
+   77 PRIMITIVE: res_mean tk_PARA id • tk_PARC
 
     tk_PARC  desplazar e ir al estado 154
 
 
 Estado 124
 
-   74 PRIMITIVE: res_median tk_PARA id • tk_PARC
+   78 PRIMITIVE: res_median tk_PARA id • tk_PARC
 
     tk_PARC  desplazar e ir al estado 155
 
 
 Estado 125
 
-   75 PRIMITIVE: res_mode tk_PARA id • tk_PARC
+   79 PRIMITIVE: res_mode tk_PARA id • tk_PARC
 
     tk_PARC  desplazar e ir al estado 156
 
 
 Estado 126
 
-   52 EXP: EXP • suma EXP
-   52    | EXP suma EXP •
-   53    | EXP • menos EXP
-   54    | EXP • mult EXP
-   55    | EXP • div EXP
-   56    | EXP • tk_menor_igual EXP
-   57    | EXP • tk_menorq EXP
-   58    | EXP • tk_mayor_igual EXP
-   59    | EXP • tk_mayorq EXP
-   60    | EXP • tk_igualq EXP
-   61    | EXP • tk_diferenteq EXP
-   62    | EXP • tk_and EXP
-   63    | EXP • tk_or EXP
-   64    | EXP • tk_not EXP
+   56 EXP: EXP • suma EXP
+   56    | EXP suma EXP •
+   57    | EXP • menos EXP
+   58    | EXP • mult EXP
+   59    | EXP • div EXP
+   60    | EXP • tk_menor_igual EXP
+   61    | EXP • tk_menorq EXP
+   62    | EXP • tk_mayor_igual EXP
+   63    | EXP • tk_mayorq EXP
+   64    | EXP • tk_igualq EXP
+   65    | EXP • tk_diferenteq EXP
+   66    | EXP • tk_and EXP
+   67    | EXP • tk_or EXP
+   68    | EXP • tk_not EXP
 
     mult            desplazar e ir al estado 95
     div             desplazar e ir al estado 96
     tk_mayor_igual  desplazar e ir al estado 99
 
-    tk_mayor_igual  [reduce usando la regla 52 (EXP)]
-    $default        reduce usando la regla 52 (EXP)
+    tk_mayor_igual  [reduce usando la regla 56 (EXP)]
+    $default        reduce usando la regla 56 (EXP)
 
 
 Estado 127
 
-   52 EXP: EXP • suma EXP
-   53    | EXP • menos EXP
-   53    | EXP menos EXP •
-   54    | EXP • mult EXP
-   55    | EXP • div EXP
-   56    | EXP • tk_menor_igual EXP
-   57    | EXP • tk_menorq EXP
-   58    | EXP • tk_mayor_igual EXP
-   59    | EXP • tk_mayorq EXP
-   60    | EXP • tk_igualq EXP
-   61    | EXP • tk_diferenteq EXP
-   62    | EXP • tk_and EXP
-   63    | EXP • tk_or EXP
-   64    | EXP • tk_not EXP
+   56 EXP: EXP • suma EXP
+   57    | EXP • menos EXP
+   57    | EXP menos EXP •
+   58    | EXP • mult EXP
+   59    | EXP • div EXP
+   60    | EXP • tk_menor_igual EXP
+   61    | EXP • tk_menorq EXP
+   62    | EXP • tk_mayor_igual EXP
+   63    | EXP • tk_mayorq EXP
+   64    | EXP • tk_igualq EXP
+   65    | EXP • tk_diferenteq EXP
+   66    | EXP • tk_and EXP
+   67    | EXP • tk_or EXP
+   68    | EXP • tk_not EXP
 
     mult            desplazar e ir al estado 95
     div             desplazar e ir al estado 96
     tk_mayor_igual  desplazar e ir al estado 99
 
-    tk_mayor_igual  [reduce usando la regla 53 (EXP)]
-    $default        reduce usando la regla 53 (EXP)
+    tk_mayor_igual  [reduce usando la regla 57 (EXP)]
+    $default        reduce usando la regla 57 (EXP)
 
 
 Estado 128
 
-   52 EXP: EXP • suma EXP
-   53    | EXP • menos EXP
-   54    | EXP • mult EXP
-   54    | EXP mult EXP •
-   55    | EXP • div EXP
-   56    | EXP • tk_menor_igual EXP
-   57    | EXP • tk_menorq EXP
-   58    | EXP • tk_mayor_igual EXP
-   59    | EXP • tk_mayorq EXP
-   60    | EXP • tk_igualq EXP
-   61    | EXP • tk_diferenteq EXP
-   62    | EXP • tk_and EXP
-   63    | EXP • tk_or EXP
-   64    | EXP • tk_not EXP
+   56 EXP: EXP • suma EXP
+   57    | EXP • menos EXP
+   58    | EXP • mult EXP
+   58    | EXP mult EXP •
+   59    | EXP • div EXP
+   60    | EXP • tk_menor_igual EXP
+   61    | EXP • tk_menorq EXP
+   62    | EXP • tk_mayor_igual EXP
+   63    | EXP • tk_mayorq EXP
+   64    | EXP • tk_igualq EXP
+   65    | EXP • tk_diferenteq EXP
+   66    | EXP • tk_and EXP
+   67    | EXP • tk_or EXP
+   68    | EXP • tk_not EXP
 
     tk_mayor_igual  desplazar e ir al estado 99
 
-    tk_mayor_igual  [reduce usando la regla 54 (EXP)]
-    $default        reduce usando la regla 54 (EXP)
+    tk_mayor_igual  [reduce usando la regla 58 (EXP)]
+    $default        reduce usando la regla 58 (EXP)
 
 
 Estado 129
 
-   52 EXP: EXP • suma EXP
-   53    | EXP • menos EXP
-   54    | EXP • mult EXP
-   55    | EXP • div EXP
-   55    | EXP div EXP •
-   56    | EXP • tk_menor_igual EXP
-   57    | EXP • tk_menorq EXP
-   58    | EXP • tk_mayor_igual EXP
-   59    | EXP • tk_mayorq EXP
-   60    | EXP • tk_igualq EXP
-   61    | EXP • tk_diferenteq EXP
-   62    | EXP • tk_and EXP
-   63    | EXP • tk_or EXP
-   64    | EXP • tk_not EXP
+   56 EXP: EXP • suma EXP
+   57    | EXP • menos EXP
+   58    | EXP • mult EXP
+   59    | EXP • div EXP
+   59    | EXP div EXP •
+   60    | EXP • tk_menor_igual EXP
+   61    | EXP • tk_menorq EXP
+   62    | EXP • tk_mayor_igual EXP
+   63    | EXP • tk_mayorq EXP
+   64    | EXP • tk_igualq EXP
+   65    | EXP • tk_diferenteq EXP
+   66    | EXP • tk_and EXP
+   67    | EXP • tk_or EXP
+   68    | EXP • tk_not EXP
 
     tk_mayor_igual  desplazar e ir al estado 99
 
-    tk_mayor_igual  [reduce usando la regla 55 (EXP)]
-    $default        reduce usando la regla 55 (EXP)
+    tk_mayor_igual  [reduce usando la regla 59 (EXP)]
+    $default        reduce usando la regla 59 (EXP)
 
 
 Estado 130
 
-   52 EXP: EXP • suma EXP
-   53    | EXP • menos EXP
-   54    | EXP • mult EXP
-   55    | EXP • div EXP
-   56    | EXP • tk_menor_igual EXP
-   57    | EXP • tk_menorq EXP
-   58    | EXP • tk_mayor_igual EXP
-   59    | EXP • tk_mayorq EXP
-   60    | EXP • tk_igualq EXP
-   60    | EXP tk_igualq EXP •
-   61    | EXP • tk_diferenteq EXP
-   62    | EXP • tk_and EXP
-   63    | EXP • tk_or EXP
-   64    | EXP • tk_not EXP
+   56 EXP: EXP • suma EXP
+   57    | EXP • menos EXP
+   58    | EXP • mult EXP
+   59    | EXP • div EXP
+   60    | EXP • tk_menor_igual EXP
+   61    | EXP • tk_menorq EXP
+   62    | EXP • tk_mayor_igual EXP
+   63    | EXP • tk_mayorq EXP
+   64    | EXP • tk_igualq EXP
+   64    | EXP tk_igualq EXP •
+   65    | EXP • tk_diferenteq EXP
+   66    | EXP • tk_and EXP
+   67    | EXP • tk_or EXP
+   68    | EXP • tk_not EXP
 
     suma            desplazar e ir al estado 93
     menos           desplazar e ir al estado 94
@@ -1939,26 +1951,26 @@ Estado 130
     div             desplazar e ir al estado 96
     tk_mayor_igual  desplazar e ir al estado 99
 
-    tk_mayor_igual  [reduce usando la regla 60 (EXP)]
-    $default        reduce usando la regla 60 (EXP)
+    tk_mayor_igual  [reduce usando la regla 64 (EXP)]
+    $default        reduce usando la regla 64 (EXP)
 
 
 Estado 131
 
-   52 EXP: EXP • suma EXP
-   53    | EXP • menos EXP
-   54    | EXP • mult EXP
-   55    | EXP • div EXP
-   56    | EXP • tk_menor_igual EXP
-   57    | EXP • tk_menorq EXP
-   58    | EXP • tk_mayor_igual EXP
-   59    | EXP • tk_mayorq EXP
-   60    | EXP • tk_igualq EXP
-   61    | EXP • tk_diferenteq EXP
-   61    | EXP tk_diferenteq EXP •
-   62    | EXP • tk_and EXP
-   63    | EXP • tk_or EXP
-   64    | EXP • tk_not EXP
+   56 EXP: EXP • suma EXP
+   57    | EXP • menos EXP
+   58    | EXP • mult EXP
+   59    | EXP • div EXP
+   60    | EXP • tk_menor_igual EXP
+   61    | EXP • tk_menorq EXP
+   62    | EXP • tk_mayor_igual EXP
+   63    | EXP • tk_mayorq EXP
+   64    | EXP • tk_igualq EXP
+   65    | EXP • tk_diferenteq EXP
+   65    | EXP tk_diferenteq EXP •
+   66    | EXP • tk_and EXP
+   67    | EXP • tk_or EXP
+   68    | EXP • tk_not EXP
 
     suma            desplazar e ir al estado 93
     menos           desplazar e ir al estado 94
@@ -1966,26 +1978,26 @@ Estado 131
     div             desplazar e ir al estado 96
     tk_mayor_igual  desplazar e ir al estado 99
 
-    tk_mayor_igual  [reduce usando la regla 61 (EXP)]
-    $default        reduce usando la regla 61 (EXP)
+    tk_mayor_igual  [reduce usando la regla 65 (EXP)]
+    $default        reduce usando la regla 65 (EXP)
 
 
 Estado 132
 
-   52 EXP: EXP • suma EXP
-   53    | EXP • menos EXP
-   54    | EXP • mult EXP
-   55    | EXP • div EXP
-   56    | EXP • tk_menor_igual EXP
-   57    | EXP • tk_menorq EXP
-   58    | EXP • tk_mayor_igual EXP
-   58    | EXP tk_mayor_igual EXP •
-   59    | EXP • tk_mayorq EXP
-   60    | EXP • tk_igualq EXP
-   61    | EXP • tk_diferenteq EXP
-   62    | EXP • tk_and EXP
-   63    | EXP • tk_or EXP
-   64    | EXP • tk_not EXP
+   56 EXP: EXP • suma EXP
+   57    | EXP • menos EXP
+   58    | EXP • mult EXP
+   59    | EXP • div EXP
+   60    | EXP • tk_menor_igual EXP
+   61    | EXP • tk_menorq EXP
+   62    | EXP • tk_mayor_igual EXP
+   62    | EXP tk_mayor_igual EXP •
+   63    | EXP • tk_mayorq EXP
+   64    | EXP • tk_igualq EXP
+   65    | EXP • tk_diferenteq EXP
+   66    | EXP • tk_and EXP
+   67    | EXP • tk_or EXP
+   68    | EXP • tk_not EXP
 
     suma            desplazar e ir al estado 93
     menos           desplazar e ir al estado 94
@@ -2001,38 +2013,38 @@ Estado 132
     tk_or           desplazar e ir al estado 104
     tk_not          desplazar e ir al estado 105
 
-    suma            [reduce usando la regla 58 (EXP)]
-    menos           [reduce usando la regla 58 (EXP)]
-    mult            [reduce usando la regla 58 (EXP)]
-    div             [reduce usando la regla 58 (EXP)]
-    tk_igualq       [reduce usando la regla 58 (EXP)]
-    tk_diferenteq   [reduce usando la regla 58 (EXP)]
-    tk_mayor_igual  [reduce usando la regla 58 (EXP)]
-    tk_menor_igual  [reduce usando la regla 58 (EXP)]
-    tk_menorq       [reduce usando la regla 58 (EXP)]
-    tk_mayorq       [reduce usando la regla 58 (EXP)]
-    tk_and          [reduce usando la regla 58 (EXP)]
-    tk_or           [reduce usando la regla 58 (EXP)]
-    tk_not          [reduce usando la regla 58 (EXP)]
-    $default        reduce usando la regla 58 (EXP)
+    suma            [reduce usando la regla 62 (EXP)]
+    menos           [reduce usando la regla 62 (EXP)]
+    mult            [reduce usando la regla 62 (EXP)]
+    div             [reduce usando la regla 62 (EXP)]
+    tk_igualq       [reduce usando la regla 62 (EXP)]
+    tk_diferenteq   [reduce usando la regla 62 (EXP)]
+    tk_mayor_igual  [reduce usando la regla 62 (EXP)]
+    tk_menor_igual  [reduce usando la regla 62 (EXP)]
+    tk_menorq       [reduce usando la regla 62 (EXP)]
+    tk_mayorq       [reduce usando la regla 62 (EXP)]
+    tk_and          [reduce usando la regla 62 (EXP)]
+    tk_or           [reduce usando la regla 62 (EXP)]
+    tk_not          [reduce usando la regla 62 (EXP)]
+    $default        reduce usando la regla 62 (EXP)
 
 
 Estado 133
 
-   52 EXP: EXP • suma EXP
-   53    | EXP • menos EXP
-   54    | EXP • mult EXP
-   55    | EXP • div EXP
-   56    | EXP • tk_menor_igual EXP
-   56    | EXP tk_menor_igual EXP •
-   57    | EXP • tk_menorq EXP
-   58    | EXP • tk_mayor_igual EXP
-   59    | EXP • tk_mayorq EXP
-   60    | EXP • tk_igualq EXP
-   61    | EXP • tk_diferenteq EXP
-   62    | EXP • tk_and EXP
-   63    | EXP • tk_or EXP
-   64    | EXP • tk_not EXP
+   56 EXP: EXP • suma EXP
+   57    | EXP • menos EXP
+   58    | EXP • mult EXP
+   59    | EXP • div EXP
+   60    | EXP • tk_menor_igual EXP
+   60    | EXP tk_menor_igual EXP •
+   61    | EXP • tk_menorq EXP
+   62    | EXP • tk_mayor_igual EXP
+   63    | EXP • tk_mayorq EXP
+   64    | EXP • tk_igualq EXP
+   65    | EXP • tk_diferenteq EXP
+   66    | EXP • tk_and EXP
+   67    | EXP • tk_or EXP
+   68    | EXP • tk_not EXP
 
     suma            desplazar e ir al estado 93
     menos           desplazar e ir al estado 94
@@ -2040,26 +2052,26 @@ Estado 133
     div             desplazar e ir al estado 96
     tk_mayor_igual  desplazar e ir al estado 99
 
-    tk_mayor_igual  [reduce usando la regla 56 (EXP)]
-    $default        reduce usando la regla 56 (EXP)
+    tk_mayor_igual  [reduce usando la regla 60 (EXP)]
+    $default        reduce usando la regla 60 (EXP)
 
 
 Estado 134
 
-   52 EXP: EXP • suma EXP
-   53    | EXP • menos EXP
-   54    | EXP • mult EXP
-   55    | EXP • div EXP
-   56    | EXP • tk_menor_igual EXP
-   57    | EXP • tk_menorq EXP
-   57    | EXP tk_menorq EXP •
-   58    | EXP • tk_mayor_igual EXP
-   59    | EXP • tk_mayorq EXP
-   60    | EXP • tk_igualq EXP
-   61    | EXP • tk_diferenteq EXP
-   62    | EXP • tk_and EXP
-   63    | EXP • tk_or EXP
-   64    | EXP • tk_not EXP
+   56 EXP: EXP • suma EXP
+   57    | EXP • menos EXP
+   58    | EXP • mult EXP
+   59    | EXP • div EXP
+   60    | EXP • tk_menor_igual EXP
+   61    | EXP • tk_menorq EXP
+   61    | EXP tk_menorq EXP •
+   62    | EXP • tk_mayor_igual EXP
+   63    | EXP • tk_mayorq EXP
+   64    | EXP • tk_igualq EXP
+   65    | EXP • tk_diferenteq EXP
+   66    | EXP • tk_and EXP
+   67    | EXP • tk_or EXP
+   68    | EXP • tk_not EXP
 
     suma            desplazar e ir al estado 93
     menos           desplazar e ir al estado 94
@@ -2067,26 +2079,26 @@ Estado 134
     div             desplazar e ir al estado 96
     tk_mayor_igual  desplazar e ir al estado 99
 
-    tk_mayor_igual  [reduce usando la regla 57 (EXP)]
-    $default        reduce usando la regla 57 (EXP)
+    tk_mayor_igual  [reduce usando la regla 61 (EXP)]
+    $default        reduce usando la regla 61 (EXP)
 
 
 Estado 135
 
-   52 EXP: EXP • suma EXP
-   53    | EXP • menos EXP
-   54    | EXP • mult EXP
-   55    | EXP • div EXP
-   56    | EXP • tk_menor_igual EXP
-   57    | EXP • tk_menorq EXP
-   58    | EXP • tk_mayor_igual EXP
-   59    | EXP • tk_mayorq EXP
-   59    | EXP tk_mayorq EXP •
-   60    | EXP • tk_igualq EXP
-   61    | EXP • tk_diferenteq EXP
-   62    | EXP • tk_and EXP
-   63    | EXP • tk_or EXP
-   64    | EXP • tk_not EXP
+   56 EXP: EXP • suma EXP
+   57    | EXP • menos EXP
+   58    | EXP • mult EXP
+   59    | EXP • div EXP
+   60    | EXP • tk_menor_igual EXP
+   61    | EXP • tk_menorq EXP
+   62    | EXP • tk_mayor_igual EXP
+   63    | EXP • tk_mayorq EXP
+   63    | EXP tk_mayorq EXP •
+   64    | EXP • tk_igualq EXP
+   65    | EXP • tk_diferenteq EXP
+   66    | EXP • tk_and EXP
+   67    | EXP • tk_or EXP
+   68    | EXP • tk_not EXP
 
     suma            desplazar e ir al estado 93
     menos           desplazar e ir al estado 94
@@ -2094,26 +2106,26 @@ Estado 135
     div             desplazar e ir al estado 96
     tk_mayor_igual  desplazar e ir al estado 99
 
-    tk_mayor_igual  [reduce usando la regla 59 (EXP)]
-    $default        reduce usando la regla 59 (EXP)
+    tk_mayor_igual  [reduce usando la regla 63 (EXP)]
+    $default        reduce usando la regla 63 (EXP)
 
 
 Estado 136
 
-   52 EXP: EXP • suma EXP
-   53    | EXP • menos EXP
-   54    | EXP • mult EXP
-   55    | EXP • div EXP
-   56    | EXP • tk_menor_igual EXP
-   57    | EXP • tk_menorq EXP
-   58    | EXP • tk_mayor_igual EXP
-   59    | EXP • tk_mayorq EXP
-   60    | EXP • tk_igualq EXP
-   61    | EXP • tk_diferenteq EXP
-   62    | EXP • tk_and EXP
-   62    | EXP tk_and EXP •
-   63    | EXP • tk_or EXP
-   64    | EXP • tk_not EXP
+   56 EXP: EXP • suma EXP
+   57    | EXP • menos EXP
+   58    | EXP • mult EXP
+   59    | EXP • div EXP
+   60    | EXP • tk_menor_igual EXP
+   61    | EXP • tk_menorq EXP
+   62    | EXP • tk_mayor_igual EXP
+   63    | EXP • tk_mayorq EXP
+   64    | EXP • tk_igualq EXP
+   65    | EXP • tk_diferenteq EXP
+   66    | EXP • tk_and EXP
+   66    | EXP tk_and EXP •
+   67    | EXP • tk_or EXP
+   68    | EXP • tk_not EXP
 
     suma            desplazar e ir al estado 93
     menos           desplazar e ir al estado 94
@@ -2127,26 +2139,26 @@ Estado 136
     tk_mayorq       desplazar e ir al estado 102
     tk_not          desplazar e ir al estado 105
 
-    tk_mayor_igual  [reduce usando la regla 62 (EXP)]
-    $default        reduce usando la regla 62 (EXP)
+    tk_mayor_igual  [reduce usando la regla 66 (EXP)]
+    $default        reduce usando la regla 66 (EXP)
 
 
 Estado 137
 
-   52 EXP: EXP • suma EXP
-   53    | EXP • menos EXP
-   54    | EXP • mult EXP
-   55    | EXP • div EXP
-   56    | EXP • tk_menor_igual EXP
-   57    | EXP • tk_menorq EXP
-   58    | EXP • tk_mayor_igual EXP
-   59    | EXP • tk_mayorq EXP
-   60    | EXP • tk_igualq EXP
-   61    | EXP • tk_diferenteq EXP
-   62    | EXP • tk_and EXP
-   63    | EXP • tk_or EXP
-   63    | EXP tk_or EXP •
-   64    | EXP • tk_not EXP
+   56 EXP: EXP • suma EXP
+   57    | EXP • menos EXP
+   58    | EXP • mult EXP
+   59    | EXP • div EXP
+   60    | EXP • tk_menor_igual EXP
+   61    | EXP • tk_menorq EXP
+   62    | EXP • tk_mayor_igual EXP
+   63    | EXP • tk_mayorq EXP
+   64    | EXP • tk_igualq EXP
+   65    | EXP • tk_diferenteq EXP
+   66    | EXP • tk_and EXP
+   67    | EXP • tk_or EXP
+   67    | EXP tk_or EXP •
+   68    | EXP • tk_not EXP
 
     suma            desplazar e ir al estado 93
     menos           desplazar e ir al estado 94
@@ -2161,26 +2173,26 @@ Estado 137
     tk_and          desplazar e ir al estado 103
     tk_not          desplazar e ir al estado 105
 
-    tk_mayor_igual  [reduce usando la regla 63 (EXP)]
-    $default        reduce usando la regla 63 (EXP)
+    tk_mayor_igual  [reduce usando la regla 67 (EXP)]
+    $default        reduce usando la regla 67 (EXP)
 
 
 Estado 138
 
-   52 EXP: EXP • suma EXP
-   53    | EXP • menos EXP
-   54    | EXP • mult EXP
-   55    | EXP • div EXP
-   56    | EXP • tk_menor_igual EXP
-   57    | EXP • tk_menorq EXP
-   58    | EXP • tk_mayor_igual EXP
-   59    | EXP • tk_mayorq EXP
-   60    | EXP • tk_igualq EXP
-   61    | EXP • tk_diferenteq EXP
-   62    | EXP • tk_and EXP
-   63    | EXP • tk_or EXP
-   64    | EXP • tk_not EXP
-   64    | EXP tk_not EXP •
+   56 EXP: EXP • suma EXP
+   57    | EXP • menos EXP
+   58    | EXP • mult EXP
+   59    | EXP • div EXP
+   60    | EXP • tk_menor_igual EXP
+   61    | EXP • tk_menorq EXP
+   62    | EXP • tk_mayor_igual EXP
+   63    | EXP • tk_mayorq EXP
+   64    | EXP • tk_igualq EXP
+   65    | EXP • tk_diferenteq EXP
+   66    | EXP • tk_and EXP
+   67    | EXP • tk_or EXP
+   68    | EXP • tk_not EXP
+   68    | EXP tk_not EXP •
 
     suma            desplazar e ir al estado 93
     menos           desplazar e ir al estado 94
@@ -2194,36 +2206,36 @@ Estado 138
     tk_mayorq       desplazar e ir al estado 102
     tk_not          desplazar e ir al estado 105
 
-    tk_mayor_igual  [reduce usando la regla 64 (EXP)]
-    $default        reduce usando la regla 64 (EXP)
+    tk_mayor_igual  [reduce usando la regla 68 (EXP)]
+    $default        reduce usando la regla 68 (EXP)
 
 
 Estado 139
 
-   30 VECTOR: res_VECTOR tk_menorq TYPES tk_mayorq • id '=' tk_CORCHA LISTAEXP tk_CORCHC
-   31       | res_VECTOR tk_menorq TYPES tk_mayorq • id
+   34 VECTOR: res_VECTOR tk_menorq TYPES tk_mayorq • id '=' tk_CORCHA LISTAEXP tk_CORCHC
+   35       | res_VECTOR tk_menorq TYPES tk_mayorq • id
 
     id  desplazar e ir al estado 157
 
 
 Estado 140
 
-   41 FUNC: TYPES id tk_PARA tk_PARC • tk_LLAVA LIST_INST tk_LLAVC
+   45 FUNC: TYPES id tk_PARA tk_PARC • tk_LLAVA LIST_INST tk_LLAVC
 
     tk_LLAVA  desplazar e ir al estado 158
 
 
 Estado 141
 
-   51 LISTPARAM: TYPES • id
+   55 LISTPARAM: TYPES • id
 
     id  desplazar e ir al estado 159
 
 
 Estado 142
 
-   40 FUNC: TYPES id tk_PARA LISTPARAM • tk_PARC tk_LLAVA LIST_INST tk_LLAVC
-   50 LISTPARAM: LISTPARAM • ',' TYPES id
+   44 FUNC: TYPES id tk_PARA LISTPARAM • tk_PARC tk_LLAVA LIST_INST tk_LLAVC
+   54 LISTPARAM: LISTPARAM • ',' TYPES id
 
     tk_PARC  desplazar e ir al estado 160
     ','      desplazar e ir al estado 161
@@ -2232,19 +2244,19 @@ Estado 142
 Estado 143
 
    20 DECLARAR: TYPES id '=' EXP •
-   52 EXP: EXP • suma EXP
-   53    | EXP • menos EXP
-   54    | EXP • mult EXP
-   55    | EXP • div EXP
-   56    | EXP • tk_menor_igual EXP
-   57    | EXP • tk_menorq EXP
-   58    | EXP • tk_mayor_igual EXP
-   59    | EXP • tk_mayorq EXP
-   60    | EXP • tk_igualq EXP
-   61    | EXP • tk_diferenteq EXP
-   62    | EXP • tk_and EXP
-   63    | EXP • tk_or EXP
-   64    | EXP • tk_not EXP
+   56 EXP: EXP • suma EXP
+   57    | EXP • menos EXP
+   58    | EXP • mult EXP
+   59    | EXP • div EXP
+   60    | EXP • tk_menor_igual EXP
+   61    | EXP • tk_menorq EXP
+   62    | EXP • tk_mayor_igual EXP
+   63    | EXP • tk_mayorq EXP
+   64    | EXP • tk_igualq EXP
+   65    | EXP • tk_diferenteq EXP
+   66    | EXP • tk_and EXP
+   67    | EXP • tk_or EXP
+   68    | EXP • tk_not EXP
 
     suma            desplazar e ir al estado 93
     menos           desplazar e ir al estado 94
@@ -2265,20 +2277,20 @@ Estado 143
 
 Estado 144
 
-   48 LISTAEXP: LISTAEXP ',' EXP •
-   52 EXP: EXP • suma EXP
-   53    | EXP • menos EXP
-   54    | EXP • mult EXP
-   55    | EXP • div EXP
-   56    | EXP • tk_menor_igual EXP
-   57    | EXP • tk_menorq EXP
-   58    | EXP • tk_mayor_igual EXP
-   59    | EXP • tk_mayorq EXP
-   60    | EXP • tk_igualq EXP
-   61    | EXP • tk_diferenteq EXP
-   62    | EXP • tk_and EXP
-   63    | EXP • tk_or EXP
-   64    | EXP • tk_not EXP
+   52 LISTAEXP: LISTAEXP ',' EXP •
+   56 EXP: EXP • suma EXP
+   57    | EXP • menos EXP
+   58    | EXP • mult EXP
+   59    | EXP • div EXP
+   60    | EXP • tk_menor_igual EXP
+   61    | EXP • tk_menorq EXP
+   62    | EXP • tk_mayor_igual EXP
+   63    | EXP • tk_mayorq EXP
+   64    | EXP • tk_igualq EXP
+   65    | EXP • tk_diferenteq EXP
+   66    | EXP • tk_and EXP
+   67    | EXP • tk_or EXP
+   68    | EXP • tk_not EXP
 
     suma            desplazar e ir al estado 93
     menos           desplazar e ir al estado 94
@@ -2294,7 +2306,7 @@ Estado 144
     tk_or           desplazar e ir al estado 104
     tk_not          desplazar e ir al estado 105
 
-    $default  reduce usando la regla 48 (LISTAEXP)
+    $default  reduce usando la regla 52 (LISTAEXP)
 
 
 Estado 145
@@ -2306,20 +2318,20 @@ Estado 145
 
 Estado 146
 
-   32 VECTOR: id '.' res_pushB tk_PARA EXP • tk_PARC
-   52 EXP: EXP • suma EXP
-   53    | EXP • menos EXP
-   54    | EXP • mult EXP
-   55    | EXP • div EXP
-   56    | EXP • tk_menor_igual EXP
-   57    | EXP • tk_menorq EXP
-   58    | EXP • tk_mayor_igual EXP
-   59    | EXP • tk_mayorq EXP
-   60    | EXP • tk_igualq EXP
-   61    | EXP • tk_diferenteq EXP
-   62    | EXP • tk_and EXP
-   63    | EXP • tk_or EXP
-   64    | EXP • tk_not EXP
+   36 VECTOR: id '.' res_pushB tk_PARA EXP • tk_PARC
+   56 EXP: EXP • suma EXP
+   57    | EXP • menos EXP
+   58    | EXP • mult EXP
+   59    | EXP • div EXP
+   60    | EXP • tk_menor_igual EXP
+   61    | EXP • tk_menorq EXP
+   62    | EXP • tk_mayor_igual EXP
+   63    | EXP • tk_mayorq EXP
+   64    | EXP • tk_igualq EXP
+   65    | EXP • tk_diferenteq EXP
+   66    | EXP • tk_and EXP
+   67    | EXP • tk_or EXP
+   68    | EXP • tk_not EXP
 
     suma            desplazar e ir al estado 93
     menos           desplazar e ir al estado 94
@@ -2339,20 +2351,20 @@ Estado 146
 
 Estado 147
 
-   33 VECTOR: id '.' res_pushF tk_PARA EXP • tk_PARC
-   52 EXP: EXP • suma EXP
-   53    | EXP • menos EXP
-   54    | EXP • mult EXP
-   55    | EXP • div EXP
-   56    | EXP • tk_menor_igual EXP
-   57    | EXP • tk_menorq EXP
-   58    | EXP • tk_mayor_igual EXP
-   59    | EXP • tk_mayorq EXP
-   60    | EXP • tk_igualq EXP
-   61    | EXP • tk_diferenteq EXP
-   62    | EXP • tk_and EXP
-   63    | EXP • tk_or EXP
-   64    | EXP • tk_not EXP
+   37 VECTOR: id '.' res_pushF tk_PARA EXP • tk_PARC
+   56 EXP: EXP • suma EXP
+   57    | EXP • menos EXP
+   58    | EXP • mult EXP
+   59    | EXP • div EXP
+   60    | EXP • tk_menor_igual EXP
+   61    | EXP • tk_menorq EXP
+   62    | EXP • tk_mayor_igual EXP
+   63    | EXP • tk_mayorq EXP
+   64    | EXP • tk_igualq EXP
+   65    | EXP • tk_diferenteq EXP
+   66    | EXP • tk_and EXP
+   67    | EXP • tk_or EXP
+   68    | EXP • tk_not EXP
 
     suma            desplazar e ir al estado 93
     menos           desplazar e ir al estado 94
@@ -2372,20 +2384,20 @@ Estado 147
 
 Estado 148
 
-   34 VECTOR: id '.' res_get tk_PARA EXP • tk_PARC
-   52 EXP: EXP • suma EXP
-   53    | EXP • menos EXP
-   54    | EXP • mult EXP
-   55    | EXP • div EXP
-   56    | EXP • tk_menor_igual EXP
-   57    | EXP • tk_menorq EXP
-   58    | EXP • tk_mayor_igual EXP
-   59    | EXP • tk_mayorq EXP
-   60    | EXP • tk_igualq EXP
-   61    | EXP • tk_diferenteq EXP
-   62    | EXP • tk_and EXP
-   63    | EXP • tk_or EXP
-   64    | EXP • tk_not EXP
+   38 VECTOR: id '.' res_get tk_PARA EXP • tk_PARC
+   56 EXP: EXP • suma EXP
+   57    | EXP • menos EXP
+   58    | EXP • mult EXP
+   59    | EXP • div EXP
+   60    | EXP • tk_menor_igual EXP
+   61    | EXP • tk_menorq EXP
+   62    | EXP • tk_mayor_igual EXP
+   63    | EXP • tk_mayorq EXP
+   64    | EXP • tk_igualq EXP
+   65    | EXP • tk_diferenteq EXP
+   66    | EXP • tk_and EXP
+   67    | EXP • tk_or EXP
+   68    | EXP • tk_not EXP
 
     suma            desplazar e ir al estado 93
     menos           desplazar e ir al estado 94
@@ -2405,20 +2417,20 @@ Estado 148
 
 Estado 149
 
-   35 VECTOR: id '.' res_remove tk_PARA EXP • tk_PARC
-   52 EXP: EXP • suma EXP
-   53    | EXP • menos EXP
-   54    | EXP • mult EXP
-   55    | EXP • div EXP
-   56    | EXP • tk_menor_igual EXP
-   57    | EXP • tk_menorq EXP
-   58    | EXP • tk_mayor_igual EXP
-   59    | EXP • tk_mayorq EXP
-   60    | EXP • tk_igualq EXP
-   61    | EXP • tk_diferenteq EXP
-   62    | EXP • tk_and EXP
-   63    | EXP • tk_or EXP
-   64    | EXP • tk_not EXP
+   39 VECTOR: id '.' res_remove tk_PARA EXP • tk_PARC
+   56 EXP: EXP • suma EXP
+   57    | EXP • menos EXP
+   58    | EXP • mult EXP
+   59    | EXP • div EXP
+   60    | EXP • tk_menor_igual EXP
+   61    | EXP • tk_menorq EXP
+   62    | EXP • tk_mayor_igual EXP
+   63    | EXP • tk_mayorq EXP
+   64    | EXP • tk_igualq EXP
+   65    | EXP • tk_diferenteq EXP
+   66    | EXP • tk_and EXP
+   67    | EXP • tk_or EXP
+   68    | EXP • tk_not EXP
 
     suma            desplazar e ir al estado 93
     menos           desplazar e ir al estado 94
@@ -2438,16 +2450,15 @@ Estado 149
 
 Estado 150
 
-   36 VECTOR: id '.' res_size tk_PARA tk_PARC •
+   40 VECTOR: id '.' res_size tk_PARA tk_PARC •
 
-    $default  reduce usando la regla 36 (VECTOR)
+    $default  reduce usando la regla 40 (VECTOR)
 
 
 Estado 151
 
-   23 IF: res_IF tk_PARA EXP tk_PARC tk_LLAVA • LIST_INST tk_LLAVC
-   24   | res_IF tk_PARA EXP tk_PARC tk_LLAVA • LIST_INST tk_LLAVC res_ELSE IF
-   25   | res_IF tk_PARA EXP tk_PARC tk_LLAVA • LIST_INST tk_LLAVC res_ELSE tk_LLAVA LIST_INST tk_LLAVC
+   23 IF: res_IF tk_PARA EXP tk_PARC tk_LLAVA • LIST_INST tk_LLAVC ELIF_LIST ELSE
+   24   | res_IF tk_PARA EXP tk_PARC tk_LLAVA • LIST_INST tk_LLAVC ELSE
 
     error         desplazar e ir al estado 9
     id            desplazar e ir al estado 10
@@ -2484,7 +2495,7 @@ Estado 151
 
 Estado 152
 
-   26 WHILE: res_WHILE tk_PARA EXP tk_PARC tk_LLAVA • LIST_INST tk_LLAVC
+   30 WHILE: res_WHILE tk_PARA EXP tk_PARC tk_LLAVA • LIST_INST tk_LLAVC
 
     error         desplazar e ir al estado 9
     id            desplazar e ir al estado 10
@@ -2521,20 +2532,20 @@ Estado 152
 
 Estado 153
 
-   27 FOR: res_FOR tk_PARA DECLARAR ';' EXP • ';' INCREMENTO tk_PARC tk_LLAVA LIST_INST tk_LLAVC
-   52 EXP: EXP • suma EXP
-   53    | EXP • menos EXP
-   54    | EXP • mult EXP
-   55    | EXP • div EXP
-   56    | EXP • tk_menor_igual EXP
-   57    | EXP • tk_menorq EXP
-   58    | EXP • tk_mayor_igual EXP
-   59    | EXP • tk_mayorq EXP
-   60    | EXP • tk_igualq EXP
-   61    | EXP • tk_diferenteq EXP
-   62    | EXP • tk_and EXP
-   63    | EXP • tk_or EXP
-   64    | EXP • tk_not EXP
+   31 FOR: res_FOR tk_PARA DECLARAR ';' EXP • ';' INCREMENTO tk_PARC tk_LLAVA LIST_INST tk_LLAVC
+   56 EXP: EXP • suma EXP
+   57    | EXP • menos EXP
+   58    | EXP • mult EXP
+   59    | EXP • div EXP
+   60    | EXP • tk_menor_igual EXP
+   61    | EXP • tk_menorq EXP
+   62    | EXP • tk_mayor_igual EXP
+   63    | EXP • tk_mayorq EXP
+   64    | EXP • tk_igualq EXP
+   65    | EXP • tk_diferenteq EXP
+   66    | EXP • tk_and EXP
+   67    | EXP • tk_or EXP
+   68    | EXP • tk_not EXP
 
     suma            desplazar e ir al estado 93
     menos           desplazar e ir al estado 94
@@ -2554,38 +2565,38 @@ Estado 153
 
 Estado 154
 
-   73 PRIMITIVE: res_mean tk_PARA id tk_PARC •
+   77 PRIMITIVE: res_mean tk_PARA id tk_PARC •
 
-    $default  reduce usando la regla 73 (PRIMITIVE)
+    $default  reduce usando la regla 77 (PRIMITIVE)
 
 
 Estado 155
 
-   74 PRIMITIVE: res_median tk_PARA id tk_PARC •
+   78 PRIMITIVE: res_median tk_PARA id tk_PARC •
 
-    $default  reduce usando la regla 74 (PRIMITIVE)
+    $default  reduce usando la regla 78 (PRIMITIVE)
 
 
 Estado 156
 
-   75 PRIMITIVE: res_mode tk_PARA id tk_PARC •
+   79 PRIMITIVE: res_mode tk_PARA id tk_PARC •
 
-    $default  reduce usando la regla 75 (PRIMITIVE)
+    $default  reduce usando la regla 79 (PRIMITIVE)
 
 
 Estado 157
 
-   30 VECTOR: res_VECTOR tk_menorq TYPES tk_mayorq id • '=' tk_CORCHA LISTAEXP tk_CORCHC
-   31       | res_VECTOR tk_menorq TYPES tk_mayorq id •
+   34 VECTOR: res_VECTOR tk_menorq TYPES tk_mayorq id • '=' tk_CORCHA LISTAEXP tk_CORCHC
+   35       | res_VECTOR tk_menorq TYPES tk_mayorq id •
 
     '='  desplazar e ir al estado 170
 
-    $default  reduce usando la regla 31 (VECTOR)
+    $default  reduce usando la regla 35 (VECTOR)
 
 
 Estado 158
 
-   41 FUNC: TYPES id tk_PARA tk_PARC tk_LLAVA • LIST_INST tk_LLAVC
+   45 FUNC: TYPES id tk_PARA tk_PARC tk_LLAVA • LIST_INST tk_LLAVC
 
     error         desplazar e ir al estado 9
     id            desplazar e ir al estado 10
@@ -2622,21 +2633,21 @@ Estado 158
 
 Estado 159
 
-   51 LISTPARAM: TYPES id •
+   55 LISTPARAM: TYPES id •
 
-    $default  reduce usando la regla 51 (LISTPARAM)
+    $default  reduce usando la regla 55 (LISTPARAM)
 
 
 Estado 160
 
-   40 FUNC: TYPES id tk_PARA LISTPARAM tk_PARC • tk_LLAVA LIST_INST tk_LLAVC
+   44 FUNC: TYPES id tk_PARA LISTPARAM tk_PARC • tk_LLAVA LIST_INST tk_LLAVC
 
     tk_LLAVA  desplazar e ir al estado 172
 
 
 Estado 161
 
-   50 LISTPARAM: LISTPARAM ',' • TYPES id
+   54 LISTPARAM: LISTPARAM ',' • TYPES id
 
     tk_int     desplazar e ir al estado 12
     tk_string  desplazar e ir al estado 13
@@ -2667,38 +2678,37 @@ Estado 162
 
 Estado 163
 
-   32 VECTOR: id '.' res_pushB tk_PARA EXP tk_PARC •
+   36 VECTOR: id '.' res_pushB tk_PARA EXP tk_PARC •
 
-    $default  reduce usando la regla 32 (VECTOR)
+    $default  reduce usando la regla 36 (VECTOR)
 
 
 Estado 164
 
-   33 VECTOR: id '.' res_pushF tk_PARA EXP tk_PARC •
+   37 VECTOR: id '.' res_pushF tk_PARA EXP tk_PARC •
 
-    $default  reduce usando la regla 33 (VECTOR)
+    $default  reduce usando la regla 37 (VECTOR)
 
 
 Estado 165
 
-   34 VECTOR: id '.' res_get tk_PARA EXP tk_PARC •
+   38 VECTOR: id '.' res_get tk_PARA EXP tk_PARC •
 
-    $default  reduce usando la regla 34 (VECTOR)
+    $default  reduce usando la regla 38 (VECTOR)
 
 
 Estado 166
 
-   35 VECTOR: id '.' res_remove tk_PARA EXP tk_PARC •
+   39 VECTOR: id '.' res_remove tk_PARA EXP tk_PARC •
 
-    $default  reduce usando la regla 35 (VECTOR)
+    $default  reduce usando la regla 39 (VECTOR)
 
 
 Estado 167
 
     3 LIST_INST: LIST_INST • INSTRUCTION
-   23 IF: res_IF tk_PARA EXP tk_PARC tk_LLAVA LIST_INST • tk_LLAVC
-   24   | res_IF tk_PARA EXP tk_PARC tk_LLAVA LIST_INST • tk_LLAVC res_ELSE IF
-   25   | res_IF tk_PARA EXP tk_PARC tk_LLAVA LIST_INST • tk_LLAVC res_ELSE tk_LLAVA LIST_INST tk_LLAVC
+   23 IF: res_IF tk_PARA EXP tk_PARC tk_LLAVA LIST_INST • tk_LLAVC ELIF_LIST ELSE
+   24   | res_IF tk_PARA EXP tk_PARC tk_LLAVA LIST_INST • tk_LLAVC ELSE
 
     error         desplazar e ir al estado 9
     id            desplazar e ir al estado 10
@@ -2736,7 +2746,7 @@ Estado 167
 Estado 168
 
     3 LIST_INST: LIST_INST • INSTRUCTION
-   26 WHILE: res_WHILE tk_PARA EXP tk_PARC tk_LLAVA LIST_INST • tk_LLAVC
+   30 WHILE: res_WHILE tk_PARA EXP tk_PARC tk_LLAVA LIST_INST • tk_LLAVC
 
     error         desplazar e ir al estado 9
     id            desplazar e ir al estado 10
@@ -2773,7 +2783,7 @@ Estado 168
 
 Estado 169
 
-   27 FOR: res_FOR tk_PARA DECLARAR ';' EXP ';' • INCREMENTO tk_PARC tk_LLAVA LIST_INST tk_LLAVC
+   31 FOR: res_FOR tk_PARA DECLARAR ';' EXP ';' • INCREMENTO tk_PARC tk_LLAVA LIST_INST tk_LLAVC
 
     id  desplazar e ir al estado 177
 
@@ -2782,7 +2792,7 @@ Estado 169
 
 Estado 170
 
-   30 VECTOR: res_VECTOR tk_menorq TYPES tk_mayorq id '=' • tk_CORCHA LISTAEXP tk_CORCHC
+   34 VECTOR: res_VECTOR tk_menorq TYPES tk_mayorq id '=' • tk_CORCHA LISTAEXP tk_CORCHC
 
     tk_CORCHA  desplazar e ir al estado 179
 
@@ -2790,7 +2800,7 @@ Estado 170
 Estado 171
 
     3 LIST_INST: LIST_INST • INSTRUCTION
-   41 FUNC: TYPES id tk_PARA tk_PARC tk_LLAVA LIST_INST • tk_LLAVC
+   45 FUNC: TYPES id tk_PARA tk_PARC tk_LLAVA LIST_INST • tk_LLAVC
 
     error         desplazar e ir al estado 9
     id            desplazar e ir al estado 10
@@ -2827,7 +2837,7 @@ Estado 171
 
 Estado 172
 
-   40 FUNC: TYPES id tk_PARA LISTPARAM tk_PARC tk_LLAVA • LIST_INST tk_LLAVC
+   44 FUNC: TYPES id tk_PARA LISTPARAM tk_PARC tk_LLAVA • LIST_INST tk_LLAVC
 
     error         desplazar e ir al estado 9
     id            desplazar e ir al estado 10
@@ -2864,7 +2874,7 @@ Estado 172
 
 Estado 173
 
-   50 LISTPARAM: LISTPARAM ',' TYPES • id
+   54 LISTPARAM: LISTPARAM ',' TYPES • id
 
     id  desplazar e ir al estado 182
 
@@ -2872,19 +2882,19 @@ Estado 173
 Estado 174
 
    22 ASIGNAR: id tk_LLAVA EXP tk_LLAVC '=' tk_LLAVA EXP • tk_LLAVC
-   52 EXP: EXP • suma EXP
-   53    | EXP • menos EXP
-   54    | EXP • mult EXP
-   55    | EXP • div EXP
-   56    | EXP • tk_menor_igual EXP
-   57    | EXP • tk_menorq EXP
-   58    | EXP • tk_mayor_igual EXP
-   59    | EXP • tk_mayorq EXP
-   60    | EXP • tk_igualq EXP
-   61    | EXP • tk_diferenteq EXP
-   62    | EXP • tk_and EXP
-   63    | EXP • tk_or EXP
-   64    | EXP • tk_not EXP
+   56 EXP: EXP • suma EXP
+   57    | EXP • menos EXP
+   58    | EXP • mult EXP
+   59    | EXP • div EXP
+   60    | EXP • tk_menor_igual EXP
+   61    | EXP • tk_menorq EXP
+   62    | EXP • tk_mayor_igual EXP
+   63    | EXP • tk_mayorq EXP
+   64    | EXP • tk_igualq EXP
+   65    | EXP • tk_diferenteq EXP
+   66    | EXP • tk_and EXP
+   67    | EXP • tk_or EXP
+   68    | EXP • tk_not EXP
 
     suma            desplazar e ir al estado 93
     menos           desplazar e ir al estado 94
@@ -2904,26 +2914,29 @@ Estado 174
 
 Estado 175
 
-   23 IF: res_IF tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC •
-   24   | res_IF tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC • res_ELSE IF
-   25   | res_IF tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC • res_ELSE tk_LLAVA LIST_INST tk_LLAVC
+   23 IF: res_IF tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC • ELIF_LIST ELSE
+   24   | res_IF tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC • ELSE
 
     res_ELSE  desplazar e ir al estado 184
 
-    $default  reduce usando la regla 23 (IF)
+    $default  reduce usando la regla 29 (ELSE)
+
+    ELIF_LIST  ir al estado 185
+    ELIF       ir al estado 186
+    ELSE       ir al estado 187
 
 
 Estado 176
 
-   26 WHILE: res_WHILE tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC •
+   30 WHILE: res_WHILE tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC •
 
-    $default  reduce usando la regla 26 (WHILE)
+    $default  reduce usando la regla 30 (WHILE)
 
 
 Estado 177
 
-   38 INCREMENTO: id • mas_mas
-   39           | id • menos_menos
+   42 INCREMENTO: id • mas_mas
+   43           | id • menos_menos
 
     mas_mas      desplazar e ir al estado 42
     menos_menos  desplazar e ir al estado 43
@@ -2931,14 +2944,14 @@ Estado 177
 
 Estado 178
 
-   27 FOR: res_FOR tk_PARA DECLARAR ';' EXP ';' INCREMENTO • tk_PARC tk_LLAVA LIST_INST tk_LLAVC
+   31 FOR: res_FOR tk_PARA DECLARAR ';' EXP ';' INCREMENTO • tk_PARC tk_LLAVA LIST_INST tk_LLAVC
 
-    tk_PARC  desplazar e ir al estado 185
+    tk_PARC  desplazar e ir al estado 188
 
 
 Estado 179
 
-   30 VECTOR: res_VECTOR tk_menorq TYPES tk_mayorq id '=' tk_CORCHA • LISTAEXP tk_CORCHC
+   34 VECTOR: res_VECTOR tk_menorq TYPES tk_mayorq id '=' tk_CORCHA • LISTAEXP tk_CORCHC
 
     NUMERO      desplazar e ir al estado 50
     id          desplazar e ir al estado 51
@@ -2951,22 +2964,22 @@ Estado 179
     res_median  desplazar e ir al estado 58
     res_mode    desplazar e ir al estado 59
 
-    LISTAEXP   ir al estado 186
+    LISTAEXP   ir al estado 189
     EXP        ir al estado 76
     PRIMITIVE  ir al estado 61
 
 
 Estado 180
 
-   41 FUNC: TYPES id tk_PARA tk_PARC tk_LLAVA LIST_INST tk_LLAVC •
+   45 FUNC: TYPES id tk_PARA tk_PARC tk_LLAVA LIST_INST tk_LLAVC •
 
-    $default  reduce usando la regla 41 (FUNC)
+    $default  reduce usando la regla 45 (FUNC)
 
 
 Estado 181
 
     3 LIST_INST: LIST_INST • INSTRUCTION
-   40 FUNC: TYPES id tk_PARA LISTPARAM tk_PARC tk_LLAVA LIST_INST • tk_LLAVC
+   44 FUNC: TYPES id tk_PARA LISTPARAM tk_PARC tk_LLAVA LIST_INST • tk_LLAVC
 
     error         desplazar e ir al estado 9
     id            desplazar e ir al estado 10
@@ -2975,7 +2988,7 @@ Estado 181
     tk_string     desplazar e ir al estado 13
     tk_float      desplazar e ir al estado 14
     tk_bool       desplazar e ir al estado 15
-    tk_LLAVC      desplazar e ir al estado 187
+    tk_LLAVC      desplazar e ir al estado 190
     res_IF        desplazar e ir al estado 16
     res_WHILE     desplazar e ir al estado 17
     res_FOR       desplazar e ir al estado 18
@@ -3003,9 +3016,9 @@ Estado 181
 
 Estado 182
 
-   50 LISTPARAM: LISTPARAM ',' TYPES id •
+   54 LISTPARAM: LISTPARAM ',' TYPES id •
 
-    $default  reduce usando la regla 50 (LISTPARAM)
+    $default  reduce usando la regla 54 (LISTPARAM)
 
 
 Estado 183
@@ -3017,85 +3030,66 @@ Estado 183
 
 Estado 184
 
-   24 IF: res_IF tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC res_ELSE • IF
-   25   | res_IF tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC res_ELSE • tk_LLAVA LIST_INST tk_LLAVC
+   27 ELIF: res_ELSE • res_IF tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC
+   28 ELSE: res_ELSE • tk_LLAVA LIST_INST tk_LLAVC
 
-    tk_LLAVA  desplazar e ir al estado 188
-    res_IF    desplazar e ir al estado 16
-
-    IF  ir al estado 189
+    tk_LLAVA  desplazar e ir al estado 191
+    res_IF    desplazar e ir al estado 192
 
 
 Estado 185
 
-   27 FOR: res_FOR tk_PARA DECLARAR ';' EXP ';' INCREMENTO tk_PARC • tk_LLAVA LIST_INST tk_LLAVC
+   23 IF: res_IF tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC ELIF_LIST • ELSE
+   25 ELIF_LIST: ELIF_LIST • ELIF
 
-    tk_LLAVA  desplazar e ir al estado 190
+    res_ELSE  desplazar e ir al estado 184
+
+    $default  reduce usando la regla 29 (ELSE)
+
+    ELIF  ir al estado 193
+    ELSE  ir al estado 194
 
 
 Estado 186
 
-   30 VECTOR: res_VECTOR tk_menorq TYPES tk_mayorq id '=' tk_CORCHA LISTAEXP • tk_CORCHC
-   48 LISTAEXP: LISTAEXP • ',' EXP
+   26 ELIF_LIST: ELIF •
 
-    tk_CORCHC  desplazar e ir al estado 191
-    ','        desplazar e ir al estado 110
+    $default  reduce usando la regla 26 (ELIF_LIST)
 
 
 Estado 187
 
-   40 FUNC: TYPES id tk_PARA LISTPARAM tk_PARC tk_LLAVA LIST_INST tk_LLAVC •
-
-    $default  reduce usando la regla 40 (FUNC)
-
-
-Estado 188
-
-   25 IF: res_IF tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC res_ELSE tk_LLAVA • LIST_INST tk_LLAVC
-
-    error         desplazar e ir al estado 9
-    id            desplazar e ir al estado 10
-    PRINTF        desplazar e ir al estado 11
-    tk_int        desplazar e ir al estado 12
-    tk_string     desplazar e ir al estado 13
-    tk_float      desplazar e ir al estado 14
-    tk_bool       desplazar e ir al estado 15
-    res_IF        desplazar e ir al estado 16
-    res_WHILE     desplazar e ir al estado 17
-    res_FOR       desplazar e ir al estado 18
-    res_BREAK     desplazar e ir al estado 19
-    res_CONTINUE  desplazar e ir al estado 20
-    res_RETURN    desplazar e ir al estado 21
-    res_VECTOR    desplazar e ir al estado 22
-
-    LIST_INST    ir al estado 192
-    INSTRUCTION  ir al estado 24
-    DECLARAR     ir al estado 25
-    ASIGNAR      ir al estado 26
-    IF           ir al estado 27
-    WHILE        ir al estado 28
-    FOR          ir al estado 29
-    BREAK        ir al estado 30
-    CONT         ir al estado 31
-    VECTOR       ir al estado 32
-    PRINT        ir al estado 33
-    INCREMENTO   ir al estado 34
-    FUNC         ir al estado 35
-    LLAMADAF     ir al estado 36
-    RETORNO      ir al estado 37
-    TYPES        ir al estado 38
-
-
-Estado 189
-
-   24 IF: res_IF tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC res_ELSE IF •
+   24 IF: res_IF tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC ELSE •
 
     $default  reduce usando la regla 24 (IF)
 
 
+Estado 188
+
+   31 FOR: res_FOR tk_PARA DECLARAR ';' EXP ';' INCREMENTO tk_PARC • tk_LLAVA LIST_INST tk_LLAVC
+
+    tk_LLAVA  desplazar e ir al estado 195
+
+
+Estado 189
+
+   34 VECTOR: res_VECTOR tk_menorq TYPES tk_mayorq id '=' tk_CORCHA LISTAEXP • tk_CORCHC
+   52 LISTAEXP: LISTAEXP • ',' EXP
+
+    tk_CORCHC  desplazar e ir al estado 196
+    ','        desplazar e ir al estado 110
+
+
 Estado 190
 
-   27 FOR: res_FOR tk_PARA DECLARAR ';' EXP ';' INCREMENTO tk_PARC tk_LLAVA • LIST_INST tk_LLAVC
+   44 FUNC: TYPES id tk_PARA LISTPARAM tk_PARC tk_LLAVA LIST_INST tk_LLAVC •
+
+    $default  reduce usando la regla 44 (FUNC)
+
+
+Estado 191
+
+   28 ELSE: res_ELSE tk_LLAVA • LIST_INST tk_LLAVC
 
     error         desplazar e ir al estado 9
     id            desplazar e ir al estado 10
@@ -3112,7 +3106,7 @@ Estado 190
     res_RETURN    desplazar e ir al estado 21
     res_VECTOR    desplazar e ir al estado 22
 
-    LIST_INST    ir al estado 193
+    LIST_INST    ir al estado 197
     INSTRUCTION  ir al estado 24
     DECLARAR     ir al estado 25
     ASIGNAR      ir al estado 26
@@ -3130,55 +3124,30 @@ Estado 190
     TYPES        ir al estado 38
 
 
-Estado 191
-
-   30 VECTOR: res_VECTOR tk_menorq TYPES tk_mayorq id '=' tk_CORCHA LISTAEXP tk_CORCHC •
-
-    $default  reduce usando la regla 30 (VECTOR)
-
-
 Estado 192
 
-    3 LIST_INST: LIST_INST • INSTRUCTION
-   25 IF: res_IF tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC res_ELSE tk_LLAVA LIST_INST • tk_LLAVC
+   27 ELIF: res_ELSE res_IF • tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC
 
-    error         desplazar e ir al estado 9
-    id            desplazar e ir al estado 10
-    PRINTF        desplazar e ir al estado 11
-    tk_int        desplazar e ir al estado 12
-    tk_string     desplazar e ir al estado 13
-    tk_float      desplazar e ir al estado 14
-    tk_bool       desplazar e ir al estado 15
-    tk_LLAVC      desplazar e ir al estado 194
-    res_IF        desplazar e ir al estado 16
-    res_WHILE     desplazar e ir al estado 17
-    res_FOR       desplazar e ir al estado 18
-    res_BREAK     desplazar e ir al estado 19
-    res_CONTINUE  desplazar e ir al estado 20
-    res_RETURN    desplazar e ir al estado 21
-    res_VECTOR    desplazar e ir al estado 22
-
-    INSTRUCTION  ir al estado 64
-    DECLARAR     ir al estado 25
-    ASIGNAR      ir al estado 26
-    IF           ir al estado 27
-    WHILE        ir al estado 28
-    FOR          ir al estado 29
-    BREAK        ir al estado 30
-    CONT         ir al estado 31
-    VECTOR       ir al estado 32
-    PRINT        ir al estado 33
-    INCREMENTO   ir al estado 34
-    FUNC         ir al estado 35
-    LLAMADAF     ir al estado 36
-    RETORNO      ir al estado 37
-    TYPES        ir al estado 38
+    tk_PARA  desplazar e ir al estado 198
 
 
 Estado 193
 
-    3 LIST_INST: LIST_INST • INSTRUCTION
-   27 FOR: res_FOR tk_PARA DECLARAR ';' EXP ';' INCREMENTO tk_PARC tk_LLAVA LIST_INST • tk_LLAVC
+   25 ELIF_LIST: ELIF_LIST ELIF •
+
+    $default  reduce usando la regla 25 (ELIF_LIST)
+
+
+Estado 194
+
+   23 IF: res_IF tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC ELIF_LIST ELSE •
+
+    $default  reduce usando la regla 23 (IF)
+
+
+Estado 195
+
+   31 FOR: res_FOR tk_PARA DECLARAR ';' EXP ';' INCREMENTO tk_PARC tk_LLAVA • LIST_INST tk_LLAVC
 
     error         desplazar e ir al estado 9
     id            desplazar e ir al estado 10
@@ -3187,7 +3156,52 @@ Estado 193
     tk_string     desplazar e ir al estado 13
     tk_float      desplazar e ir al estado 14
     tk_bool       desplazar e ir al estado 15
-    tk_LLAVC      desplazar e ir al estado 195
+    res_IF        desplazar e ir al estado 16
+    res_WHILE     desplazar e ir al estado 17
+    res_FOR       desplazar e ir al estado 18
+    res_BREAK     desplazar e ir al estado 19
+    res_CONTINUE  desplazar e ir al estado 20
+    res_RETURN    desplazar e ir al estado 21
+    res_VECTOR    desplazar e ir al estado 22
+
+    LIST_INST    ir al estado 199
+    INSTRUCTION  ir al estado 24
+    DECLARAR     ir al estado 25
+    ASIGNAR      ir al estado 26
+    IF           ir al estado 27
+    WHILE        ir al estado 28
+    FOR          ir al estado 29
+    BREAK        ir al estado 30
+    CONT         ir al estado 31
+    VECTOR       ir al estado 32
+    PRINT        ir al estado 33
+    INCREMENTO   ir al estado 34
+    FUNC         ir al estado 35
+    LLAMADAF     ir al estado 36
+    RETORNO      ir al estado 37
+    TYPES        ir al estado 38
+
+
+Estado 196
+
+   34 VECTOR: res_VECTOR tk_menorq TYPES tk_mayorq id '=' tk_CORCHA LISTAEXP tk_CORCHC •
+
+    $default  reduce usando la regla 34 (VECTOR)
+
+
+Estado 197
+
+    3 LIST_INST: LIST_INST • INSTRUCTION
+   28 ELSE: res_ELSE tk_LLAVA LIST_INST • tk_LLAVC
+
+    error         desplazar e ir al estado 9
+    id            desplazar e ir al estado 10
+    PRINTF        desplazar e ir al estado 11
+    tk_int        desplazar e ir al estado 12
+    tk_string     desplazar e ir al estado 13
+    tk_float      desplazar e ir al estado 14
+    tk_bool       desplazar e ir al estado 15
+    tk_LLAVC      desplazar e ir al estado 200
     res_IF        desplazar e ir al estado 16
     res_WHILE     desplazar e ir al estado 17
     res_FOR       desplazar e ir al estado 18
@@ -3213,15 +3227,194 @@ Estado 193
     TYPES        ir al estado 38
 
 
-Estado 194
+Estado 198
 
-   25 IF: res_IF tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC res_ELSE tk_LLAVA LIST_INST tk_LLAVC •
+   27 ELIF: res_ELSE res_IF tk_PARA • EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC
 
-    $default  reduce usando la regla 25 (IF)
+    NUMERO      desplazar e ir al estado 50
+    id          desplazar e ir al estado 51
+    CADENA      desplazar e ir al estado 52
+    DECIMAL     desplazar e ir al estado 53
+    tk_PARA     desplazar e ir al estado 54
+    tk_true     desplazar e ir al estado 55
+    tk_false    desplazar e ir al estado 56
+    res_mean    desplazar e ir al estado 57
+    res_median  desplazar e ir al estado 58
+    res_mode    desplazar e ir al estado 59
+
+    EXP        ir al estado 201
+    PRIMITIVE  ir al estado 61
 
 
-Estado 195
+Estado 199
 
-   27 FOR: res_FOR tk_PARA DECLARAR ';' EXP ';' INCREMENTO tk_PARC tk_LLAVA LIST_INST tk_LLAVC •
+    3 LIST_INST: LIST_INST • INSTRUCTION
+   31 FOR: res_FOR tk_PARA DECLARAR ';' EXP ';' INCREMENTO tk_PARC tk_LLAVA LIST_INST • tk_LLAVC
 
-    $default  reduce usando la regla 27 (FOR)
+    error         desplazar e ir al estado 9
+    id            desplazar e ir al estado 10
+    PRINTF        desplazar e ir al estado 11
+    tk_int        desplazar e ir al estado 12
+    tk_string     desplazar e ir al estado 13
+    tk_float      desplazar e ir al estado 14
+    tk_bool       desplazar e ir al estado 15
+    tk_LLAVC      desplazar e ir al estado 202
+    res_IF        desplazar e ir al estado 16
+    res_WHILE     desplazar e ir al estado 17
+    res_FOR       desplazar e ir al estado 18
+    res_BREAK     desplazar e ir al estado 19
+    res_CONTINUE  desplazar e ir al estado 20
+    res_RETURN    desplazar e ir al estado 21
+    res_VECTOR    desplazar e ir al estado 22
+
+    INSTRUCTION  ir al estado 64
+    DECLARAR     ir al estado 25
+    ASIGNAR      ir al estado 26
+    IF           ir al estado 27
+    WHILE        ir al estado 28
+    FOR          ir al estado 29
+    BREAK        ir al estado 30
+    CONT         ir al estado 31
+    VECTOR       ir al estado 32
+    PRINT        ir al estado 33
+    INCREMENTO   ir al estado 34
+    FUNC         ir al estado 35
+    LLAMADAF     ir al estado 36
+    RETORNO      ir al estado 37
+    TYPES        ir al estado 38
+
+
+Estado 200
+
+   28 ELSE: res_ELSE tk_LLAVA LIST_INST tk_LLAVC •
+
+    $default  reduce usando la regla 28 (ELSE)
+
+
+Estado 201
+
+   27 ELIF: res_ELSE res_IF tk_PARA EXP • tk_PARC tk_LLAVA LIST_INST tk_LLAVC
+   56 EXP: EXP • suma EXP
+   57    | EXP • menos EXP
+   58    | EXP • mult EXP
+   59    | EXP • div EXP
+   60    | EXP • tk_menor_igual EXP
+   61    | EXP • tk_menorq EXP
+   62    | EXP • tk_mayor_igual EXP
+   63    | EXP • tk_mayorq EXP
+   64    | EXP • tk_igualq EXP
+   65    | EXP • tk_diferenteq EXP
+   66    | EXP • tk_and EXP
+   67    | EXP • tk_or EXP
+   68    | EXP • tk_not EXP
+
+    suma            desplazar e ir al estado 93
+    menos           desplazar e ir al estado 94
+    mult            desplazar e ir al estado 95
+    div             desplazar e ir al estado 96
+    tk_PARC         desplazar e ir al estado 203
+    tk_igualq       desplazar e ir al estado 97
+    tk_diferenteq   desplazar e ir al estado 98
+    tk_mayor_igual  desplazar e ir al estado 99
+    tk_menor_igual  desplazar e ir al estado 100
+    tk_menorq       desplazar e ir al estado 101
+    tk_mayorq       desplazar e ir al estado 102
+    tk_and          desplazar e ir al estado 103
+    tk_or           desplazar e ir al estado 104
+    tk_not          desplazar e ir al estado 105
+
+
+Estado 202
+
+   31 FOR: res_FOR tk_PARA DECLARAR ';' EXP ';' INCREMENTO tk_PARC tk_LLAVA LIST_INST tk_LLAVC •
+
+    $default  reduce usando la regla 31 (FOR)
+
+
+Estado 203
+
+   27 ELIF: res_ELSE res_IF tk_PARA EXP tk_PARC • tk_LLAVA LIST_INST tk_LLAVC
+
+    tk_LLAVA  desplazar e ir al estado 204
+
+
+Estado 204
+
+   27 ELIF: res_ELSE res_IF tk_PARA EXP tk_PARC tk_LLAVA • LIST_INST tk_LLAVC
+
+    error         desplazar e ir al estado 9
+    id            desplazar e ir al estado 10
+    PRINTF        desplazar e ir al estado 11
+    tk_int        desplazar e ir al estado 12
+    tk_string     desplazar e ir al estado 13
+    tk_float      desplazar e ir al estado 14
+    tk_bool       desplazar e ir al estado 15
+    res_IF        desplazar e ir al estado 16
+    res_WHILE     desplazar e ir al estado 17
+    res_FOR       desplazar e ir al estado 18
+    res_BREAK     desplazar e ir al estado 19
+    res_CONTINUE  desplazar e ir al estado 20
+    res_RETURN    desplazar e ir al estado 21
+    res_VECTOR    desplazar e ir al estado 22
+
+    LIST_INST    ir al estado 205
+    INSTRUCTION  ir al estado 24
+    DECLARAR     ir al estado 25
+    ASIGNAR      ir al estado 26
+    IF           ir al estado 27
+    WHILE        ir al estado 28
+    FOR          ir al estado 29
+    BREAK        ir al estado 30
+    CONT         ir al estado 31
+    VECTOR       ir al estado 32
+    PRINT        ir al estado 33
+    INCREMENTO   ir al estado 34
+    FUNC         ir al estado 35
+    LLAMADAF     ir al estado 36
+    RETORNO      ir al estado 37
+    TYPES        ir al estado 38
+
+
+Estado 205
+
+    3 LIST_INST: LIST_INST • INSTRUCTION
+   27 ELIF: res_ELSE res_IF tk_PARA EXP tk_PARC tk_LLAVA LIST_INST • tk_LLAVC
+
+    error         desplazar e ir al estado 9
+    id            desplazar e ir al estado 10
+    PRINTF        desplazar e ir al estado 11
+    tk_int        desplazar e ir al estado 12
+    tk_string     desplazar e ir al estado 13
+    tk_float      desplazar e ir al estado 14
+    tk_bool       desplazar e ir al estado 15
+    tk_LLAVC      desplazar e ir al estado 206
+    res_IF        desplazar e ir al estado 16
+    res_WHILE     desplazar e ir al estado 17
+    res_FOR       desplazar e ir al estado 18
+    res_BREAK     desplazar e ir al estado 19
+    res_CONTINUE  desplazar e ir al estado 20
+    res_RETURN    desplazar e ir al estado 21
+    res_VECTOR    desplazar e ir al estado 22
+
+    INSTRUCTION  ir al estado 64
+    DECLARAR     ir al estado 25
+    ASIGNAR      ir al estado 26
+    IF           ir al estado 27
+    WHILE        ir al estado 28
+    FOR          ir al estado 29
+    BREAK        ir al estado 30
+    CONT         ir al estado 31
+    VECTOR       ir al estado 32
+    PRINT        ir al estado 33
+    INCREMENTO   ir al estado 34
+    FUNC         ir al estado 35
+    LLAMADAF     ir al estado 36
+    RETORNO      ir al estado 37
+    TYPES        ir al estado 38
+
+
+Estado 206
+
+   27 ELIF: res_ELSE res_IF tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC •
+
+    $default  reduce usando la regla 27 (ELIF)

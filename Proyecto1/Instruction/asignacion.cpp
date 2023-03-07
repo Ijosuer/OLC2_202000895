@@ -12,7 +12,7 @@ void asignacion::ejecutar(environment *env, ast *tree)
 {
 
     symbol sym = Valor->ejecutar(env, tree);//Opera el valor a asignar
-    symbol temp = env->GetVariable(Id, tree);//Devuelve un simbolo
+    symbol temp = env->GetVariable(Id,env, tree);//Devuelve un simbolo
 
     std::cout<<temp.Tipo<<" "<<*static_cast<int*>(temp.Value)<<std::endl;
     std::cout<<*static_cast<int*>(sym.Value)<<std::endl;

@@ -23,7 +23,7 @@ QString read_file(const QString& filename) {
     return content;
 }
 void ejecutar(){
-    environment *GlobalEnv = new environment();
+    environment *GlobalEnv = new environment(nullptr,"MAIN");
     //creando ast
     ast *Root = new ast();
     //ejecuta el analizador
