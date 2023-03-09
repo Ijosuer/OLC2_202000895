@@ -18,7 +18,8 @@ void asignacion::ejecutar(environment *env, ast *tree)
     std::cout<<*static_cast<int*>(sym.Value)<<std::endl;
     if(sym.Tipo == temp.Tipo)
     {
-        env->ActualizarVariable(Id,sym,tree);
+        // temp.Value = &sym.Value;
+        env->ActualizarVariable(Id,env,&sym,tree);
     }
     else
     {

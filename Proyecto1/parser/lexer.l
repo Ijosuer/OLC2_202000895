@@ -66,6 +66,7 @@ DECIMAL ({NUMERO})"."({NUMERO})
 "-"     return Parser::symbol_type( token::menos, loc );
 "*"     return Parser::symbol_type( token::mult, loc );
 "/"     return Parser::symbol_type( token::div, loc );
+"%"     return Parser::symbol_type( token::modulo, loc );
 
     /* defincion clásica / para caracteres especiales */
 ";"     return Parser::symbol_type( token_type(';'), loc );

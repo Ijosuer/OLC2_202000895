@@ -10,7 +10,6 @@ void environment::SaveVariable(symbol sym, std::string id, ast *tree)
 {
     if (Tabla.find(id) == Tabla.end())
     {
-        std::cout<<"guarda"<<std::endl;
         Tabla[id] = sym;
     }
     else
@@ -22,6 +21,7 @@ void environment::SaveVariable(symbol sym, std::string id, ast *tree)
 
 symbol environment::GetVariable(std::string id, environment *env, ast *tree)
 {
+    bool flag = false;
     symbol sym (0,0,"",NULO,nullptr);
     environment tmpEnv = *env;
 
@@ -29,10 +29,8 @@ symbol environment::GetVariable(std::string id, environment *env, ast *tree)
     {
         if (tmpEnv.Tabla.find(id) == tmpEnv.Tabla.end())
         {
-            std::cout<<"Entra aca"<<std::endl;
             if(tmpEnv.Anterior == nullptr)
             {
-            std::cout<<"Entra aca en break"<<std::endl;
                 break;
             }
             else
@@ -42,22 +40,45 @@ symbol environment::GetVariable(std::string id, environment *env, ast *tree)
         }
         else
         {
-            std::cout<<"nel aca"<<std::endl;
             symbol tempSym (tmpEnv.Tabla[id].Line,
                             tmpEnv.Tabla[id].Col,
                             tmpEnv.Tabla[id].Id,
                             tmpEnv.Tabla[id].Tipo,
                             tmpEnv.Tabla[id].Value);
             sym = tempSym;
+            flag = true;
             break;
         }
 
     }
-
     return sym;
 }
 
-void environment::ActualizarVariable(std::string id, symbol valor, ast *tree)
+void environment::ActualizarVariable(std::string id,environment *env, symbol *valor, ast *tree)
 {
-    Tabla[id].Value = valor.Value;
+    bool flag =false;
+    environment tmpEnv = *env;
+    for(;;)
+    {
+        if(env->Tabla.find(id) == env->Tabla.end())
+        {
+            if(env->Anterior == nullptr)
+            {
+                break;
+            }
+            else
+            {
+                env = env->Anterior;
+            }
+        }
+        else
+        {
+            env->Tabla[id].Value = valor->Value;
+            flag = true;
+            break;
+        }
+    }
+    
+    // env->Tabla[id].Value = valor->Value;
+    // Tabla[id].Value = valor->Value;
 }

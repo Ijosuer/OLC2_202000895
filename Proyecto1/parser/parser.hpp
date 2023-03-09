@@ -68,9 +68,10 @@
     #include "../Instruction/list_instruction.hpp"
     #include "../Instruction/func_main.hpp"
     #include "../Instruction/func_if.hpp"
+    #include "../Instruction/func_while.hpp"
 
 
-#line 74 "parser.hpp"
+#line 75 "parser.hpp"
 
 
 # include <cstdlib> // std::abort
@@ -205,7 +206,7 @@
 #endif
 
 namespace yy {
-#line 209 "parser.hpp"
+#line 210 "parser.hpp"
 
 
 
@@ -442,6 +443,7 @@ namespace yy {
       // menos
       // mult
       // div
+      // modulo
       // PRINTF
       // tk_void
       // tk_int
@@ -546,52 +548,53 @@ namespace yy {
     menos = 263,                   // menos
     mult = 264,                    // mult
     div = 265,                     // div
-    PRINTF = 266,                  // PRINTF
-    tk_void = 267,                 // tk_void
-    tk_int = 268,                  // tk_int
-    tk_string = 269,               // tk_string
-    tk_float = 270,                // tk_float
-    tk_bool = 271,                 // tk_bool
-    tk_PARA = 272,                 // tk_PARA
-    tk_PARC = 273,                 // tk_PARC
-    rmain = 274,                   // rmain
-    tk_LLAVA = 275,                // tk_LLAVA
-    tk_LLAVC = 276,                // tk_LLAVC
-    tk_true = 277,                 // tk_true
-    tk_false = 278,                // tk_false
-    tk_igualq = 279,               // tk_igualq
-    tk_diferenteq = 280,           // tk_diferenteq
-    tk_mayor_igual = 281,          // tk_mayor_igual
-    tk_menor_igual = 282,          // tk_menor_igual
-    tk_CORCHA = 283,               // tk_CORCHA
-    tk_CORCHC = 284,               // tk_CORCHC
-    tk_menorq = 285,               // tk_menorq
-    tk_mayorq = 286,               // tk_mayorq
-    tk_and = 287,                  // tk_and
-    tk_or = 288,                   // tk_or
-    tk_not = 289,                  // tk_not
-    res_IF = 290,                  // res_IF
-    res_ELSE = 291,                // res_ELSE
-    res_WHILE = 292,               // res_WHILE
-    res_FOR = 293,                 // res_FOR
-    res_BREAK = 294,               // res_BREAK
-    res_CONTINUE = 295,            // res_CONTINUE
-    res_RETURN = 296,              // res_RETURN
-    res_pushB = 297,               // res_pushB
-    res_pushF = 298,               // res_pushF
-    res_get = 299,                 // res_get
-    res_remove = 300,              // res_remove
-    res_size = 301,                // res_size
-    res_struct = 302,              // res_struct
-    res_mean = 303,                // res_mean
-    res_median = 304,              // res_median
-    res_mode = 305,                // res_mode
-    res_atoi = 306,                // res_atoi
-    res_atof = 307,                // res_atof
-    res_iota = 308,                // res_iota
-    res_VECTOR = 309,              // res_VECTOR
-    mas_mas = 310,                 // mas_mas
-    menos_menos = 311              // menos_menos
+    modulo = 266,                  // modulo
+    PRINTF = 267,                  // PRINTF
+    tk_void = 268,                 // tk_void
+    tk_int = 269,                  // tk_int
+    tk_string = 270,               // tk_string
+    tk_float = 271,                // tk_float
+    tk_bool = 272,                 // tk_bool
+    tk_PARA = 273,                 // tk_PARA
+    tk_PARC = 274,                 // tk_PARC
+    rmain = 275,                   // rmain
+    tk_LLAVA = 276,                // tk_LLAVA
+    tk_LLAVC = 277,                // tk_LLAVC
+    tk_true = 278,                 // tk_true
+    tk_false = 279,                // tk_false
+    tk_igualq = 280,               // tk_igualq
+    tk_diferenteq = 281,           // tk_diferenteq
+    tk_mayor_igual = 282,          // tk_mayor_igual
+    tk_menor_igual = 283,          // tk_menor_igual
+    tk_CORCHA = 284,               // tk_CORCHA
+    tk_CORCHC = 285,               // tk_CORCHC
+    tk_menorq = 286,               // tk_menorq
+    tk_mayorq = 287,               // tk_mayorq
+    tk_and = 288,                  // tk_and
+    tk_or = 289,                   // tk_or
+    tk_not = 290,                  // tk_not
+    res_IF = 291,                  // res_IF
+    res_ELSE = 292,                // res_ELSE
+    res_WHILE = 293,               // res_WHILE
+    res_FOR = 294,                 // res_FOR
+    res_BREAK = 295,               // res_BREAK
+    res_CONTINUE = 296,            // res_CONTINUE
+    res_RETURN = 297,              // res_RETURN
+    res_pushB = 298,               // res_pushB
+    res_pushF = 299,               // res_pushF
+    res_get = 300,                 // res_get
+    res_remove = 301,              // res_remove
+    res_size = 302,                // res_size
+    res_struct = 303,              // res_struct
+    res_mean = 304,                // res_mean
+    res_median = 305,              // res_median
+    res_mode = 306,                // res_mode
+    res_atoi = 307,                // res_atoi
+    res_atof = 308,                // res_atof
+    res_iota = 309,                // res_iota
+    res_VECTOR = 310,              // res_VECTOR
+    mas_mas = 311,                 // mas_mas
+    menos_menos = 312              // menos_menos
       };
       /// Backward compatibility alias (Bison 3.6).
       typedef token_kind_type yytokentype;
@@ -608,7 +611,7 @@ namespace yy {
     {
       enum symbol_kind_type
       {
-        YYNTOKENS = 61, ///< Number of tokens.
+        YYNTOKENS = 62, ///< Number of tokens.
         S_YYEMPTY = -2,
         S_YYEOF = 0,                             // END
         S_YYerror = 1,                           // error
@@ -621,82 +624,83 @@ namespace yy {
         S_menos = 8,                             // menos
         S_mult = 9,                              // mult
         S_div = 10,                              // div
-        S_PRINTF = 11,                           // PRINTF
-        S_tk_void = 12,                          // tk_void
-        S_tk_int = 13,                           // tk_int
-        S_tk_string = 14,                        // tk_string
-        S_tk_float = 15,                         // tk_float
-        S_tk_bool = 16,                          // tk_bool
-        S_tk_PARA = 17,                          // tk_PARA
-        S_tk_PARC = 18,                          // tk_PARC
-        S_rmain = 19,                            // rmain
-        S_tk_LLAVA = 20,                         // tk_LLAVA
-        S_tk_LLAVC = 21,                         // tk_LLAVC
-        S_tk_true = 22,                          // tk_true
-        S_tk_false = 23,                         // tk_false
-        S_tk_igualq = 24,                        // tk_igualq
-        S_tk_diferenteq = 25,                    // tk_diferenteq
-        S_tk_mayor_igual = 26,                   // tk_mayor_igual
-        S_tk_menor_igual = 27,                   // tk_menor_igual
-        S_tk_CORCHA = 28,                        // tk_CORCHA
-        S_tk_CORCHC = 29,                        // tk_CORCHC
-        S_tk_menorq = 30,                        // tk_menorq
-        S_tk_mayorq = 31,                        // tk_mayorq
-        S_tk_and = 32,                           // tk_and
-        S_tk_or = 33,                            // tk_or
-        S_tk_not = 34,                           // tk_not
-        S_res_IF = 35,                           // res_IF
-        S_res_ELSE = 36,                         // res_ELSE
-        S_res_WHILE = 37,                        // res_WHILE
-        S_res_FOR = 38,                          // res_FOR
-        S_res_BREAK = 39,                        // res_BREAK
-        S_res_CONTINUE = 40,                     // res_CONTINUE
-        S_res_RETURN = 41,                       // res_RETURN
-        S_res_pushB = 42,                        // res_pushB
-        S_res_pushF = 43,                        // res_pushF
-        S_res_get = 44,                          // res_get
-        S_res_remove = 45,                       // res_remove
-        S_res_size = 46,                         // res_size
-        S_res_struct = 47,                       // res_struct
-        S_res_mean = 48,                         // res_mean
-        S_res_median = 49,                       // res_median
-        S_res_mode = 50,                         // res_mode
-        S_res_atoi = 51,                         // res_atoi
-        S_res_atof = 52,                         // res_atof
-        S_res_iota = 53,                         // res_iota
-        S_res_VECTOR = 54,                       // res_VECTOR
-        S_mas_mas = 55,                          // mas_mas
-        S_menos_menos = 56,                      // menos_menos
-        S_57_ = 57,                              // ';'
-        S_58_ = 58,                              // '='
-        S_59_ = 59,                              // ','
-        S_60_ = 60,                              // '.'
-        S_YYACCEPT = 61,                         // $accept
-        S_START = 62,                            // START
-        S_MAIN = 63,                             // MAIN
-        S_LIST_INST = 64,                        // LIST_INST
-        S_INSTRUCTION = 65,                      // INSTRUCTION
-        S_DECLARAR = 66,                         // DECLARAR
-        S_ASIGNAR = 67,                          // ASIGNAR
-        S_IF = 68,                               // IF
-        S_ELIF_LIST = 69,                        // ELIF_LIST
-        S_ELIF = 70,                             // ELIF
-        S_ELSE = 71,                             // ELSE
-        S_WHILE = 72,                            // WHILE
-        S_FOR = 73,                              // FOR
-        S_BREAK = 74,                            // BREAK
-        S_CONT = 75,                             // CONT
-        S_VECTOR = 76,                           // VECTOR
-        S_PRINT = 77,                            // PRINT
-        S_INCREMENTO = 78,                       // INCREMENTO
-        S_FUNC = 79,                             // FUNC
-        S_LLAMADAF = 80,                         // LLAMADAF
-        S_RETORNO = 81,                          // RETORNO
-        S_TYPES = 82,                            // TYPES
-        S_LISTAEXP = 83,                         // LISTAEXP
-        S_LISTPARAM = 84,                        // LISTPARAM
-        S_EXP = 85,                              // EXP
-        S_PRIMITIVE = 86                         // PRIMITIVE
+        S_modulo = 11,                           // modulo
+        S_PRINTF = 12,                           // PRINTF
+        S_tk_void = 13,                          // tk_void
+        S_tk_int = 14,                           // tk_int
+        S_tk_string = 15,                        // tk_string
+        S_tk_float = 16,                         // tk_float
+        S_tk_bool = 17,                          // tk_bool
+        S_tk_PARA = 18,                          // tk_PARA
+        S_tk_PARC = 19,                          // tk_PARC
+        S_rmain = 20,                            // rmain
+        S_tk_LLAVA = 21,                         // tk_LLAVA
+        S_tk_LLAVC = 22,                         // tk_LLAVC
+        S_tk_true = 23,                          // tk_true
+        S_tk_false = 24,                         // tk_false
+        S_tk_igualq = 25,                        // tk_igualq
+        S_tk_diferenteq = 26,                    // tk_diferenteq
+        S_tk_mayor_igual = 27,                   // tk_mayor_igual
+        S_tk_menor_igual = 28,                   // tk_menor_igual
+        S_tk_CORCHA = 29,                        // tk_CORCHA
+        S_tk_CORCHC = 30,                        // tk_CORCHC
+        S_tk_menorq = 31,                        // tk_menorq
+        S_tk_mayorq = 32,                        // tk_mayorq
+        S_tk_and = 33,                           // tk_and
+        S_tk_or = 34,                            // tk_or
+        S_tk_not = 35,                           // tk_not
+        S_res_IF = 36,                           // res_IF
+        S_res_ELSE = 37,                         // res_ELSE
+        S_res_WHILE = 38,                        // res_WHILE
+        S_res_FOR = 39,                          // res_FOR
+        S_res_BREAK = 40,                        // res_BREAK
+        S_res_CONTINUE = 41,                     // res_CONTINUE
+        S_res_RETURN = 42,                       // res_RETURN
+        S_res_pushB = 43,                        // res_pushB
+        S_res_pushF = 44,                        // res_pushF
+        S_res_get = 45,                          // res_get
+        S_res_remove = 46,                       // res_remove
+        S_res_size = 47,                         // res_size
+        S_res_struct = 48,                       // res_struct
+        S_res_mean = 49,                         // res_mean
+        S_res_median = 50,                       // res_median
+        S_res_mode = 51,                         // res_mode
+        S_res_atoi = 52,                         // res_atoi
+        S_res_atof = 53,                         // res_atof
+        S_res_iota = 54,                         // res_iota
+        S_res_VECTOR = 55,                       // res_VECTOR
+        S_mas_mas = 56,                          // mas_mas
+        S_menos_menos = 57,                      // menos_menos
+        S_58_ = 58,                              // ';'
+        S_59_ = 59,                              // '='
+        S_60_ = 60,                              // ','
+        S_61_ = 61,                              // '.'
+        S_YYACCEPT = 62,                         // $accept
+        S_START = 63,                            // START
+        S_MAIN = 64,                             // MAIN
+        S_LIST_INST = 65,                        // LIST_INST
+        S_INSTRUCTION = 66,                      // INSTRUCTION
+        S_DECLARAR = 67,                         // DECLARAR
+        S_ASIGNAR = 68,                          // ASIGNAR
+        S_IF = 69,                               // IF
+        S_ELIF_LIST = 70,                        // ELIF_LIST
+        S_ELIF = 71,                             // ELIF
+        S_ELSE = 72,                             // ELSE
+        S_WHILE = 73,                            // WHILE
+        S_FOR = 74,                              // FOR
+        S_BREAK = 75,                            // BREAK
+        S_CONT = 76,                             // CONT
+        S_VECTOR = 77,                           // VECTOR
+        S_PRINT = 78,                            // PRINT
+        S_INCREMENTO = 79,                       // INCREMENTO
+        S_FUNC = 80,                             // FUNC
+        S_LLAMADAF = 81,                         // LLAMADAF
+        S_RETORNO = 82,                          // RETORNO
+        S_TYPES = 83,                            // TYPES
+        S_LISTAEXP = 84,                         // LISTAEXP
+        S_LISTPARAM = 85,                        // LISTPARAM
+        S_EXP = 86,                              // EXP
+        S_PRIMITIVE = 87                         // PRIMITIVE
       };
     };
 
@@ -779,6 +783,7 @@ namespace yy {
       case symbol_kind::S_menos: // menos
       case symbol_kind::S_mult: // mult
       case symbol_kind::S_div: // div
+      case symbol_kind::S_modulo: // modulo
       case symbol_kind::S_PRINTF: // PRINTF
       case symbol_kind::S_tk_void: // tk_void
       case symbol_kind::S_tk_int: // tk_int
@@ -1005,6 +1010,7 @@ switch (yykind)
       case symbol_kind::S_menos: // menos
       case symbol_kind::S_mult: // mult
       case symbol_kind::S_div: // div
+      case symbol_kind::S_modulo: // modulo
       case symbol_kind::S_PRINTF: // PRINTF
       case symbol_kind::S_tk_void: // tk_void
       case symbol_kind::S_tk_int: // tk_int
@@ -1369,6 +1375,21 @@ switch (yykind)
       make_div (const std::string& v, const location_type& l)
       {
         return symbol_type (token::div, v, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_modulo (std::string v, location_type l)
+      {
+        return symbol_type (token::modulo, std::move (v), std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_modulo (const std::string& v, const location_type& l)
+      {
+        return symbol_type (token::modulo, v, l);
       }
 #endif
 #if 201103L <= YY_CPLUSPLUS
@@ -2391,7 +2412,7 @@ switch (yykind)
     /// Constants.
     enum
     {
-      yylast_ = 761,     ///< Last index in yytable_.
+      yylast_ = 787,     ///< Last index in yytable_.
       yynnts_ = 26,  ///< Number of nonterminal symbols.
       yyfinal_ = 5 ///< Termination state number.
     };
@@ -2418,9 +2439,9 @@ switch (yykind)
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,    59,     2,    60,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,    57,
-       2,    58,     2,     2,     2,     2,     2,     2,     2,     2,
+       2,     2,     2,     2,    60,     2,    61,     2,     2,     2,
+       2,     2,     2,     2,     2,     2,     2,     2,     2,    58,
+       2,    59,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -2445,10 +2466,10 @@ switch (yykind)
       25,    26,    27,    28,    29,    30,    31,    32,    33,    34,
       35,    36,    37,    38,    39,    40,    41,    42,    43,    44,
       45,    46,    47,    48,    49,    50,    51,    52,    53,    54,
-      55,    56
+      55,    56,    57
     };
     // Last valid token kind.
-    const int code_max = 311;
+    const int code_max = 312;
 
     if (t <= 0)
       return symbol_kind::S_YYEOF;
@@ -2513,6 +2534,7 @@ switch (yykind)
       case symbol_kind::S_menos: // menos
       case symbol_kind::S_mult: // mult
       case symbol_kind::S_div: // div
+      case symbol_kind::S_modulo: // modulo
       case symbol_kind::S_PRINTF: // PRINTF
       case symbol_kind::S_tk_void: // tk_void
       case symbol_kind::S_tk_int: // tk_int
@@ -2639,6 +2661,7 @@ switch (yykind)
       case symbol_kind::S_menos: // menos
       case symbol_kind::S_mult: // mult
       case symbol_kind::S_div: // div
+      case symbol_kind::S_modulo: // modulo
       case symbol_kind::S_PRINTF: // PRINTF
       case symbol_kind::S_tk_void: // tk_void
       case symbol_kind::S_tk_int: // tk_int
@@ -2754,7 +2777,7 @@ switch (yykind)
 
 
 } // yy
-#line 2758 "parser.hpp"
+#line 2781 "parser.hpp"
 
 
 

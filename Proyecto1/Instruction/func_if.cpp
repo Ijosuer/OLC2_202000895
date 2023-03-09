@@ -13,20 +13,22 @@ func_if::func_if(int line, int col, expression *condition, instruction *block, i
 void func_if::ejecutar(environment *env, ast *tree)
 {
     symbol sym = Condition->ejecutar(env,tree);
-    // Crear entorno de IF
-    environment *ifenv = new environment(env, "IF") ;
     if (sym.Tipo == BOOL)
     {
+    // Crear entorno de IF
+    environment *ifenv = new environment(env, "IF") ;
         bool *val = (bool *)sym.Value;
         // Si se cumple el if
         if (*val)
         {
+        /* reportar ERROR */
             /* ejecutar el primer bloque  */
             Block->ejecutar(ifenv,tree);
             // Puede ser un else if por lo que hay que validar
             if (tree->EliFlag)
             {
                 tree->EliFlag = false;
+        /* reportar ERROR */
                 tree->ifReturn = true;
             }
             return;
@@ -46,6 +48,7 @@ void func_if::ejecutar(environment *env, ast *tree)
         {
             ElseBlock->ejecutar(ifenv,tree);
         }
+        
         
     }else
     {

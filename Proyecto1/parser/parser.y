@@ -52,6 +52,7 @@
     #include "../Instruction/list_instruction.hpp"
     #include "../Instruction/func_main.hpp"
     #include "../Instruction/func_if.hpp"
+    #include "../Instruction/func_while.hpp"
 
 }
 
@@ -62,7 +63,7 @@
 %token END 0;
 
 /*tokens*/
-%token <std::string> NUMERO id CADENA DECIMAL suma menos mult div PRINTF tk_void tk_int tk_string tk_float tk_bool tk_PARA tk_PARC rmain tk_LLAVA tk_LLAVC
+%token <std::string> NUMERO id CADENA DECIMAL suma menos mult div modulo PRINTF tk_void tk_int tk_string tk_float tk_bool tk_PARA tk_PARC rmain tk_LLAVA tk_LLAVC
 %token <std::string> tk_true tk_false tk_igualq tk_diferenteq tk_mayor_igual tk_menor_igual tk_CORCHA tk_CORCHC
 %token <std::string> tk_menorq tk_mayorq tk_and tk_or tk_not res_IF res_ELSE res_WHILE res_FOR res_BREAK res_CONTINUE res_RETURN res_pushB res_pushF 
 %token <std::string> res_get res_remove res_size res_struct res_mean res_median res_mode res_atoi res_atof res_iota res_VECTOR mas_mas menos_menos
@@ -189,7 +190,7 @@ ELSE: res_ELSE tk_LLAVA LIST_INST tk_LLAVC { $$=$3; }
 ;
 
 // While
-WHILE: res_WHILE tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC {std::cout<<"While "<<std::endl;}
+WHILE: res_WHILE tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC {$$ = new func_while(0,0,$3,$6);}
 ;
         
 // For
@@ -248,6 +249,7 @@ EXP : EXP suma EXP { $$ = new operation(0, 0, $1, $3, "+"); }
     | EXP menos EXP { $$ = new operation(0, 0, $1, $3, "-"); }
     | EXP mult EXP { $$ = new operation(0, 0, $1, $3, "*"); }
     | EXP div EXP { $$ = new operation(0, 0, $1, $3, "/"); }
+    | EXP modulo EXP { $$ = new operation(0, 0, $1, $3, "%"); }
     | EXP tk_menor_igual EXP { $$ = new operation(0, 0, $1, $3, "<="); }
     | EXP tk_menorq EXP { $$ = new operation(0, 0, $1, $3, "<"); }
     | EXP tk_mayor_igual EXP { $$ = new operation(0, 0, $1, $3, ">="); }

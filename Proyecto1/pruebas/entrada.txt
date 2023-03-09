@@ -62,3 +62,13 @@ printf("hi");
 
 adios(1,2,3);
 }
+int a = 1;
+if(a==1){
+a = a+1;
+if(a==2){
+a = a+1;
+if(a==3){
+printf(a);
+}
+}
+}
