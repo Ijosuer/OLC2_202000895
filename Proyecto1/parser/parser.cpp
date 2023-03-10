@@ -1604,361 +1604,364 @@ namespace yy {
 
   case 20: // DECLARAR: TYPES id
 #line 163 "parser.y"
-                    {std::cout<<"Declarando "<<yystack_[0].value.as < std::string > ()<<std::endl; }
-#line 1609 "parser.cpp"
+                    {std::cout<<"Declarando "<<yystack_[0].value.as < std::string > ()<<std::endl; 
+                            yylhs.value.as < instruction* > () = new declaracion(0,0,yystack_[1].value.as < TipoDato > (),yystack_[0].value.as < std::string > (),new primitive(0,0,yystack_[1].value.as < TipoDato > (),"",0,0.0,0));
+                    }
+#line 1611 "parser.cpp"
     break;
 
   case 21: // DECLARAR: TYPES id '=' EXP
-#line 164 "parser.y"
+#line 166 "parser.y"
                            {std::cout<<"Declarando con valor a "<<yystack_[2].value.as < std::string > ()<<std::endl;
-                            yylhs.value.as < instruction* > () = new declaracion(0,0,yystack_[3].value.as < TipoDato > (),yystack_[2].value.as < std::string > (),yystack_[0].value.as < expression* > ());}
-#line 1616 "parser.cpp"
+                            yylhs.value.as < instruction* > () = new declaracion(0,0,yystack_[3].value.as < TipoDato > (),yystack_[2].value.as < std::string > (),yystack_[0].value.as < expression* > ());
+                            }
+#line 1619 "parser.cpp"
     break;
 
   case 22: // ASIGNAR: id '=' EXP
-#line 168 "parser.y"
+#line 171 "parser.y"
                      {std::cout<<"Asignando valor a "<<yystack_[2].value.as < std::string > ()<<std::endl; yylhs.value.as < instruction* > () = new asignacion(0,0,yystack_[2].value.as < std::string > (),yystack_[0].value.as < expression* > ());}
-#line 1622 "parser.cpp"
+#line 1625 "parser.cpp"
     break;
 
   case 23: // ASIGNAR: id tk_LLAVA EXP tk_LLAVC '=' tk_LLAVA EXP tk_LLAVC
-#line 169 "parser.y"
+#line 172 "parser.y"
                                                                {std::cout<<"Asignando valor vector a: "<<yystack_[7].value.as < std::string > ()<<std::endl;}
-#line 1628 "parser.cpp"
+#line 1631 "parser.cpp"
     break;
 
   case 24: // IF: res_IF tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC ELIF_LIST ELSE
-#line 174 "parser.y"
+#line 177 "parser.y"
                                                                             {yylhs.value.as < instruction* > () = new func_if(0,0,yystack_[6].value.as < expression* > (),yystack_[3].value.as < list_instruction* > (),yystack_[1].value.as < list_instruction* > (),yystack_[0].value.as < list_instruction* > ());}
-#line 1634 "parser.cpp"
+#line 1637 "parser.cpp"
     break;
 
   case 25: // IF: res_IF tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC ELSE
-#line 175 "parser.y"
+#line 178 "parser.y"
                                                                   {yylhs.value.as < instruction* > () = new func_if(0,0,yystack_[5].value.as < expression* > (),yystack_[2].value.as < list_instruction* > (),nullptr,yystack_[0].value.as < list_instruction* > ());}
-#line 1640 "parser.cpp"
+#line 1643 "parser.cpp"
     break;
 
   case 26: // ELIF_LIST: ELIF_LIST ELIF
-#line 178 "parser.y"
+#line 181 "parser.y"
                           { yystack_[1].value.as < list_instruction* > ()->newInst(yystack_[0].value.as < instruction* > ()); yylhs.value.as < list_instruction* > ()=yystack_[1].value.as < list_instruction* > (); }
-#line 1646 "parser.cpp"
+#line 1649 "parser.cpp"
     break;
 
   case 27: // ELIF_LIST: ELIF
-#line 179 "parser.y"
+#line 182 "parser.y"
                           { yylhs.value.as < list_instruction* > ()=new list_instruction(); yylhs.value.as < list_instruction* > ()->newInst(yystack_[0].value.as < instruction* > ()); }
-#line 1652 "parser.cpp"
+#line 1655 "parser.cpp"
     break;
 
   case 28: // ELIF: res_ELSE res_IF tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC
-#line 183 "parser.y"
+#line 186 "parser.y"
         {
             yylhs.value.as < instruction* > () = new func_if(0,0,yystack_[4].value.as < expression* > (),yystack_[1].value.as < list_instruction* > (), nullptr, nullptr);
         }
-#line 1660 "parser.cpp"
+#line 1663 "parser.cpp"
     break;
 
   case 29: // ELSE: res_ELSE tk_LLAVA LIST_INST tk_LLAVC
-#line 188 "parser.y"
+#line 191 "parser.y"
                                            { yylhs.value.as < list_instruction* > ()=yystack_[1].value.as < list_instruction* > (); }
-#line 1666 "parser.cpp"
+#line 1669 "parser.cpp"
     break;
 
   case 30: // ELSE: %empty
-#line 189 "parser.y"
+#line 192 "parser.y"
              {}
-#line 1672 "parser.cpp"
+#line 1675 "parser.cpp"
     break;
 
   case 31: // WHILE: res_WHILE tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC
-#line 193 "parser.y"
+#line 196 "parser.y"
                                                                  {yylhs.value.as < instruction* > () = new func_while(0,0,yystack_[4].value.as < expression* > (),yystack_[1].value.as < list_instruction* > ());}
-#line 1678 "parser.cpp"
+#line 1681 "parser.cpp"
     break;
 
   case 32: // FOR: res_FOR tk_PARA DECLARAR ';' EXP ';' INCREMENTO tk_PARC tk_LLAVA LIST_INST tk_LLAVC
-#line 197 "parser.y"
+#line 200 "parser.y"
                                                                                           {std::cout<<"FOR "<<std::endl;}
-#line 1684 "parser.cpp"
+#line 1687 "parser.cpp"
     break;
 
   case 33: // BREAK: res_BREAK
-#line 201 "parser.y"
+#line 204 "parser.y"
                  {std::cout<<"Break"<<std::endl;}
-#line 1690 "parser.cpp"
+#line 1693 "parser.cpp"
     break;
 
   case 34: // CONT: res_CONTINUE
-#line 203 "parser.y"
+#line 206 "parser.y"
                    {std::cout<<"continue"<<std::endl;}
-#line 1696 "parser.cpp"
+#line 1699 "parser.cpp"
     break;
 
   case 35: // VECTOR: res_VECTOR tk_menorq TYPES tk_mayorq id '=' tk_CORCHA LISTAEXP tk_CORCHC
-#line 207 "parser.y"
+#line 210 "parser.y"
                                                                                  {std::cout<<"VECTOR con valores "<<std::endl;}
-#line 1702 "parser.cpp"
+#line 1705 "parser.cpp"
     break;
 
   case 36: // VECTOR: res_VECTOR tk_menorq TYPES tk_mayorq id
-#line 208 "parser.y"
+#line 211 "parser.y"
                                                 {std::cout<<"VECTOR empty "<<std::endl;}
-#line 1708 "parser.cpp"
+#line 1711 "parser.cpp"
     break;
 
   case 37: // VECTOR: id '.' res_pushB tk_PARA EXP tk_PARC
-#line 209 "parser.y"
+#line 212 "parser.y"
                                              {std::cout<<"VECTOR.pushB "<<std::endl;}
-#line 1714 "parser.cpp"
+#line 1717 "parser.cpp"
     break;
 
   case 38: // VECTOR: id '.' res_pushF tk_PARA EXP tk_PARC
-#line 210 "parser.y"
+#line 213 "parser.y"
                                              {std::cout<<"VECTOR.pushF "<<std::endl;}
-#line 1720 "parser.cpp"
+#line 1723 "parser.cpp"
     break;
 
   case 39: // VECTOR: id '.' res_get tk_PARA EXP tk_PARC
-#line 211 "parser.y"
+#line 214 "parser.y"
                                            {std::cout<<"VECTOR.get "<<std::endl;}
-#line 1726 "parser.cpp"
+#line 1729 "parser.cpp"
     break;
 
   case 40: // VECTOR: id '.' res_remove tk_PARA EXP tk_PARC
-#line 212 "parser.y"
+#line 215 "parser.y"
                                               {std::cout<<"VECTOR.remove "<<std::endl;}
-#line 1732 "parser.cpp"
+#line 1735 "parser.cpp"
     break;
 
   case 41: // VECTOR: id '.' res_size tk_PARA tk_PARC
-#line 213 "parser.y"
+#line 216 "parser.y"
                                          {std::cout<<"VECTOR.size "<<std::endl;}
-#line 1738 "parser.cpp"
+#line 1741 "parser.cpp"
     break;
 
   case 42: // PRINT: PRINTF tk_PARA EXP tk_PARC
-#line 216 "parser.y"
+#line 219 "parser.y"
                                    { yylhs.value.as < instruction* > () = new print(0,0,yystack_[1].value.as < expression* > ()); }
-#line 1744 "parser.cpp"
+#line 1747 "parser.cpp"
     break;
 
   case 43: // INCREMENTO: id mas_mas
-#line 219 "parser.y"
+#line 222 "parser.y"
                         {std::cout<<"masmas "<<std::endl;}
-#line 1750 "parser.cpp"
+#line 1753 "parser.cpp"
     break;
 
   case 44: // INCREMENTO: id menos_menos
-#line 220 "parser.y"
+#line 223 "parser.y"
                              {std::cout<<"menosmenos "<<std::endl;}
-#line 1756 "parser.cpp"
+#line 1759 "parser.cpp"
     break;
 
   case 45: // FUNC: TYPES id tk_PARA LISTPARAM tk_PARC tk_LLAVA LIST_INST tk_LLAVC
-#line 223 "parser.y"
+#line 226 "parser.y"
                                                                      {std::cout<<"funcion: "<<yystack_[6].value.as < std::string > ()<<std::endl;}
-#line 1762 "parser.cpp"
+#line 1765 "parser.cpp"
     break;
 
   case 46: // FUNC: TYPES id tk_PARA tk_PARC tk_LLAVA LIST_INST tk_LLAVC
-#line 224 "parser.y"
+#line 227 "parser.y"
                                                            {std::cout<<"funcion: "<<yystack_[5].value.as < std::string > ()<<std::endl;}
-#line 1768 "parser.cpp"
+#line 1771 "parser.cpp"
     break;
 
   case 47: // LLAMADAF: id tk_PARA LISTAEXP tk_PARC
-#line 227 "parser.y"
+#line 230 "parser.y"
                                       {std::cout<<"Llamando funcion: "<<yystack_[3].value.as < std::string > ()<<std::endl;}
-#line 1774 "parser.cpp"
+#line 1777 "parser.cpp"
     break;
 
   case 48: // RETORNO: res_RETURN EXP
-#line 230 "parser.y"
+#line 233 "parser.y"
                         {std::cout<<"returno de : "<<yystack_[0].value.as < expression* > ()<<std::endl;}
-#line 1780 "parser.cpp"
+#line 1783 "parser.cpp"
     break;
 
   case 49: // TYPES: tk_int
-#line 233 "parser.y"
+#line 236 "parser.y"
               { yylhs.value.as < TipoDato > () = INTEGER; }
-#line 1786 "parser.cpp"
+#line 1789 "parser.cpp"
     break;
 
   case 50: // TYPES: tk_string
-#line 234 "parser.y"
+#line 237 "parser.y"
                 { yylhs.value.as < TipoDato > () = STRING; }
-#line 1792 "parser.cpp"
+#line 1795 "parser.cpp"
     break;
 
   case 51: // TYPES: tk_float
-#line 235 "parser.y"
+#line 238 "parser.y"
                { yylhs.value.as < TipoDato > () = FLOAT; }
-#line 1798 "parser.cpp"
+#line 1801 "parser.cpp"
     break;
 
   case 52: // TYPES: tk_bool
-#line 236 "parser.y"
+#line 239 "parser.y"
               { yylhs.value.as < TipoDato > () = BOOL; }
-#line 1804 "parser.cpp"
+#line 1807 "parser.cpp"
     break;
 
   case 57: // EXP: EXP suma EXP
-#line 248 "parser.y"
+#line 251 "parser.y"
                    { yylhs.value.as < expression* > () = new operation(0, 0, yystack_[2].value.as < expression* > (), yystack_[0].value.as < expression* > (), "+"); }
-#line 1810 "parser.cpp"
+#line 1813 "parser.cpp"
     break;
 
   case 58: // EXP: EXP menos EXP
-#line 249 "parser.y"
+#line 252 "parser.y"
                     { yylhs.value.as < expression* > () = new operation(0, 0, yystack_[2].value.as < expression* > (), yystack_[0].value.as < expression* > (), "-"); }
-#line 1816 "parser.cpp"
+#line 1819 "parser.cpp"
     break;
 
   case 59: // EXP: EXP mult EXP
-#line 250 "parser.y"
+#line 253 "parser.y"
                    { yylhs.value.as < expression* > () = new operation(0, 0, yystack_[2].value.as < expression* > (), yystack_[0].value.as < expression* > (), "*"); }
-#line 1822 "parser.cpp"
+#line 1825 "parser.cpp"
     break;
 
   case 60: // EXP: EXP div EXP
-#line 251 "parser.y"
+#line 254 "parser.y"
                   { yylhs.value.as < expression* > () = new operation(0, 0, yystack_[2].value.as < expression* > (), yystack_[0].value.as < expression* > (), "/"); }
-#line 1828 "parser.cpp"
+#line 1831 "parser.cpp"
     break;
 
   case 61: // EXP: EXP modulo EXP
-#line 252 "parser.y"
+#line 255 "parser.y"
                      { yylhs.value.as < expression* > () = new operation(0, 0, yystack_[2].value.as < expression* > (), yystack_[0].value.as < expression* > (), "%"); }
-#line 1834 "parser.cpp"
+#line 1837 "parser.cpp"
     break;
 
   case 62: // EXP: EXP tk_menor_igual EXP
-#line 253 "parser.y"
+#line 256 "parser.y"
                              { yylhs.value.as < expression* > () = new operation(0, 0, yystack_[2].value.as < expression* > (), yystack_[0].value.as < expression* > (), "<="); }
-#line 1840 "parser.cpp"
+#line 1843 "parser.cpp"
     break;
 
   case 63: // EXP: EXP tk_menorq EXP
-#line 254 "parser.y"
+#line 257 "parser.y"
                         { yylhs.value.as < expression* > () = new operation(0, 0, yystack_[2].value.as < expression* > (), yystack_[0].value.as < expression* > (), "<"); }
-#line 1846 "parser.cpp"
+#line 1849 "parser.cpp"
     break;
 
   case 64: // EXP: EXP tk_mayor_igual EXP
-#line 255 "parser.y"
+#line 258 "parser.y"
                              { yylhs.value.as < expression* > () = new operation(0, 0, yystack_[2].value.as < expression* > (), yystack_[0].value.as < expression* > (), ">="); }
-#line 1852 "parser.cpp"
+#line 1855 "parser.cpp"
     break;
 
   case 65: // EXP: EXP tk_mayorq EXP
-#line 256 "parser.y"
+#line 259 "parser.y"
                         { yylhs.value.as < expression* > () = new operation(0, 0, yystack_[2].value.as < expression* > (), yystack_[0].value.as < expression* > (), ">"); }
-#line 1858 "parser.cpp"
+#line 1861 "parser.cpp"
     break;
 
   case 66: // EXP: EXP tk_igualq EXP
-#line 257 "parser.y"
+#line 260 "parser.y"
                         { yylhs.value.as < expression* > () = new operation(0, 0, yystack_[2].value.as < expression* > (), yystack_[0].value.as < expression* > (), "=="); }
-#line 1864 "parser.cpp"
+#line 1867 "parser.cpp"
     break;
 
   case 67: // EXP: EXP tk_diferenteq EXP
-#line 258 "parser.y"
+#line 261 "parser.y"
                             { yylhs.value.as < expression* > () = new operation(0, 0, yystack_[2].value.as < expression* > (), yystack_[0].value.as < expression* > (), "!="); }
-#line 1870 "parser.cpp"
+#line 1873 "parser.cpp"
     break;
 
   case 68: // EXP: EXP tk_and EXP
-#line 259 "parser.y"
+#line 262 "parser.y"
                      { yylhs.value.as < expression* > () = new operation(0, 0, yystack_[2].value.as < expression* > (), yystack_[0].value.as < expression* > (), "&&"); }
-#line 1876 "parser.cpp"
+#line 1879 "parser.cpp"
     break;
 
   case 69: // EXP: EXP tk_or EXP
-#line 260 "parser.y"
+#line 263 "parser.y"
                     { yylhs.value.as < expression* > () = new operation(0, 0, yystack_[2].value.as < expression* > (), yystack_[0].value.as < expression* > (), "||"); }
-#line 1882 "parser.cpp"
+#line 1885 "parser.cpp"
     break;
 
   case 70: // EXP: EXP tk_not EXP
-#line 261 "parser.y"
+#line 264 "parser.y"
                      { yylhs.value.as < expression* > () = new operation(0, 0, yystack_[2].value.as < expression* > (), yystack_[0].value.as < expression* > (), "!"); }
-#line 1888 "parser.cpp"
+#line 1891 "parser.cpp"
     break;
 
   case 71: // EXP: tk_PARA EXP tk_PARC
-#line 262 "parser.y"
+#line 265 "parser.y"
                           { yylhs.value.as < expression* > () = yystack_[1].value.as < expression* > (); }
-#line 1894 "parser.cpp"
+#line 1897 "parser.cpp"
     break;
 
   case 72: // EXP: PRIMITIVE
-#line 263 "parser.y"
+#line 266 "parser.y"
                 { yylhs.value.as < expression* > () = yystack_[0].value.as < expression* > (); }
-#line 1900 "parser.cpp"
+#line 1903 "parser.cpp"
     break;
 
   case 73: // PRIMITIVE: NUMERO
-#line 266 "parser.y"
+#line 269 "parser.y"
                    {  int num = stoi(yystack_[0].value.as < std::string > ()); yylhs.value.as < expression* > () = new primitive(0,0,INTEGER, "",num,0.0,false); }
-#line 1906 "parser.cpp"
+#line 1909 "parser.cpp"
     break;
 
   case 74: // PRIMITIVE: CADENA
-#line 268 "parser.y"
+#line 271 "parser.y"
         {
             std::string str1 = yystack_[0].value.as < std::string > ().erase(0,1);
             std::string str2 = str1.erase(str1.length()-1,1);
             yylhs.value.as < expression* > () = new primitive(0,0,STRING,str2,0,0.0, false);
         }
-#line 1916 "parser.cpp"
+#line 1919 "parser.cpp"
     break;
 
   case 75: // PRIMITIVE: id
-#line 273 "parser.y"
+#line 276 "parser.y"
                {yylhs.value.as < expression* > () = new access(0,0,yystack_[0].value.as < std::string > ());}
-#line 1922 "parser.cpp"
+#line 1925 "parser.cpp"
     break;
 
   case 76: // PRIMITIVE: DECIMAL
-#line 274 "parser.y"
+#line 277 "parser.y"
                     {float num = stof(yystack_[0].value.as < std::string > ()); yylhs.value.as < expression* > () = new primitive(0,0,FLOAT, "",0,num,false);}
-#line 1928 "parser.cpp"
+#line 1931 "parser.cpp"
     break;
 
   case 77: // PRIMITIVE: tk_true
-#line 275 "parser.y"
+#line 278 "parser.y"
                     { yylhs.value.as < expression* > () = new primitive(0,0,BOOL,"",0,0.0,true); }
-#line 1934 "parser.cpp"
+#line 1937 "parser.cpp"
     break;
 
   case 78: // PRIMITIVE: tk_false
-#line 276 "parser.y"
+#line 279 "parser.y"
                     { yylhs.value.as < expression* > () = new primitive(0,0,BOOL,"",0,0.0,false); }
-#line 1940 "parser.cpp"
+#line 1943 "parser.cpp"
     break;
 
   case 79: // PRIMITIVE: res_mean tk_PARA id tk_PARC
-#line 277 "parser.y"
+#line 280 "parser.y"
                                       {std::cout<<"Media de: "<<yystack_[1].value.as < std::string > ()<<std::endl;}
-#line 1946 "parser.cpp"
+#line 1949 "parser.cpp"
     break;
 
   case 80: // PRIMITIVE: res_median tk_PARA id tk_PARC
-#line 278 "parser.y"
+#line 281 "parser.y"
                                         {std::cout<<"Mediana de: "<<yystack_[1].value.as < std::string > ()<<std::endl;}
-#line 1952 "parser.cpp"
+#line 1955 "parser.cpp"
     break;
 
   case 81: // PRIMITIVE: res_mode tk_PARA id tk_PARC
-#line 279 "parser.y"
+#line 282 "parser.y"
                                       {std::cout<<"Moda de: "<<yystack_[1].value.as < std::string > ()<<std::endl;}
-#line 1958 "parser.cpp"
+#line 1961 "parser.cpp"
     break;
 
 
-#line 1962 "parser.cpp"
+#line 1965 "parser.cpp"
 
             default:
               break;
@@ -2636,13 +2639,13 @@ namespace yy {
   {
        0,   119,   119,   129,   135,   140,   147,   148,   149,   150,
      151,   152,   153,   154,   155,   156,   157,   158,   159,   160,
-     163,   164,   168,   169,   174,   175,   178,   179,   182,   188,
-     189,   193,   197,   201,   203,   207,   208,   209,   210,   211,
-     212,   213,   216,   219,   220,   223,   224,   227,   230,   233,
-     234,   235,   236,   240,   241,   244,   245,   248,   249,   250,
-     251,   252,   253,   254,   255,   256,   257,   258,   259,   260,
-     261,   262,   263,   266,   267,   273,   274,   275,   276,   277,
-     278,   279
+     163,   166,   171,   172,   177,   178,   181,   182,   185,   191,
+     192,   196,   200,   204,   206,   210,   211,   212,   213,   214,
+     215,   216,   219,   222,   223,   226,   227,   230,   233,   236,
+     237,   238,   239,   243,   244,   247,   248,   251,   252,   253,
+     254,   255,   256,   257,   258,   259,   260,   261,   262,   263,
+     264,   265,   266,   269,   270,   276,   277,   278,   279,   280,
+     281,   282
   };
 
   void
@@ -2674,9 +2677,9 @@ namespace yy {
 
 
 } // yy
-#line 2678 "parser.cpp"
+#line 2681 "parser.cpp"
 
-#line 282 "parser.y"
+#line 285 "parser.y"
 
 
 /* función de error */

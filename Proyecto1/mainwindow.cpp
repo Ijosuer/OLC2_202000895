@@ -36,7 +36,7 @@ void anterior(){
         //despliega el mensaje
         msg->setText(QString::fromStdString(analizador.Salida));
         msg->exec();
-//        ui->Consola->setText(QString::fromStdString(Root->ConsoleOut));
+//        ui.Consola->setText(QString::fromStdString(Root->ConsoleOut));
     }
     else
     {
@@ -69,7 +69,7 @@ void MainWindow::on_pushButton_clicked()
     }
     else
     {
-        //despliega el mensaje
+        //despliega el mensaje de error
         msg->setText(QString::fromStdString("Se encontraron algunos errores.."));
         msg->exec();
         ui->Consola->setText(QString::fromStdString(Root->ErrorOut));

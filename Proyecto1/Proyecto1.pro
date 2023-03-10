@@ -32,6 +32,7 @@ Environment/ast.cpp \
     parser/parser.cpp \
     main.cpp \
     mainwindow.cpp\
+#    texteditlinenumber.cpp\
      parserctx.cpp
 
 HEADERS += \
@@ -59,6 +60,7 @@ HEADERS += \
    parser/position.hh \
    parser/stack.hh \
    mainwindow.h\
+#   texteditlinenumber.h\
    parserctx.hpp
 
 FORMS += \

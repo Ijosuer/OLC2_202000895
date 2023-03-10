@@ -160,9 +160,12 @@ INSTRUCTION : PRINT ';' { $$ = $1; }
             | error ';'{}
 ;
 
-DECLARAR: TYPES id  {std::cout<<"Declarando "<<$2<<std::endl; }
+DECLARAR: TYPES id  {std::cout<<"Declarando "<<$2<<std::endl; 
+                            $$ = new declaracion(0,0,$1,$2,new primitive(0,0,$1,"",0,0.0,0));
+                    }
         | TYPES id '=' EXP {std::cout<<"Declarando con valor a "<<$2<<std::endl;
-                            $$ = new declaracion(0,0,$1,$2,$4);}
+                            $$ = new declaracion(0,0,$1,$2,$4);
+                            }
 ;
 
 ASIGNAR:  id '=' EXP {std::cout<<"Asignando valor a "<<$1<<std::endl; $$ = new asignacion(0,0,$1,$3);}
