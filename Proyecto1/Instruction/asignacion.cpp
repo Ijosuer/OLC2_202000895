@@ -2,24 +2,25 @@
 
 asignacion::asignacion(int line, int col, std::string id, expression *valor)
 {
-  Line = line;
-  Col = col;
-  Id = id;
-  Valor = valor;
+  this->Line = line;
+  this->Col = col;
+  this->Id = id;
+  this->Valor = valor; 
 }
 
 void asignacion::ejecutar(environment *env, ast *tree)
 {
+    symbol sym (0,0,"",NULO,nullptr);
+    sym = this->Valor->ejecutar(env, tree); //Opera el valor a asignar
+    symbol temp (0,0,"",NULO,nullptr);
+    temp = env->GetVariable(Id,env, tree); //Devuelve un simbolo
 
-    symbol sym = Valor->ejecutar(env, tree);//Opera el valor a asignar
-    symbol temp = env->GetVariable(Id,env, tree);//Devuelve un simbolo
-
-    std::cout<<temp.Tipo<<" "<<*static_cast<int*>(temp.Value)<<std::endl;
-    std::cout<<*static_cast<int*>(sym.Value)<<std::endl;
+    std::cout<<"EL tipo de la variable es: "<<temp.Tipo<<" "<<"Valor actual es: "<<*static_cast<int*>(temp.Value)<<std::endl;
+    std::cout<<"El valor a asignar es: "<<*static_cast<int*>(sym.Value)<<std::endl;
     if(sym.Tipo == temp.Tipo)
     {
-        // temp.Value = &sym.Value;
-        env->ActualizarVariable(Id,env,&sym,tree);
+        // env->Tabla[Id] = sym;
+        env->ActualizarVariable(this->Id,env,sym,tree);
     }
     else
     {

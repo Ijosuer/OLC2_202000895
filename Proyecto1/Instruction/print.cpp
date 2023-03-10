@@ -12,6 +12,7 @@ void print::ejecutar(environment *env, ast *tree)
     symbol sym = this->Valor->ejecutar(env, tree);
     switch (sym.Tipo) {
     case STRING:
+        std::cout<<*static_cast<std::string*>(sym.Value);
         tree->ConsoleOut += *static_cast<std::string*>(sym.Value)+"\n";
         break;
     case INTEGER:

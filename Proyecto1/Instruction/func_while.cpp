@@ -16,23 +16,25 @@ void func_while::ejecutar(environment *env, ast *tree)
       int cont = 0;
       while (true && cont < 1000)
       {
-        bool *val = (bool*)sym.Value;
-        std::cout<<"Valor: "<<*val<<std::endl;
+        // Crear entorno de WHILE
         environment *new_env = new environment(env, "WHILE") ;
+        bool *val = (bool*)sym.Value;
+        // std::cout<<"Valor: "<<*val<<std::endl;
         // Si se cumple la condicion
         if(*val)
         {
-          // Crear entorno de IF
           Block->ejecutar(new_env,tree);
         }
         else
         {
-          std::cout<<"hace break"<<std::endl;
+          // std::cout<<"hace break"<<std::endl;
+          delete new_env;
           break;
         }
-        std::cout<<"cont++"<<std::endl;
+        // std::cout<<"cont++"<<std::endl;
         cont+=1;
-          sym = Condition->ejecutar(new_env,tree);
+        // Volver a ejecutar condicion en el entorno anterior
+        sym = Condition->ejecutar(env,tree);
       }
     }
     else

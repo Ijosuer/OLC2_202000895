@@ -27,6 +27,7 @@ symbol environment::GetVariable(std::string id, environment *env, ast *tree)
 
     for( ; ;)
     {
+
         if (tmpEnv.Tabla.find(id) == tmpEnv.Tabla.end())
         {
             if(tmpEnv.Anterior == nullptr)
@@ -54,9 +55,8 @@ symbol environment::GetVariable(std::string id, environment *env, ast *tree)
     return sym;
 }
 
-void environment::ActualizarVariable(std::string id,environment *env, symbol *valor, ast *tree)
+void environment::ActualizarVariable(std::string id,environment *env, symbol valor, ast *tree)
 {
-    bool flag =false;
     environment tmpEnv = *env;
     for(;;)
     {
@@ -73,12 +73,11 @@ void environment::ActualizarVariable(std::string id,environment *env, symbol *va
         }
         else
         {
-            env->Tabla[id].Value = valor->Value;
-            flag = true;
+            env->Tabla[id] = valor;
             break;
         }
     }
-    return;
+    
     // env->Tabla[id].Value = valor->Value;
     // Tabla[id].Value = valor->Value;
 }

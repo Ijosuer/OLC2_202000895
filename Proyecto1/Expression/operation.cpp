@@ -13,6 +13,8 @@ symbol operation::ejecutar(environment *env, ast *tree)
     symbol sym (Line,Col,"",NULO,nullptr);
     symbol op1 = Op_izq->ejecutar(env, tree);
     symbol op2 = Op_der->ejecutar(env, tree);
+    // std::cout<<"loock: "<<op1.Tipo<<std::endl;
+    // std::cout<<"loock: "<<op2.Tipo<<std::endl;
 
 
     //matriz dominante: esta matriz retorna el tipo dominante entre dos operandos

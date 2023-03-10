@@ -15,20 +15,20 @@ void func_if::ejecutar(environment *env, ast *tree)
     symbol sym = Condition->ejecutar(env,tree);
     if (sym.Tipo == BOOL)
     {
-    // Crear entorno de IF
-    environment *ifenv = new environment(env, "IF") ;
+    // // Crear entorno de IF
+    // environment *ifenv = new environment(env, "IF") ;
         bool *val = (bool *)sym.Value;
         // Si se cumple el if
         if (*val)
         {
-        /* reportar ERROR */
+            // Crear entorno de IF
+            environment *ifenv = new environment(env, "IF") ;
             /* ejecutar el primer bloque  */
             Block->ejecutar(ifenv,tree);
             // Puede ser un else if por lo que hay que validar
             if (tree->EliFlag)
             {
                 tree->EliFlag = false;
-        /* reportar ERROR */
                 tree->ifReturn = true;
             }
             return;
@@ -36,6 +36,8 @@ void func_if::ejecutar(environment *env, ast *tree)
         // Si no se cumple y existe un elif
         if(ElseIfBlock!=nullptr)
         {
+            // Crear entorno de IF
+            environment *ifenv = new environment(env, "IF") ;
             // Flag de elif
             tree->EliFlag = true;
             tree->ifReturn = false;
@@ -46,6 +48,8 @@ void func_if::ejecutar(environment *env, ast *tree)
         // Si aun no se cumple y hay ELSE
         if (ElseBlock != nullptr)
         {
+            // Crear entorno de IF
+            environment *ifenv = new environment(env, "IF") ;
             ElseBlock->ejecutar(ifenv,tree);
         }
         

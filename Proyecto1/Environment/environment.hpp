@@ -15,7 +15,7 @@ public:
     environment(environment *back,std::string id);
     void SaveVariable(symbol sym, std::string id, ast *tree);
     symbol GetVariable(std::string id,environment *env, ast *tree);
-    void ActualizarVariable(std::string id,environment *env, symbol *valor ,ast *tree);
+    void ActualizarVariable(std::string id,environment *env, symbol valor ,ast *tree);
 
 };
 
