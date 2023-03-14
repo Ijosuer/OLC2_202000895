@@ -19,7 +19,6 @@ void func_while::ejecutar(environment *env, ast *tree)
         // Crear entorno de WHILE
         environment *new_env = new environment(env, "WHILE") ;
         bool *val = (bool*)sym.Value;
-        // std::cout<<"Valor: "<<*val<<std::endl;
         // Si se cumple la condicion
         if(*val)
         {
@@ -27,11 +26,9 @@ void func_while::ejecutar(environment *env, ast *tree)
         }
         else
         {
-          // std::cout<<"hace break"<<std::endl;
           delete new_env;
           break;
         }
-        // std::cout<<"cont++"<<std::endl;
         cont+=1;
         // Volver a ejecutar condicion en el entorno anterior
         sym = Condition->ejecutar(env,tree);

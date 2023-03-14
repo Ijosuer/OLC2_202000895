@@ -50,6 +50,7 @@ void anterior(){
 void MainWindow::on_pushButton_clicked()
 {
     QMessageBox *msg = new QMessageBox();
+    QMessageBox *msg3 = new QMessageBox();
     //creando entorno global
     environment *GlobalEnv = new environment(NULL,"MAIN");
     //creando ast
@@ -57,6 +58,11 @@ void MainWindow::on_pushButton_clicked()
     //ejecuta el analizador
     OCL2Calc::ParserCtx analizador;
     analizador.Analizar(ui->textEdit->toPlainText().toStdString());
+    //ejecutar funciones
+    if(analizador.Functions != nullptr)
+    {
+       analizador.Functions->ejecutar(GlobalEnv, Root);
+    }
     //ejecutar main
     analizador.Main->ejecutar(GlobalEnv, Root);
     //valio errores

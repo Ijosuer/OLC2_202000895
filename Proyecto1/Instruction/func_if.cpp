@@ -38,12 +38,12 @@ void func_if::ejecutar(environment *env, ast *tree)
         {
             // Crear entorno de IF
             environment *ifenv = new environment(env, "IF") ;
+            ElseIfBlock->ejecutar(ifenv,tree);
             // Flag de elif
             tree->EliFlag = true;
             tree->ifReturn = false;
-            ElseIfBlock->ejecutar(ifenv,tree);
             // Validar el return
-            if(tree->ifReturn)return;
+            if(tree->ifReturn){return;}
         }
         // Si aun no se cumple y hay ELSE
         if (ElseBlock != nullptr)

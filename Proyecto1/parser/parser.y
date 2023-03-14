@@ -41,6 +41,9 @@
     #include "../Expression/primitive.hpp"
     #include "../Expression/access.hpp"
     #include "../Expression/operation.hpp"
+    #include "../Expression/call_exp.hpp"
+    #include "../Expression/map_struct_dec.hpp"
+    #include "../Expression/list_expression.hpp"
     #include "../Environment/type.h"
     #include "../Interfaces/expression.hpp"
 
@@ -53,6 +56,9 @@
     #include "../Instruction/func_main.hpp"
     #include "../Instruction/func_if.hpp"
     #include "../Instruction/func_while.hpp"
+    #include "../Instruction/function.hpp"
+    #include "../Instruction/func_return.hpp"
+    #include "../Instruction/call_inst.hpp"
 
 }
 
@@ -86,6 +92,7 @@
 /* definicion de no terminales */
 %type<expression*> PRIMITIVE
 %type<expression*> EXP
+%type<expression*> CALL_EXP;
 %type<func_main*> START
 %type<list_instruction*> LIST_INST
 %type<func_main*> MAIN
@@ -97,6 +104,7 @@
 %type<instruction*> ELIF
 %type<list_instruction*> ELSE
 %type<list_instruction*> ELIF_LIST
+%type<list_instruction*> LIST_FUNC
 %type<instruction*> WHILE
 %type<instruction*> BREAK
 %type<instruction*> CONT
@@ -107,6 +115,9 @@
 %type<instruction*> LLAMADAF
 %type<instruction*> RETORNO
 %type<TipoDato> TYPES
+%type<map_struct_dec*> LISTPARAM
+%type<list_expression*> LISTAEXP
+
 
 /* printer */
 %printer { yyoutput << $$; } <*>;
@@ -119,16 +130,36 @@
 START : MAIN
     {
       ctx.Main = $1;
+      ctx.Functions = nullptr;
         ctx.Salida = "!Ejecución realizada con éxito!";
       $$ = $1;
     }
+    | LIST_FUNC MAIN
+    {
+        ctx.Main = $2;
+        ctx.Functions = $1;
+        ctx.Salida = "!Ejecución realizada con éxito!";
+        $$ = $2;
+    }
 ;
+LIST_FUNC: LIST_FUNC FUNC
+            {
+                $1->newInst($2);
+                $$=$1;
+            }
+         | FUNC
+         {
+            $$= new list_instruction();
+            $$->newInst($1);
+         }
 
+;
 // PRUEBA : LIST_INST;
 
 MAIN : tk_void rmain tk_PARA tk_PARC tk_LLAVA LIST_INST tk_LLAVC
 {
     $$ = new func_main(0, 0, $1, $6);
+    
 }
 ;
 
@@ -153,7 +184,7 @@ INSTRUCTION : PRINT ';' { $$ = $1; }
             | RETORNO ';'  {$$=$1;}
             | INCREMENTO ';' {$$=$1;}
             | LLAMADAF ';' {$$=$1;}
-            | FUNC  {$$=$1;}
+            // | FUNC  {$$=$1;}
             | WHILE  {$$=$1;}
             | FOR  {$$=$1;}
             | IF  {$$=$1;}
@@ -223,29 +254,50 @@ INCREMENTO: id mas_mas  {std::cout<<"masmas "<<std::endl;}
             | id menos_menos {std::cout<<"menosmenos "<<std::endl;}
 ;
 
-FUNC: TYPES id tk_PARA LISTPARAM tk_PARC tk_LLAVA LIST_INST tk_LLAVC {std::cout<<"funcion: "<<$2<<std::endl;}
-    | TYPES id tk_PARA tk_PARC tk_LLAVA LIST_INST tk_LLAVC {std::cout<<"funcion: "<<$2<<std::endl;}
+FUNC: TYPES id tk_PARA LISTPARAM tk_PARC tk_LLAVA LIST_INST tk_LLAVC {$$=new function(0,0,$1,$2,$4,$7);}
+    | TYPES id tk_PARA tk_PARC tk_LLAVA LIST_INST tk_LLAVC {$$=new function(0,0,$1,$2,nullptr,$6);}
 ;
 
-LLAMADAF: id tk_PARA LISTAEXP tk_PARC {std::cout<<"Llamando funcion: "<<$1<<std::endl;}
+CALL_EXP : id tk_PARA LISTAEXP tk_PARC { $$ = new call_exp(0,0,$1,$3); }
+       | id tk_PARA tk_PARC { $$ = new call_exp(0,0,$1,nullptr); }
 ;
 
-RETORNO: res_RETURN EXP {std::cout<<"returno de : "<<$2<<std::endl;}
+LLAMADAF: id tk_PARA LISTAEXP tk_PARC {$$= new call_inst(0,0,$1,$3);}
+        | id tk_PARA tk_PARC {$$= new call_inst(0,0,$1,nullptr);}
+;
+
+RETORNO: res_RETURN EXP {$$= new inst_return(0,0,$2);}
+        |  res_RETURN {$$= new inst_return(0,0,nullptr);}
 ;
 
 TYPES :tk_int { $$ = INTEGER; }
     | tk_string { $$ = STRING; }
     | tk_float { $$ = FLOAT; }
     | tk_bool { $$ = BOOL; }
-    // |tk_void { $$ = "void"; }
+    |tk_void { $$ = NULO; }
 ;
-
 LISTAEXP: LISTAEXP ',' EXP 
-        |   EXP
+       {
+            $1->newExp($3);
+            $$ = $1;
+        }
+        | EXP 
+        {
+            $$ = new list_expression();
+            $$->newExp($1);
+        }
 ;
 
 LISTPARAM: LISTPARAM ','  TYPES id
+        {
+            $1->newMap($4,$3);
+            $$=$1;
+        }
          | TYPES id
+        {
+            $$ = new map_struct_dec();
+            $$->newMap($2,$1);
+        }
 ;
 
 EXP : EXP suma EXP { $$ = new operation(0, 0, $1, $3, "+"); }
@@ -263,7 +315,8 @@ EXP : EXP suma EXP { $$ = new operation(0, 0, $1, $3, "+"); }
     | EXP tk_or EXP { $$ = new operation(0, 0, $1, $3, "||"); }
     | EXP tk_not EXP { $$ = new operation(0, 0, $1, $3, "!"); }
     | tk_PARA EXP tk_PARC { $$ = $2; }
-    | PRIMITIVE { $$ = $1; }
+    | PRIMITIVE { $$ = $1;}
+    | CALL_EXP
 ;
 
 PRIMITIVE : NUMERO {  int num = stoi($1); $$ = new primitive(0,0,INTEGER, "",num,0.0,false); }

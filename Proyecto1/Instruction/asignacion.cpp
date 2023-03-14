@@ -15,15 +15,28 @@ void asignacion::ejecutar(environment *env, ast *tree)
     symbol temp (0,0,"",NULO,nullptr);
     temp = env->GetVariable(Id,env, tree); //Devuelve un simbolo
 
-    std::cout<<"EL tipo de la variable es: "<<temp.Tipo<<" "<<"Valor actual es: "<<*static_cast<int*>(temp.Value)<<std::endl;
-    std::cout<<"El valor a asignar es: "<<*static_cast<int*>(sym.Value)<<std::endl;
+    // std::cout<<"EL tipo de la variable es: "<<temp.Tipo<<" "<<"Valor actual es: "<<*static_cast<int*>(temp.Value)<<std::endl;
+    // std::cout<<"El valor a asignar es: "<<*static_cast<int*>(sym.Value)<<std::endl;
     if(sym.Tipo == temp.Tipo)
     {
+        if (sym.Tipo == INTEGER)
+        {
+            int *a = new int;
+            *a = *static_cast<int*>(sym.Value);
+            sym.Value = a;
+        }
+        else if (sym.Tipo == STRING)
+        {
+            std::string *a = new std::string;
+            *a = *static_cast<std::string*>(sym.Value);
+            sym.Value = a;
+        }
+        
         // env->Tabla[Id] = sym;
         env->ActualizarVariable(this->Id,env,sym,tree);
     }
     else
     {
-        tree->ErrorOut+="No es posible actualizar la variable: "+Id;
+        tree->ErrorOut+="Error: Tipo no valido para asignar a: "+Id;
     }
 }

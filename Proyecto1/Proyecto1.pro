@@ -15,8 +15,12 @@ SOURCES += \
 Environment/ast.cpp \
     Environment/environment.cpp \
     Environment/symbol.cpp \
+    Environment/func_symbol.cpp \
     Expression/operation.cpp \
     Expression/access.cpp \
+    Expression/call_exp.cpp \
+    Expression/list_expression.cpp \
+    Expression/map_struct_dec.cpp \
     Expression/primitive.cpp \
     Instruction/func_main.cpp \
     Instruction/list_instruction.cpp \
@@ -25,6 +29,9 @@ Environment/ast.cpp \
     Instruction/func_if.cpp \
     Instruction/func_while.cpp \
     Instruction/asignacion.cpp \
+    Instruction/call_inst.cpp \
+    Instruction/func_return.cpp \
+    Instruction/function.cpp \
     Interfaces/expression.cpp \
     Interfaces/expression.cpp \
     Interfaces/instruction.cpp \
@@ -39,8 +46,12 @@ HEADERS += \
     Environment/ast.hpp \
    Environment/environment.hpp \
    Environment/symbol.hpp \
+   Environment/func_symbol.hpp \
    Environment/type.h \
    Expression/access.hpp \
+   Expression/call_exp.hpp \
+   Expression/list_expression.hpp \
+   Expression/map_struct_dec.hpp \
    Expression/operation.hpp \
    Expression/primitive.hpp \
    Instruction/func_main.hpp \
@@ -50,6 +61,9 @@ HEADERS += \
    Instruction/func_while.hpp \
    Instruction/declaracion.hpp \
    Instruction/asignacion.hpp \
+   Instruction/call_inst.hpp \
+   Instruction/func_return.hpp \
+   Instruction/function.hpp \
    Interfaces/expression.hpp \
    Interfaces/expression.hpp \
    Interfaces/instruction.hpp \

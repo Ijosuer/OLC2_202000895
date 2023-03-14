@@ -53,7 +53,7 @@ symbol operation::ejecutar(environment *env, ast *tree)
                 bool b = *static_cast<bool*>(op1.Value);
                 std::string s = (b)? "true" : "false";
                 std::string d = *static_cast<std::string*>(op2.Value);
-                std::cout<<"val1:"<<s<<std::endl;
+                // std::cout<<"val1:"<<s<<std::endl;
                 std::string result = s+d;
                  sym = symbol(Line,Col,"",Dominante,&result);
             }
@@ -62,8 +62,9 @@ symbol operation::ejecutar(environment *env, ast *tree)
                 bool b = *static_cast<bool*>(op2.Value);
                 std::string s = (b)? "true" : "false";
                 std::string d = *static_cast<std::string*>(op1.Value);
-//                std::cout<<"val2:"<<s<<std::endl;
+            //    std::cout<<"val2:"<<s<<std::endl;
                 std::string result = d+s;
+                // std::cout<<"res:"<<result<<std::endl;
                 sym = symbol(Line,Col,"",Dominante,&result);
             }
             else if(op1.Tipo == INTEGER)

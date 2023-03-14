@@ -2,17 +2,19 @@
 
 print::print(int line, int col, expression *valor)
 {
-    this->Line = line;
-    this->Col = col;
-    this->Valor = valor;
+    Line = line;
+    Col = col;
+    Valor = valor;
 }
 
 void print::ejecutar(environment *env, ast *tree)
 {
-    symbol sym = this->Valor->ejecutar(env, tree);
+    symbol sym (Line,Col,"",NULO,nullptr);
+    sym = Valor->ejecutar(env, tree);
+//    std::string* a = (std::string*)sym.Value;
+//    std::cout<<a<<std::endl;
     switch (sym.Tipo) {
     case STRING:
-        std::cout<<*static_cast<std::string*>(sym.Value);
         tree->ConsoleOut += *static_cast<std::string*>(sym.Value)+"\n";
         break;
     case INTEGER:
