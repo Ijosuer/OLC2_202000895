@@ -18,6 +18,7 @@ void print::ejecutar(environment *env, ast *tree)
         tree->ConsoleOut += *static_cast<std::string*>(sym.Value)+"\n";
         break;
     case INTEGER:
+        std::cout<<"ACA EN INT"<<std::endl;
         tree->ConsoleOut += std::to_string(*static_cast<int*>(sym.Value))+ "\n";
         break;
     case BOOL:

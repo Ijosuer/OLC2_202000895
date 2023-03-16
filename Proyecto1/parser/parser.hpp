@@ -75,9 +75,10 @@
     #include "../Instruction/function.hpp"
     #include "../Instruction/func_return.hpp"
     #include "../Instruction/call_inst.hpp"
+    #include "../Instruction/func_for.hpp"
 
 
-#line 81 "parser.hpp"
+#line 82 "parser.hpp"
 
 
 # include <cstdlib> // std::abort
@@ -212,7 +213,7 @@
 #endif
 
 namespace yy {
-#line 216 "parser.hpp"
+#line 217 "parser.hpp"
 
 
 
@@ -2476,7 +2477,7 @@ switch (yykind)
     /// Constants.
     enum
     {
-      yylast_ = 811,     ///< Last index in yytable_.
+      yylast_ = 817,     ///< Last index in yytable_.
       yynnts_ = 28,  ///< Number of nonterminal symbols.
       yyfinal_ = 12 ///< Termination state number.
     };
@@ -2861,7 +2862,7 @@ switch (yykind)
 
 
 } // yy
-#line 2865 "parser.hpp"
+#line 2866 "parser.hpp"
 
 
 

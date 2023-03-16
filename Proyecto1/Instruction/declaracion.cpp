@@ -13,6 +13,11 @@ void declaracion::ejecutar(environment *env, ast *tree)
     symbol sym = Valor->ejecutar(env, tree);
     if(Tipo == sym.Tipo)
     {
+        // if(sym.Tipo == INTEGER){
+        //     int * a = new int;
+        //     *a = *static_cast<int*>(sym.Value);
+        //     sym.Value = a;
+        // }
         env->SaveVariable(sym, Id, tree);
     }
 //    else if(Tipo == INTEGER && sym.Tipo == FLOAT)

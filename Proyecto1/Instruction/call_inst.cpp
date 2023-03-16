@@ -17,10 +17,16 @@ void call_inst::ejecutar(environment *env, ast *tree)
     //buscar la funcion
     func_symbol sym_func = env->GetFunc(Id, env, tree);
     //obtenemos parametros guardados
-    map_struct_dec mapStrTemp = *(map_struct_dec*)sym_func.ParamList;
+    map_struct_dec mapStrTemp;
+    if (sym_func.ParamList != nullptr)
+    {
+        mapStrTemp = *(map_struct_dec*)sym_func.ParamList;
+        
+    }
     //obtenemos instrucciones guardados
     list_instruction instTemp = *(list_instruction*)sym_func.InstList;
     //validando si la llamada trae parametros
+    std::cout<<ExpList<<std::endl;
     if(ExpList != nullptr)
     {
         //Comparando cantidad de parametros

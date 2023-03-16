@@ -32,6 +32,7 @@ Environment/ast.cpp \
     Instruction/call_inst.cpp \
     Instruction/func_return.cpp \
     Instruction/function.cpp \
+    Instruction/func_for.cpp \
     Interfaces/expression.cpp \
     Interfaces/expression.cpp \
     Interfaces/instruction.cpp \
@@ -64,6 +65,7 @@ HEADERS += \
    Instruction/call_inst.hpp \
    Instruction/func_return.hpp \
    Instruction/function.hpp \
+   Instruction/func_for.hpp \
    Interfaces/expression.hpp \
    Interfaces/expression.hpp \
    Interfaces/instruction.hpp \

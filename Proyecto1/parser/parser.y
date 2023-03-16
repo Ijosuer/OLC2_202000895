@@ -59,6 +59,7 @@
     #include "../Instruction/function.hpp"
     #include "../Instruction/func_return.hpp"
     #include "../Instruction/call_inst.hpp"
+    #include "../Instruction/func_for.hpp"
 
 }
 
@@ -80,10 +81,11 @@
 %left tk_or
 %left tk_and
 %right tk_not
-%left tk_menorq tk_mayorq tk_menor_igual tk_igualq tk_diferenteq
-
+%left tk_diferenteq tk_igualq
+%left tk_menorq tk_mayorq tk_menor_igual 
 %left suma menos
-%left mult div
+%left mult div 
+/* %left tk_PARA tk_PARC */
 
 /* instancia de la clase que creamos */
 %lex-param {void *scanner} {yy::location& loc} { class OCL2Calc::ParserCtx & ctx }
@@ -228,7 +230,7 @@ WHILE: res_WHILE tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC {$$ = new func_
 ;
         
 // For
-FOR:  res_FOR tk_PARA DECLARAR ';' EXP ';' INCREMENTO tk_PARC tk_LLAVA LIST_INST tk_LLAVC {std::cout<<"FOR "<<std::endl;}
+FOR:  res_FOR tk_PARA DECLARAR ';' EXP ';' ASIGNAR tk_PARC tk_LLAVA LIST_INST tk_LLAVC {$$ = new func_for(0,0,$3,$5,$7,$10);}
 ;
 
 // Break - Continue
@@ -300,11 +302,12 @@ LISTPARAM: LISTPARAM ','  TYPES id
         }
 ;
 
-EXP : EXP suma EXP { $$ = new operation(0, 0, $1, $3, "+"); }
+EXP : EXP suma EXP { $$ = new operation(0, 0, $1, $3, "+");}
     | EXP menos EXP { $$ = new operation(0, 0, $1, $3, "-"); }
     | EXP mult EXP { $$ = new operation(0, 0, $1, $3, "*"); }
     | EXP div EXP { $$ = new operation(0, 0, $1, $3, "/"); }
     | EXP modulo EXP { $$ = new operation(0, 0, $1, $3, "%"); }
+    | tk_PARA EXP tk_PARC { $$ = $2; }
     | EXP tk_menor_igual EXP { $$ = new operation(0, 0, $1, $3, "<="); }
     | EXP tk_menorq EXP { $$ = new operation(0, 0, $1, $3, "<"); }
     | EXP tk_mayor_igual EXP { $$ = new operation(0, 0, $1, $3, ">="); }
@@ -314,12 +317,12 @@ EXP : EXP suma EXP { $$ = new operation(0, 0, $1, $3, "+"); }
     | EXP tk_and EXP { $$ = new operation(0, 0, $1, $3, "&&"); }
     | EXP tk_or EXP { $$ = new operation(0, 0, $1, $3, "||"); }
     | EXP tk_not EXP { $$ = new operation(0, 0, $1, $3, "!"); }
-    | tk_PARA EXP tk_PARC { $$ = $2; }
     | PRIMITIVE { $$ = $1;}
     | CALL_EXP
+    // | CALL_EXP suma CALL_EXP
 ;
 
-PRIMITIVE : NUMERO {  int num = stoi($1); $$ = new primitive(0,0,INTEGER, "",num,0.0,false); }
+PRIMITIVE : NUMERO {  int num = stoi($1); $$ = new primitive(0,0,INTEGER, "",num,0.0,false);}
         | CADENA
         {
             std::string str1 = $1.erase(0,1);

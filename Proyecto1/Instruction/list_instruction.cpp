@@ -15,6 +15,7 @@ void list_instruction::ejecutar(environment *env, ast *tree)
         {
             return;
         }
+        // Validacion de return en funciones
         inst_return* retu = dynamic_cast<inst_return*>(ListInst[i]);
         if (retu)
         {

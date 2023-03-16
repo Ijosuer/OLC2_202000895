@@ -1,20 +1,26 @@
 #include "operation.hpp"
 
 operation::operation(int line, int col, expression *op_izq, expression *op_der, std::string operador){
-    Line = line;
-    Col = col;
-    Op_izq = op_izq;
-    Op_der = op_der;
-    Operator = operador;
+    this->Line = line;
+    this->Col = col;
+    this->Op_izq = op_izq;
+    this->Op_der = op_der;
+    this->Operator = operador;
 }
 
 symbol operation::ejecutar(environment *env, ast *tree)
 {
-    symbol sym (Line,Col,"",NULO,nullptr);
-    symbol op1 = Op_izq->ejecutar(env, tree);
-    symbol op2 = Op_der->ejecutar(env, tree);
-    // std::cout<<"loock: "<<op1.Tipo<<std::endl;
-    // std::cout<<"loock: "<<op2.Tipo<<std::endl;
+    symbol sym = *new symbol(Line,Col,"",NULO,nullptr);
+    symbol op1 = this->Op_izq->ejecutar(env, tree);
+    symbol op2 = this->Op_der->ejecutar(env, tree);
+
+    // std::cout<<"==================================="<<std::endl;
+    // std::cout<<*static_cast<int*>(op1.Value);
+    // std::cout<<Operator;
+    // std::cout<<*static_cast<int*>(op2.Value)<<std::endl;
+
+    // std::cout<<"loock1: "<<op1.Tipo<<std::endl;
+    // std::cout<<"loock2: "<<op2.Tipo<<std::endl;
 
 
     //matriz dominante: esta matriz retorna el tipo dominante entre dos operandos
@@ -42,8 +48,11 @@ symbol operation::ejecutar(environment *env, ast *tree)
             else
             {
 //            std::cout<<"val1:"<<*static_cast<int*>(op1.Value)<<" Val2:"<<*static_cast<int*>(op2.Value)<<std::endl;
-            int result = *static_cast<int*>(op1.Value) + *static_cast<int*>(op2.Value);
+            int result=   *static_cast<int*>(op1.Value) + *static_cast<int*>(op2.Value);
             sym = symbol(Line,Col,"",Dominante,&result);
+            int *a = new int;
+            *a = *static_cast<int*>(sym.Value);
+            sym.Value = a;
             }
         }
         else if(Dominante == STRING)
@@ -100,28 +109,43 @@ symbol operation::ejecutar(environment *env, ast *tree)
             {
                 float result = *static_cast<float*>(op1.Value) + *static_cast<float*>(op2.Value);
                 sym = symbol(Line,Col,"",Dominante,&result);
+                float *a = new float;
+                *a = *static_cast<float*>(sym.Value);
+                sym.Value = a;
             }else if(op1.Tipo == FLOAT && op2.Tipo == INTEGER)
             {
                 int temp1 = *static_cast<int*>(op2.Value);
                 float result = *static_cast<float*>(op1.Value) + temp1;
                 sym = symbol(Line,Col,"",Dominante,&result);
+                float *a = new float;
+                *a = *static_cast<float*>(sym.Value);
+                sym.Value = a;
             }else if(op2.Tipo == FLOAT && op1.Tipo == INTEGER)
             {
                 int temp1 = *static_cast<int*>(op1.Value);
                 float result = *static_cast<float*>(op2.Value) + temp1;
                 sym = symbol(Line,Col,"",Dominante,&result);
+                float *a = new float;
+                *a = *static_cast<float*>(sym.Value);
+                sym.Value = a;
             }
             else if(op1.Tipo == FLOAT && op2.Tipo == BOOL)
             {
                 int temp1 = *static_cast<bool*>(op2.Value);
                 float result = *static_cast<float*>(op1.Value) + temp1;
                 sym = symbol(Line,Col,"",Dominante,&result);
+                float *a = new float;
+                *a = *static_cast<float*>(sym.Value);
+                sym.Value = a;
             }
             else if(op1.Tipo == BOOL && op2.Tipo == FLOAT)
             {
                 int temp1 = *static_cast<bool*>(op1.Value);
                 float result = *static_cast<float*>(op2.Value) + temp1;
                 sym = symbol(Line,Col,"",Dominante,&result);
+                float *a = new float;
+                *a = *static_cast<float*>(sym.Value);
+                sym.Value = a;
             }
         }
         else
@@ -144,6 +168,9 @@ symbol operation::ejecutar(environment *env, ast *tree)
                 int *val2 = (int *)op2.Value;
                 int result = *val1 - *val2;
                 sym = symbol(Line,Col,"",Dominante,&result);
+                int *a = new int;
+                *a = *static_cast<int*>(sym.Value);
+                sym.Value = a;
             }
         }
         else if(Dominante == FLOAT)
@@ -152,28 +179,43 @@ symbol operation::ejecutar(environment *env, ast *tree)
             {
                 float result = *static_cast<float*>(op1.Value) - *static_cast<float*>(op2.Value);
                 sym = symbol(Line,Col,"",Dominante,&result);
+                float *a = new float;
+                *a = *static_cast<float*>(sym.Value);
+                sym.Value = a;
             }else if(op1.Tipo == FLOAT && op2.Tipo == INTEGER)
             {
                 int temp1 = *static_cast<int*>(op2.Value);
                 float result = *static_cast<float*>(op1.Value) - temp1;
                 sym = symbol(Line,Col,"",Dominante,&result);
+                float *a = new float;
+                *a = *static_cast<float*>(sym.Value);
+                sym.Value = a;
             }else if(op2.Tipo == FLOAT && op1.Tipo == INTEGER)
             {
                 int temp1 = *static_cast<int*>(op1.Value);
                 float result = *static_cast<float*>(op2.Value) - temp1;
                 sym = symbol(Line,Col,"",Dominante,&result);
+                float *a = new float;
+                *a = *static_cast<float*>(sym.Value);
+                sym.Value = a;
             }
             else if(op1.Tipo == FLOAT && op2.Tipo == BOOL)
             {
                 int temp1 = *static_cast<bool*>(op2.Value);
                 float result = *static_cast<float*>(op1.Value) - temp1;
                 sym = symbol(Line,Col,"",Dominante,&result);
+                float *a = new float;
+                *a = *static_cast<float*>(sym.Value);
+                sym.Value = a;
             }
             else if(op1.Tipo == BOOL && op2.Tipo == FLOAT)
             {
                 int temp1 = *static_cast<bool*>(op1.Value);
                 float result = *static_cast<float*>(op2.Value) - temp1;
                 sym = symbol(Line,Col,"",Dominante,&result);
+                float *a = new float;
+                *a = *static_cast<float*>(sym.Value);
+                sym.Value = a;
             }
         }
         else
@@ -193,10 +235,15 @@ symbol operation::ejecutar(environment *env, ast *tree)
             }
             else{
 
-            int *val1 = (int *)op1.Value;
-            int *val2 = (int *)op2.Value;
-            int result = *val1 * *val2;
+            // int *val1 = (int *)op1.Value;
+            // int *val2 = (int *)op2.Value;
+            int *a = new int;
+            int result = *static_cast<int*>(op1.Value) * *static_cast<int*>(op2.Value);
             sym = symbol(Line,Col,"",Dominante,&result);
+            *a = *static_cast<int*>(sym.Value);
+            sym.Value = a;
+
+            // return sym;
             }
         }
         else if(Dominante == FLOAT)
@@ -205,35 +252,50 @@ symbol operation::ejecutar(environment *env, ast *tree)
             {
                 float result = *static_cast<float*>(op1.Value) * *static_cast<float*>(op2.Value);
                 sym = symbol(Line,Col,"",Dominante,&result);
+                float *a = new float;
+                *a = *static_cast<float*>(sym.Value);
+                sym.Value = a;
             }else if(op1.Tipo == FLOAT && op2.Tipo == INTEGER)
             {
                 int temp1 = *static_cast<int*>(op2.Value);
                 float result = *static_cast<float*>(op1.Value) * temp1;
                 sym = symbol(Line,Col,"",Dominante,&result);
+                float *a = new float;
+                *a = *static_cast<float*>(sym.Value);
+                sym.Value = a;
             }else if(op2.Tipo == FLOAT && op1.Tipo == INTEGER)
             {
                 int temp1 = *static_cast<int*>(op1.Value);
                 float result = *static_cast<float*>(op2.Value) * temp1;
                 sym = symbol(Line,Col,"",Dominante,&result);
+                float *a = new float;
+                *a = *static_cast<float*>(sym.Value);
+                sym.Value = a;
             }
             else if(op1.Tipo == FLOAT && op2.Tipo == BOOL)
             {
                 int temp1 = *static_cast<bool*>(op2.Value);
                 float result = *static_cast<float*>(op1.Value) * temp1;
                 sym = symbol(Line,Col,"",Dominante,&result);
+                float *a = new float;
+                *a = *static_cast<float*>(sym.Value);
+                sym.Value = a;
             }
             else if(op1.Tipo == BOOL && op2.Tipo == FLOAT)
             {
                 int temp1 = *static_cast<bool*>(op1.Value);
                 float result = *static_cast<float*>(op2.Value) * temp1;
                 sym = symbol(Line,Col,"",Dominante,&result);
-
+                float *a = new float;
+                *a = *static_cast<float*>(sym.Value);
+                sym.Value = a;
             }
         }
         else
         {
             //se reporta un error
             tree->ErrorOut += "Error: tipo incorrecto para multiplicación";
+           
         }
     }
     else if(Operator == "/")
@@ -258,10 +320,13 @@ symbol operation::ejecutar(environment *env, ast *tree)
             else{
                 int *val1 = (int *)op1.Value;
                 int *val2 = (int *)op2.Value;
+                int *a = new int;
                 if(*val2 != 0)
                 {
                     int result = *val1 / *val2;
                     sym = symbol(Line,Col,"",Dominante,&result);
+                    *a = *static_cast<int*>(sym.Value);
+                    sym.Value = a;
                 }
                 else
                 {
@@ -278,6 +343,9 @@ symbol operation::ejecutar(environment *env, ast *tree)
                 {
                     float result = *static_cast<float*>(op1.Value) / *static_cast<float*>(op2.Value);
                     sym = symbol(Line,Col,"",Dominante,&result);
+                    float *a = new float;
+                    *a = *static_cast<float*>(sym.Value);
+                    sym.Value = a;
                 }
                 else
                 {
@@ -291,6 +359,9 @@ symbol operation::ejecutar(environment *env, ast *tree)
                     int temp1 = *static_cast<int*>(op2.Value);
                     float result = *static_cast<float*>(op1.Value) / temp1;
                     sym = symbol(Line,Col,"",Dominante,&result);
+                    float *a = new float;
+                    *a = *static_cast<float*>(sym.Value);
+                    sym.Value = a;
                 }else{
                     tree->ErrorOut+="Error: no se puede dividir por cero";
                 }
@@ -301,6 +372,9 @@ symbol operation::ejecutar(environment *env, ast *tree)
                     int temp1 = *static_cast<int*>(op1.Value);
                     float result = *static_cast<float*>(op2.Value) / temp1;
                     sym = symbol(Line,Col,"",Dominante,&result);
+                    float *a = new float;
+                    *a = *static_cast<float*>(sym.Value);
+                    sym.Value = a;
                 }else{
                     tree->ErrorOut+="Error: no se puede dividir por cero";
                 }
@@ -312,6 +386,9 @@ symbol operation::ejecutar(environment *env, ast *tree)
                     int temp1 = *static_cast<bool*>(op2.Value);
                     float result = *static_cast<float*>(op1.Value) / temp1;
                     sym = symbol(Line,Col,"",Dominante,&result);
+                    float *a = new float;
+                    *a = *static_cast<float*>(sym.Value);
+                    sym.Value = a;
                 }else{
                     tree->ErrorOut+="Error: no se puede dividir por cero";
                 }
@@ -325,7 +402,10 @@ symbol operation::ejecutar(environment *env, ast *tree)
                         std::cout<<"ENTRA"<<std::endl;
                         float result = 0.0;
                         sym = symbol(Line,Col,"",Dominante,&result);
-                    }else{  
+                        float *a = new float;
+                        *a = *static_cast<float*>(sym.Value);
+                        sym.Value = a;
+                    }else{
                         int temp1 = *static_cast<bool*>(op1.Value);
                         float result = *static_cast<float*>(op2.Value) / temp1;
                         sym = symbol(Line,Col,"",Dominante,&result);
@@ -372,7 +452,8 @@ symbol operation::ejecutar(environment *env, ast *tree)
         else
         {
             //se reporta un error
-            tree->ErrorOut += "Error: tipo incorrecto para multiplicación";
+            tree->ErrorOut += "Error: tipo incorrecto para menor q";
+            std::cout<<Dominante<<std::endl;
         }
     }
     else if(Operator == ">")
@@ -387,7 +468,7 @@ symbol operation::ejecutar(environment *env, ast *tree)
         else
         {
             //se reporta un error
-            tree->ErrorOut += "Error: tipo incorrecto para multiplicación";
+            tree->ErrorOut += "Error: tipo incorrecto para mayor q";
         }
     }
     else if(Operator == "<=")
@@ -402,7 +483,7 @@ symbol operation::ejecutar(environment *env, ast *tree)
         else
         {
             //se reporta un error
-            tree->ErrorOut += "Error: tipo incorrecto para multiplicación";
+            tree->ErrorOut += "Error: tipo incorrecto para menor o igual q";
         }
     }
     else if(Operator == ">=")
@@ -417,7 +498,7 @@ symbol operation::ejecutar(environment *env, ast *tree)
         else
         {
             //se reporta un error
-            tree->ErrorOut += "Error: tipo incorrecto para multiplicación";
+            tree->ErrorOut += "Error: tipo incorrecto para mayor o igual q";
         }
     }
     else if(Operator == "!=")
@@ -446,7 +527,7 @@ symbol operation::ejecutar(environment *env, ast *tree)
         else
         {
             //se reporta un error
-            tree->ErrorOut += "Error: tipo incorrecto para multiplicación";
+            tree->ErrorOut += "Error: tipo incorrecto para diferente q";
         }
     }
     else if(Operator == "==")
@@ -475,7 +556,7 @@ symbol operation::ejecutar(environment *env, ast *tree)
         else
         {
             //se reporta un error
-            tree->ErrorOut += "Error: tipo incorrecto para multiplicación";
+            tree->ErrorOut += "Error: tipo incorrecto para igual q";
         }
     }
     else if (Operator == "&&")
@@ -494,7 +575,7 @@ symbol operation::ejecutar(environment *env, ast *tree)
     }
     else if (Operator == "||")
     {
-        if(Dominante == BOOL)
+        if(op1.Tipo == BOOL && op2.Tipo == BOOL)
         {
             bool *val1 = (bool *)op1.Value;
             bool *val2 = (bool *)op2.Value;
@@ -506,6 +587,5 @@ symbol operation::ejecutar(environment *env, ast *tree)
             tree->ErrorOut+="Error: tipo incorrecto en exp logica";
         }
     }
-    
     return sym;
 }

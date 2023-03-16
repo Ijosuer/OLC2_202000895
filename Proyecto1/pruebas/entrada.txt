@@ -1,15 +1,8 @@
 //FUNCIONESSSSSSSSSSSSSSSS
 
-void hola(int a, int b){
-    printf("suma");
-    return a+b
-}
 
-void main(){
-    int a= hola();
-    printf("la suma es");
-    printf(a);
-}
+
+
 
 void main(){
 //Declaracion de variables

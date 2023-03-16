@@ -70,7 +70,7 @@ Gramática
 
    32 WHILE: res_WHILE tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC
 
-   33 FOR: res_FOR tk_PARA DECLARAR ';' EXP ';' INCREMENTO tk_PARC tk_LLAVA LIST_INST tk_LLAVC
+   33 FOR: res_FOR tk_PARA DECLARAR ';' EXP ';' ASIGNAR tk_PARC tk_LLAVA LIST_INST tk_LLAVC
 
    34 BREAK: res_BREAK
 
@@ -118,16 +118,16 @@ Gramática
    65    | EXP mult EXP
    66    | EXP div EXP
    67    | EXP modulo EXP
-   68    | EXP tk_menor_igual EXP
-   69    | EXP tk_menorq EXP
-   70    | EXP tk_mayor_igual EXP
-   71    | EXP tk_mayorq EXP
-   72    | EXP tk_igualq EXP
-   73    | EXP tk_diferenteq EXP
-   74    | EXP tk_and EXP
-   75    | EXP tk_or EXP
-   76    | EXP tk_not EXP
-   77    | tk_PARA EXP tk_PARC
+   68    | tk_PARA EXP tk_PARC
+   69    | EXP tk_menor_igual EXP
+   70    | EXP tk_menorq EXP
+   71    | EXP tk_mayor_igual EXP
+   72    | EXP tk_mayorq EXP
+   73    | EXP tk_igualq EXP
+   74    | EXP tk_diferenteq EXP
+   75    | EXP tk_and EXP
+   76    | EXP tk_or EXP
+   77    | EXP tk_not EXP
    78    | PRIMITIVE
    79    | CALL_EXP
 
@@ -165,24 +165,24 @@ Terminales con las reglas donde aparecen
     tk_string <std::string> (270) 55
     tk_float <std::string> (271) 56
     tk_bool <std::string> (272) 57
-    tk_PARA <std::string> (273) 5 25 26 29 32 33 38 39 40 41 42 43 46 47 48 49 50 51 77 86 87 88
-    tk_PARC <std::string> (274) 5 25 26 29 32 33 38 39 40 41 42 43 46 47 48 49 50 51 77 86 87 88
+    tk_PARA <std::string> (273) 5 25 26 29 32 33 38 39 40 41 42 43 46 47 48 49 50 51 68 86 87 88
+    tk_PARC <std::string> (274) 5 25 26 29 32 33 38 39 40 41 42 43 46 47 48 49 50 51 68 86 87 88
     rmain <std::string> (275) 5
     tk_LLAVA <std::string> (276) 5 24 25 26 29 30 32 33 46 47
     tk_LLAVC <std::string> (277) 5 24 25 26 29 30 32 33 46 47
     tk_true <std::string> (278) 84
     tk_false <std::string> (279) 85
-    tk_igualq <std::string> (280) 72
-    tk_diferenteq <std::string> (281) 73
-    tk_mayor_igual <std::string> (282) 70
-    tk_menor_igual <std::string> (283) 68
+    tk_igualq <std::string> (280) 73
+    tk_diferenteq <std::string> (281) 74
+    tk_mayor_igual <std::string> (282) 71
+    tk_menor_igual <std::string> (283) 69
     tk_CORCHA <std::string> (284) 36
     tk_CORCHC <std::string> (285) 36
-    tk_menorq <std::string> (286) 36 37 69
-    tk_mayorq <std::string> (287) 36 37 71
-    tk_and <std::string> (288) 74
-    tk_or <std::string> (289) 75
-    tk_not <std::string> (290) 76
+    tk_menorq <std::string> (286) 36 37 70
+    tk_mayorq <std::string> (287) 36 37 72
+    tk_and <std::string> (288) 75
+    tk_or <std::string> (289) 76
+    tk_not <std::string> (290) 77
     res_IF <std::string> (291) 25 26 29
     res_ELSE <std::string> (292) 29 30
     res_WHILE <std::string> (293) 32
@@ -231,7 +231,7 @@ No terminales con las reglas donde aparecen
         on right: 9 33
     ASIGNAR <instruction*> (69)
         on left: 23 24
-        on right: 10
+        on right: 10 33
     IF <instruction*> (70)
         on left: 25 26
         on right: 19
@@ -264,7 +264,7 @@ No terminales con las reglas donde aparecen
         on right: 8
     INCREMENTO <instruction*> (80)
         on left: 44 45
-        on right: 15 33
+        on right: 15
     FUNC <instruction*> (81)
         on left: 46 47
         on right: 3 4
@@ -644,7 +644,7 @@ Estado 32
 
 Estado 33
 
-   33 FOR: res_FOR • tk_PARA DECLARAR ';' EXP ';' INCREMENTO tk_PARC tk_LLAVA LIST_INST tk_LLAVC
+   33 FOR: res_FOR • tk_PARA DECLARAR ';' EXP ';' ASIGNAR tk_PARC tk_LLAVA LIST_INST tk_LLAVC
 
     tk_PARA  desplazar e ir al estado 66
 
@@ -1075,7 +1075,7 @@ Estado 65
 
 Estado 66
 
-   33 FOR: res_FOR tk_PARA • DECLARAR ';' EXP ';' INCREMENTO tk_PARC tk_LLAVA LIST_INST tk_LLAVC
+   33 FOR: res_FOR tk_PARA • DECLARAR ';' EXP ';' ASIGNAR tk_PARC tk_LLAVA LIST_INST tk_LLAVC
 
     tk_void    desplazar e ir al estado 19
     tk_int     desplazar e ir al estado 2
@@ -1121,7 +1121,7 @@ Estado 70
 
 Estado 71
 
-   77 EXP: tk_PARA • EXP tk_PARC
+   68 EXP: tk_PARA • EXP tk_PARC
 
     NUMERO      desplazar e ir al estado 67
     id          desplazar e ir al estado 68
@@ -1189,15 +1189,15 @@ Estado 78
    65    | EXP • mult EXP
    66    | EXP • div EXP
    67    | EXP • modulo EXP
-   68    | EXP • tk_menor_igual EXP
-   69    | EXP • tk_menorq EXP
-   70    | EXP • tk_mayor_igual EXP
-   71    | EXP • tk_mayorq EXP
-   72    | EXP • tk_igualq EXP
-   73    | EXP • tk_diferenteq EXP
-   74    | EXP • tk_and EXP
-   75    | EXP • tk_or EXP
-   76    | EXP • tk_not EXP
+   69    | EXP • tk_menor_igual EXP
+   70    | EXP • tk_menorq EXP
+   71    | EXP • tk_mayor_igual EXP
+   72    | EXP • tk_mayorq EXP
+   73    | EXP • tk_igualq EXP
+   74    | EXP • tk_diferenteq EXP
+   75    | EXP • tk_and EXP
+   76    | EXP • tk_or EXP
+   77    | EXP • tk_not EXP
 
     suma            desplazar e ir al estado 115
     menos           desplazar e ir al estado 116
@@ -1401,15 +1401,15 @@ Estado 98
    65    | EXP • mult EXP
    66    | EXP • div EXP
    67    | EXP • modulo EXP
-   68    | EXP • tk_menor_igual EXP
-   69    | EXP • tk_menorq EXP
-   70    | EXP • tk_mayor_igual EXP
-   71    | EXP • tk_mayorq EXP
-   72    | EXP • tk_igualq EXP
-   73    | EXP • tk_diferenteq EXP
-   74    | EXP • tk_and EXP
-   75    | EXP • tk_or EXP
-   76    | EXP • tk_not EXP
+   69    | EXP • tk_menor_igual EXP
+   70    | EXP • tk_menorq EXP
+   71    | EXP • tk_mayor_igual EXP
+   72    | EXP • tk_mayorq EXP
+   73    | EXP • tk_igualq EXP
+   74    | EXP • tk_diferenteq EXP
+   75    | EXP • tk_and EXP
+   76    | EXP • tk_or EXP
+   77    | EXP • tk_not EXP
 
     suma            desplazar e ir al estado 115
     menos           desplazar e ir al estado 116
@@ -1437,15 +1437,15 @@ Estado 99
    65    | EXP • mult EXP
    66    | EXP • div EXP
    67    | EXP • modulo EXP
-   68    | EXP • tk_menor_igual EXP
-   69    | EXP • tk_menorq EXP
-   70    | EXP • tk_mayor_igual EXP
-   71    | EXP • tk_mayorq EXP
-   72    | EXP • tk_igualq EXP
-   73    | EXP • tk_diferenteq EXP
-   74    | EXP • tk_and EXP
-   75    | EXP • tk_or EXP
-   76    | EXP • tk_not EXP
+   69    | EXP • tk_menor_igual EXP
+   70    | EXP • tk_menorq EXP
+   71    | EXP • tk_mayor_igual EXP
+   72    | EXP • tk_mayorq EXP
+   73    | EXP • tk_igualq EXP
+   74    | EXP • tk_diferenteq EXP
+   75    | EXP • tk_and EXP
+   76    | EXP • tk_or EXP
+   77    | EXP • tk_not EXP
 
     suma            desplazar e ir al estado 115
     menos           desplazar e ir al estado 116
@@ -1472,15 +1472,15 @@ Estado 100
    65    | EXP • mult EXP
    66    | EXP • div EXP
    67    | EXP • modulo EXP
-   68    | EXP • tk_menor_igual EXP
-   69    | EXP • tk_menorq EXP
-   70    | EXP • tk_mayor_igual EXP
-   71    | EXP • tk_mayorq EXP
-   72    | EXP • tk_igualq EXP
-   73    | EXP • tk_diferenteq EXP
-   74    | EXP • tk_and EXP
-   75    | EXP • tk_or EXP
-   76    | EXP • tk_not EXP
+   69    | EXP • tk_menor_igual EXP
+   70    | EXP • tk_menorq EXP
+   71    | EXP • tk_mayor_igual EXP
+   72    | EXP • tk_mayorq EXP
+   73    | EXP • tk_igualq EXP
+   74    | EXP • tk_diferenteq EXP
+   75    | EXP • tk_and EXP
+   76    | EXP • tk_or EXP
+   77    | EXP • tk_not EXP
 
     suma            desplazar e ir al estado 115
     menos           desplazar e ir al estado 116
@@ -1543,15 +1543,15 @@ Estado 106
    65    | EXP • mult EXP
    66    | EXP • div EXP
    67    | EXP • modulo EXP
-   68    | EXP • tk_menor_igual EXP
-   69    | EXP • tk_menorq EXP
-   70    | EXP • tk_mayor_igual EXP
-   71    | EXP • tk_mayorq EXP
-   72    | EXP • tk_igualq EXP
-   73    | EXP • tk_diferenteq EXP
-   74    | EXP • tk_and EXP
-   75    | EXP • tk_or EXP
-   76    | EXP • tk_not EXP
+   69    | EXP • tk_menor_igual EXP
+   70    | EXP • tk_menorq EXP
+   71    | EXP • tk_mayor_igual EXP
+   72    | EXP • tk_mayorq EXP
+   73    | EXP • tk_igualq EXP
+   74    | EXP • tk_diferenteq EXP
+   75    | EXP • tk_and EXP
+   76    | EXP • tk_or EXP
+   77    | EXP • tk_not EXP
 
     suma            desplazar e ir al estado 115
     menos           desplazar e ir al estado 116
@@ -1579,15 +1579,15 @@ Estado 107
    65    | EXP • mult EXP
    66    | EXP • div EXP
    67    | EXP • modulo EXP
-   68    | EXP • tk_menor_igual EXP
-   69    | EXP • tk_menorq EXP
-   70    | EXP • tk_mayor_igual EXP
-   71    | EXP • tk_mayorq EXP
-   72    | EXP • tk_igualq EXP
-   73    | EXP • tk_diferenteq EXP
-   74    | EXP • tk_and EXP
-   75    | EXP • tk_or EXP
-   76    | EXP • tk_not EXP
+   69    | EXP • tk_menor_igual EXP
+   70    | EXP • tk_menorq EXP
+   71    | EXP • tk_mayor_igual EXP
+   72    | EXP • tk_mayorq EXP
+   73    | EXP • tk_igualq EXP
+   74    | EXP • tk_diferenteq EXP
+   75    | EXP • tk_and EXP
+   76    | EXP • tk_or EXP
+   77    | EXP • tk_not EXP
 
     suma            desplazar e ir al estado 115
     menos           desplazar e ir al estado 116
@@ -1614,15 +1614,15 @@ Estado 108
    65    | EXP • mult EXP
    66    | EXP • div EXP
    67    | EXP • modulo EXP
-   68    | EXP • tk_menor_igual EXP
-   69    | EXP • tk_menorq EXP
-   70    | EXP • tk_mayor_igual EXP
-   71    | EXP • tk_mayorq EXP
-   72    | EXP • tk_igualq EXP
-   73    | EXP • tk_diferenteq EXP
-   74    | EXP • tk_and EXP
-   75    | EXP • tk_or EXP
-   76    | EXP • tk_not EXP
+   69    | EXP • tk_menor_igual EXP
+   70    | EXP • tk_menorq EXP
+   71    | EXP • tk_mayor_igual EXP
+   72    | EXP • tk_mayorq EXP
+   73    | EXP • tk_igualq EXP
+   74    | EXP • tk_diferenteq EXP
+   75    | EXP • tk_and EXP
+   76    | EXP • tk_or EXP
+   77    | EXP • tk_not EXP
 
     suma            desplazar e ir al estado 115
     menos           desplazar e ir al estado 116
@@ -1643,7 +1643,7 @@ Estado 108
 
 Estado 109
 
-   33 FOR: res_FOR tk_PARA DECLARAR • ';' EXP ';' INCREMENTO tk_PARC tk_LLAVA LIST_INST tk_LLAVC
+   33 FOR: res_FOR tk_PARA DECLARAR • ';' EXP ';' ASIGNAR tk_PARC tk_LLAVA LIST_INST tk_LLAVC
 
     ';'  desplazar e ir al estado 143
 
@@ -1678,16 +1678,16 @@ Estado 111
    65    | EXP • mult EXP
    66    | EXP • div EXP
    67    | EXP • modulo EXP
-   68    | EXP • tk_menor_igual EXP
-   69    | EXP • tk_menorq EXP
-   70    | EXP • tk_mayor_igual EXP
-   71    | EXP • tk_mayorq EXP
-   72    | EXP • tk_igualq EXP
-   73    | EXP • tk_diferenteq EXP
-   74    | EXP • tk_and EXP
-   75    | EXP • tk_or EXP
-   76    | EXP • tk_not EXP
-   77    | tk_PARA EXP • tk_PARC
+   68    | tk_PARA EXP • tk_PARC
+   69    | EXP • tk_menor_igual EXP
+   70    | EXP • tk_menorq EXP
+   71    | EXP • tk_mayor_igual EXP
+   72    | EXP • tk_mayorq EXP
+   73    | EXP • tk_igualq EXP
+   74    | EXP • tk_diferenteq EXP
+   75    | EXP • tk_and EXP
+   76    | EXP • tk_or EXP
+   77    | EXP • tk_not EXP
 
     suma            desplazar e ir al estado 115
     menos           desplazar e ir al estado 116
@@ -1829,7 +1829,7 @@ Estado 119
 
 Estado 120
 
-   72 EXP: EXP tk_igualq • EXP
+   73 EXP: EXP tk_igualq • EXP
 
     NUMERO      desplazar e ir al estado 67
     id          desplazar e ir al estado 68
@@ -1849,7 +1849,7 @@ Estado 120
 
 Estado 121
 
-   73 EXP: EXP tk_diferenteq • EXP
+   74 EXP: EXP tk_diferenteq • EXP
 
     NUMERO      desplazar e ir al estado 67
     id          desplazar e ir al estado 68
@@ -1869,7 +1869,7 @@ Estado 121
 
 Estado 122
 
-   70 EXP: EXP tk_mayor_igual • EXP
+   71 EXP: EXP tk_mayor_igual • EXP
 
     NUMERO      desplazar e ir al estado 67
     id          desplazar e ir al estado 68
@@ -1889,7 +1889,7 @@ Estado 122
 
 Estado 123
 
-   68 EXP: EXP tk_menor_igual • EXP
+   69 EXP: EXP tk_menor_igual • EXP
 
     NUMERO      desplazar e ir al estado 67
     id          desplazar e ir al estado 68
@@ -1909,7 +1909,7 @@ Estado 123
 
 Estado 124
 
-   69 EXP: EXP tk_menorq • EXP
+   70 EXP: EXP tk_menorq • EXP
 
     NUMERO      desplazar e ir al estado 67
     id          desplazar e ir al estado 68
@@ -1929,7 +1929,7 @@ Estado 124
 
 Estado 125
 
-   71 EXP: EXP tk_mayorq • EXP
+   72 EXP: EXP tk_mayorq • EXP
 
     NUMERO      desplazar e ir al estado 67
     id          desplazar e ir al estado 68
@@ -1949,7 +1949,7 @@ Estado 125
 
 Estado 126
 
-   74 EXP: EXP tk_and • EXP
+   75 EXP: EXP tk_and • EXP
 
     NUMERO      desplazar e ir al estado 67
     id          desplazar e ir al estado 68
@@ -1969,7 +1969,7 @@ Estado 126
 
 Estado 127
 
-   75 EXP: EXP tk_or • EXP
+   76 EXP: EXP tk_or • EXP
 
     NUMERO      desplazar e ir al estado 67
     id          desplazar e ir al estado 68
@@ -1989,7 +1989,7 @@ Estado 127
 
 Estado 128
 
-   76 EXP: EXP tk_not • EXP
+   77 EXP: EXP tk_not • EXP
 
     NUMERO      desplazar e ir al estado 67
     id          desplazar e ir al estado 68
@@ -2187,7 +2187,7 @@ Estado 142
 
 Estado 143
 
-   33 FOR: res_FOR tk_PARA DECLARAR ';' • EXP ';' INCREMENTO tk_PARC tk_LLAVA LIST_INST tk_LLAVC
+   33 FOR: res_FOR tk_PARA DECLARAR ';' • EXP ';' ASIGNAR tk_PARC tk_LLAVA LIST_INST tk_LLAVC
 
     NUMERO      desplazar e ir al estado 67
     id          desplazar e ir al estado 68
@@ -2223,9 +2223,9 @@ Estado 145
 
 Estado 146
 
-   77 EXP: tk_PARA EXP tk_PARC •
+   68 EXP: tk_PARA EXP tk_PARC •
 
-    $default  reduce usando la regla 77 (EXP)
+    $default  reduce usando la regla 68 (EXP)
 
 
 Estado 147
@@ -2257,15 +2257,15 @@ Estado 150
    65    | EXP • mult EXP
    66    | EXP • div EXP
    67    | EXP • modulo EXP
-   68    | EXP • tk_menor_igual EXP
-   69    | EXP • tk_menorq EXP
-   70    | EXP • tk_mayor_igual EXP
-   71    | EXP • tk_mayorq EXP
-   72    | EXP • tk_igualq EXP
-   73    | EXP • tk_diferenteq EXP
-   74    | EXP • tk_and EXP
-   75    | EXP • tk_or EXP
-   76    | EXP • tk_not EXP
+   69    | EXP • tk_menor_igual EXP
+   70    | EXP • tk_menorq EXP
+   71    | EXP • tk_mayor_igual EXP
+   72    | EXP • tk_mayorq EXP
+   73    | EXP • tk_igualq EXP
+   74    | EXP • tk_diferenteq EXP
+   75    | EXP • tk_and EXP
+   76    | EXP • tk_or EXP
+   77    | EXP • tk_not EXP
 
     mult            desplazar e ir al estado 117
     div             desplazar e ir al estado 118
@@ -2285,15 +2285,15 @@ Estado 151
    65    | EXP • mult EXP
    66    | EXP • div EXP
    67    | EXP • modulo EXP
-   68    | EXP • tk_menor_igual EXP
-   69    | EXP • tk_menorq EXP
-   70    | EXP • tk_mayor_igual EXP
-   71    | EXP • tk_mayorq EXP
-   72    | EXP • tk_igualq EXP
-   73    | EXP • tk_diferenteq EXP
-   74    | EXP • tk_and EXP
-   75    | EXP • tk_or EXP
-   76    | EXP • tk_not EXP
+   69    | EXP • tk_menor_igual EXP
+   70    | EXP • tk_menorq EXP
+   71    | EXP • tk_mayor_igual EXP
+   72    | EXP • tk_mayorq EXP
+   73    | EXP • tk_igualq EXP
+   74    | EXP • tk_diferenteq EXP
+   75    | EXP • tk_and EXP
+   76    | EXP • tk_or EXP
+   77    | EXP • tk_not EXP
 
     mult            desplazar e ir al estado 117
     div             desplazar e ir al estado 118
@@ -2313,15 +2313,15 @@ Estado 152
    65    | EXP mult EXP •
    66    | EXP • div EXP
    67    | EXP • modulo EXP
-   68    | EXP • tk_menor_igual EXP
-   69    | EXP • tk_menorq EXP
-   70    | EXP • tk_mayor_igual EXP
-   71    | EXP • tk_mayorq EXP
-   72    | EXP • tk_igualq EXP
-   73    | EXP • tk_diferenteq EXP
-   74    | EXP • tk_and EXP
-   75    | EXP • tk_or EXP
-   76    | EXP • tk_not EXP
+   69    | EXP • tk_menor_igual EXP
+   70    | EXP • tk_menorq EXP
+   71    | EXP • tk_mayor_igual EXP
+   72    | EXP • tk_mayorq EXP
+   73    | EXP • tk_igualq EXP
+   74    | EXP • tk_diferenteq EXP
+   75    | EXP • tk_and EXP
+   76    | EXP • tk_or EXP
+   77    | EXP • tk_not EXP
 
     modulo          desplazar e ir al estado 119
     tk_mayor_igual  desplazar e ir al estado 122
@@ -2339,15 +2339,15 @@ Estado 153
    66    | EXP • div EXP
    66    | EXP div EXP •
    67    | EXP • modulo EXP
-   68    | EXP • tk_menor_igual EXP
-   69    | EXP • tk_menorq EXP
-   70    | EXP • tk_mayor_igual EXP
-   71    | EXP • tk_mayorq EXP
-   72    | EXP • tk_igualq EXP
-   73    | EXP • tk_diferenteq EXP
-   74    | EXP • tk_and EXP
-   75    | EXP • tk_or EXP
-   76    | EXP • tk_not EXP
+   69    | EXP • tk_menor_igual EXP
+   70    | EXP • tk_menorq EXP
+   71    | EXP • tk_mayor_igual EXP
+   72    | EXP • tk_mayorq EXP
+   73    | EXP • tk_igualq EXP
+   74    | EXP • tk_diferenteq EXP
+   75    | EXP • tk_and EXP
+   76    | EXP • tk_or EXP
+   77    | EXP • tk_not EXP
 
     modulo          desplazar e ir al estado 119
     tk_mayor_igual  desplazar e ir al estado 122
@@ -2365,15 +2365,15 @@ Estado 154
    66    | EXP • div EXP
    67    | EXP • modulo EXP
    67    | EXP modulo EXP •
-   68    | EXP • tk_menor_igual EXP
-   69    | EXP • tk_menorq EXP
-   70    | EXP • tk_mayor_igual EXP
-   71    | EXP • tk_mayorq EXP
-   72    | EXP • tk_igualq EXP
-   73    | EXP • tk_diferenteq EXP
-   74    | EXP • tk_and EXP
-   75    | EXP • tk_or EXP
-   76    | EXP • tk_not EXP
+   69    | EXP • tk_menor_igual EXP
+   70    | EXP • tk_menorq EXP
+   71    | EXP • tk_mayor_igual EXP
+   72    | EXP • tk_mayorq EXP
+   73    | EXP • tk_igualq EXP
+   74    | EXP • tk_diferenteq EXP
+   75    | EXP • tk_and EXP
+   76    | EXP • tk_or EXP
+   77    | EXP • tk_not EXP
 
     suma            desplazar e ir al estado 115
     menos           desplazar e ir al estado 116
@@ -2414,16 +2414,16 @@ Estado 155
    65    | EXP • mult EXP
    66    | EXP • div EXP
    67    | EXP • modulo EXP
-   68    | EXP • tk_menor_igual EXP
-   69    | EXP • tk_menorq EXP
-   70    | EXP • tk_mayor_igual EXP
-   71    | EXP • tk_mayorq EXP
-   72    | EXP • tk_igualq EXP
-   72    | EXP tk_igualq EXP •
-   73    | EXP • tk_diferenteq EXP
-   74    | EXP • tk_and EXP
-   75    | EXP • tk_or EXP
-   76    | EXP • tk_not EXP
+   69    | EXP • tk_menor_igual EXP
+   70    | EXP • tk_menorq EXP
+   71    | EXP • tk_mayor_igual EXP
+   72    | EXP • tk_mayorq EXP
+   73    | EXP • tk_igualq EXP
+   73    | EXP tk_igualq EXP •
+   74    | EXP • tk_diferenteq EXP
+   75    | EXP • tk_and EXP
+   76    | EXP • tk_or EXP
+   77    | EXP • tk_not EXP
 
     suma            desplazar e ir al estado 115
     menos           desplazar e ir al estado 116
@@ -2431,10 +2431,13 @@ Estado 155
     div             desplazar e ir al estado 118
     modulo          desplazar e ir al estado 119
     tk_mayor_igual  desplazar e ir al estado 122
+    tk_menor_igual  desplazar e ir al estado 123
+    tk_menorq       desplazar e ir al estado 124
+    tk_mayorq       desplazar e ir al estado 125
 
-    modulo          [reduce usando la regla 72 (EXP)]
-    tk_mayor_igual  [reduce usando la regla 72 (EXP)]
-    $default        reduce usando la regla 72 (EXP)
+    modulo          [reduce usando la regla 73 (EXP)]
+    tk_mayor_igual  [reduce usando la regla 73 (EXP)]
+    $default        reduce usando la regla 73 (EXP)
 
 
 Estado 156
@@ -2444,16 +2447,16 @@ Estado 156
    65    | EXP • mult EXP
    66    | EXP • div EXP
    67    | EXP • modulo EXP
-   68    | EXP • tk_menor_igual EXP
-   69    | EXP • tk_menorq EXP
-   70    | EXP • tk_mayor_igual EXP
-   71    | EXP • tk_mayorq EXP
-   72    | EXP • tk_igualq EXP
-   73    | EXP • tk_diferenteq EXP
-   73    | EXP tk_diferenteq EXP •
-   74    | EXP • tk_and EXP
-   75    | EXP • tk_or EXP
-   76    | EXP • tk_not EXP
+   69    | EXP • tk_menor_igual EXP
+   70    | EXP • tk_menorq EXP
+   71    | EXP • tk_mayor_igual EXP
+   72    | EXP • tk_mayorq EXP
+   73    | EXP • tk_igualq EXP
+   74    | EXP • tk_diferenteq EXP
+   74    | EXP tk_diferenteq EXP •
+   75    | EXP • tk_and EXP
+   76    | EXP • tk_or EXP
+   77    | EXP • tk_not EXP
 
     suma            desplazar e ir al estado 115
     menos           desplazar e ir al estado 116
@@ -2461,10 +2464,13 @@ Estado 156
     div             desplazar e ir al estado 118
     modulo          desplazar e ir al estado 119
     tk_mayor_igual  desplazar e ir al estado 122
+    tk_menor_igual  desplazar e ir al estado 123
+    tk_menorq       desplazar e ir al estado 124
+    tk_mayorq       desplazar e ir al estado 125
 
-    modulo          [reduce usando la regla 73 (EXP)]
-    tk_mayor_igual  [reduce usando la regla 73 (EXP)]
-    $default        reduce usando la regla 73 (EXP)
+    modulo          [reduce usando la regla 74 (EXP)]
+    tk_mayor_igual  [reduce usando la regla 74 (EXP)]
+    $default        reduce usando la regla 74 (EXP)
 
 
 Estado 157
@@ -2474,16 +2480,16 @@ Estado 157
    65    | EXP • mult EXP
    66    | EXP • div EXP
    67    | EXP • modulo EXP
-   68    | EXP • tk_menor_igual EXP
-   69    | EXP • tk_menorq EXP
-   70    | EXP • tk_mayor_igual EXP
-   70    | EXP tk_mayor_igual EXP •
-   71    | EXP • tk_mayorq EXP
-   72    | EXP • tk_igualq EXP
-   73    | EXP • tk_diferenteq EXP
-   74    | EXP • tk_and EXP
-   75    | EXP • tk_or EXP
-   76    | EXP • tk_not EXP
+   69    | EXP • tk_menor_igual EXP
+   70    | EXP • tk_menorq EXP
+   71    | EXP • tk_mayor_igual EXP
+   71    | EXP tk_mayor_igual EXP •
+   72    | EXP • tk_mayorq EXP
+   73    | EXP • tk_igualq EXP
+   74    | EXP • tk_diferenteq EXP
+   75    | EXP • tk_and EXP
+   76    | EXP • tk_or EXP
+   77    | EXP • tk_not EXP
 
     suma            desplazar e ir al estado 115
     menos           desplazar e ir al estado 116
@@ -2500,21 +2506,21 @@ Estado 157
     tk_or           desplazar e ir al estado 127
     tk_not          desplazar e ir al estado 128
 
-    suma            [reduce usando la regla 70 (EXP)]
-    menos           [reduce usando la regla 70 (EXP)]
-    mult            [reduce usando la regla 70 (EXP)]
-    div             [reduce usando la regla 70 (EXP)]
-    modulo          [reduce usando la regla 70 (EXP)]
-    tk_igualq       [reduce usando la regla 70 (EXP)]
-    tk_diferenteq   [reduce usando la regla 70 (EXP)]
-    tk_mayor_igual  [reduce usando la regla 70 (EXP)]
-    tk_menor_igual  [reduce usando la regla 70 (EXP)]
-    tk_menorq       [reduce usando la regla 70 (EXP)]
-    tk_mayorq       [reduce usando la regla 70 (EXP)]
-    tk_and          [reduce usando la regla 70 (EXP)]
-    tk_or           [reduce usando la regla 70 (EXP)]
-    tk_not          [reduce usando la regla 70 (EXP)]
-    $default        reduce usando la regla 70 (EXP)
+    suma            [reduce usando la regla 71 (EXP)]
+    menos           [reduce usando la regla 71 (EXP)]
+    mult            [reduce usando la regla 71 (EXP)]
+    div             [reduce usando la regla 71 (EXP)]
+    modulo          [reduce usando la regla 71 (EXP)]
+    tk_igualq       [reduce usando la regla 71 (EXP)]
+    tk_diferenteq   [reduce usando la regla 71 (EXP)]
+    tk_mayor_igual  [reduce usando la regla 71 (EXP)]
+    tk_menor_igual  [reduce usando la regla 71 (EXP)]
+    tk_menorq       [reduce usando la regla 71 (EXP)]
+    tk_mayorq       [reduce usando la regla 71 (EXP)]
+    tk_and          [reduce usando la regla 71 (EXP)]
+    tk_or           [reduce usando la regla 71 (EXP)]
+    tk_not          [reduce usando la regla 71 (EXP)]
+    $default        reduce usando la regla 71 (EXP)
 
 
 Estado 158
@@ -2524,46 +2530,16 @@ Estado 158
    65    | EXP • mult EXP
    66    | EXP • div EXP
    67    | EXP • modulo EXP
-   68    | EXP • tk_menor_igual EXP
-   68    | EXP tk_menor_igual EXP •
-   69    | EXP • tk_menorq EXP
-   70    | EXP • tk_mayor_igual EXP
-   71    | EXP • tk_mayorq EXP
-   72    | EXP • tk_igualq EXP
-   73    | EXP • tk_diferenteq EXP
-   74    | EXP • tk_and EXP
-   75    | EXP • tk_or EXP
-   76    | EXP • tk_not EXP
-
-    suma            desplazar e ir al estado 115
-    menos           desplazar e ir al estado 116
-    mult            desplazar e ir al estado 117
-    div             desplazar e ir al estado 118
-    modulo          desplazar e ir al estado 119
-    tk_mayor_igual  desplazar e ir al estado 122
-
-    modulo          [reduce usando la regla 68 (EXP)]
-    tk_mayor_igual  [reduce usando la regla 68 (EXP)]
-    $default        reduce usando la regla 68 (EXP)
-
-
-Estado 159
-
-   63 EXP: EXP • suma EXP
-   64    | EXP • menos EXP
-   65    | EXP • mult EXP
-   66    | EXP • div EXP
-   67    | EXP • modulo EXP
-   68    | EXP • tk_menor_igual EXP
-   69    | EXP • tk_menorq EXP
-   69    | EXP tk_menorq EXP •
-   70    | EXP • tk_mayor_igual EXP
-   71    | EXP • tk_mayorq EXP
-   72    | EXP • tk_igualq EXP
-   73    | EXP • tk_diferenteq EXP
-   74    | EXP • tk_and EXP
-   75    | EXP • tk_or EXP
-   76    | EXP • tk_not EXP
+   69    | EXP • tk_menor_igual EXP
+   69    | EXP tk_menor_igual EXP •
+   70    | EXP • tk_menorq EXP
+   71    | EXP • tk_mayor_igual EXP
+   72    | EXP • tk_mayorq EXP
+   73    | EXP • tk_igualq EXP
+   74    | EXP • tk_diferenteq EXP
+   75    | EXP • tk_and EXP
+   76    | EXP • tk_or EXP
+   77    | EXP • tk_not EXP
 
     suma            desplazar e ir al estado 115
     menos           desplazar e ir al estado 116
@@ -2577,23 +2553,23 @@ Estado 159
     $default        reduce usando la regla 69 (EXP)
 
 
-Estado 160
+Estado 159
 
    63 EXP: EXP • suma EXP
    64    | EXP • menos EXP
    65    | EXP • mult EXP
    66    | EXP • div EXP
    67    | EXP • modulo EXP
-   68    | EXP • tk_menor_igual EXP
-   69    | EXP • tk_menorq EXP
-   70    | EXP • tk_mayor_igual EXP
-   71    | EXP • tk_mayorq EXP
-   71    | EXP tk_mayorq EXP •
-   72    | EXP • tk_igualq EXP
-   73    | EXP • tk_diferenteq EXP
-   74    | EXP • tk_and EXP
-   75    | EXP • tk_or EXP
-   76    | EXP • tk_not EXP
+   69    | EXP • tk_menor_igual EXP
+   70    | EXP • tk_menorq EXP
+   70    | EXP tk_menorq EXP •
+   71    | EXP • tk_mayor_igual EXP
+   72    | EXP • tk_mayorq EXP
+   73    | EXP • tk_igualq EXP
+   74    | EXP • tk_diferenteq EXP
+   75    | EXP • tk_and EXP
+   76    | EXP • tk_or EXP
+   77    | EXP • tk_not EXP
 
     suma            desplazar e ir al estado 115
     menos           desplazar e ir al estado 116
@@ -2602,9 +2578,39 @@ Estado 160
     modulo          desplazar e ir al estado 119
     tk_mayor_igual  desplazar e ir al estado 122
 
-    modulo          [reduce usando la regla 71 (EXP)]
-    tk_mayor_igual  [reduce usando la regla 71 (EXP)]
-    $default        reduce usando la regla 71 (EXP)
+    modulo          [reduce usando la regla 70 (EXP)]
+    tk_mayor_igual  [reduce usando la regla 70 (EXP)]
+    $default        reduce usando la regla 70 (EXP)
+
+
+Estado 160
+
+   63 EXP: EXP • suma EXP
+   64    | EXP • menos EXP
+   65    | EXP • mult EXP
+   66    | EXP • div EXP
+   67    | EXP • modulo EXP
+   69    | EXP • tk_menor_igual EXP
+   70    | EXP • tk_menorq EXP
+   71    | EXP • tk_mayor_igual EXP
+   72    | EXP • tk_mayorq EXP
+   72    | EXP tk_mayorq EXP •
+   73    | EXP • tk_igualq EXP
+   74    | EXP • tk_diferenteq EXP
+   75    | EXP • tk_and EXP
+   76    | EXP • tk_or EXP
+   77    | EXP • tk_not EXP
+
+    suma            desplazar e ir al estado 115
+    menos           desplazar e ir al estado 116
+    mult            desplazar e ir al estado 117
+    div             desplazar e ir al estado 118
+    modulo          desplazar e ir al estado 119
+    tk_mayor_igual  desplazar e ir al estado 122
+
+    modulo          [reduce usando la regla 72 (EXP)]
+    tk_mayor_igual  [reduce usando la regla 72 (EXP)]
+    $default        reduce usando la regla 72 (EXP)
 
 
 Estado 161
@@ -2614,16 +2620,16 @@ Estado 161
    65    | EXP • mult EXP
    66    | EXP • div EXP
    67    | EXP • modulo EXP
-   68    | EXP • tk_menor_igual EXP
-   69    | EXP • tk_menorq EXP
-   70    | EXP • tk_mayor_igual EXP
-   71    | EXP • tk_mayorq EXP
-   72    | EXP • tk_igualq EXP
-   73    | EXP • tk_diferenteq EXP
-   74    | EXP • tk_and EXP
-   74    | EXP tk_and EXP •
-   75    | EXP • tk_or EXP
-   76    | EXP • tk_not EXP
+   69    | EXP • tk_menor_igual EXP
+   70    | EXP • tk_menorq EXP
+   71    | EXP • tk_mayor_igual EXP
+   72    | EXP • tk_mayorq EXP
+   73    | EXP • tk_igualq EXP
+   74    | EXP • tk_diferenteq EXP
+   75    | EXP • tk_and EXP
+   75    | EXP tk_and EXP •
+   76    | EXP • tk_or EXP
+   77    | EXP • tk_not EXP
 
     suma            desplazar e ir al estado 115
     menos           desplazar e ir al estado 116
@@ -2638,9 +2644,9 @@ Estado 161
     tk_mayorq       desplazar e ir al estado 125
     tk_not          desplazar e ir al estado 128
 
-    modulo          [reduce usando la regla 74 (EXP)]
-    tk_mayor_igual  [reduce usando la regla 74 (EXP)]
-    $default        reduce usando la regla 74 (EXP)
+    modulo          [reduce usando la regla 75 (EXP)]
+    tk_mayor_igual  [reduce usando la regla 75 (EXP)]
+    $default        reduce usando la regla 75 (EXP)
 
 
 Estado 162
@@ -2650,16 +2656,16 @@ Estado 162
    65    | EXP • mult EXP
    66    | EXP • div EXP
    67    | EXP • modulo EXP
-   68    | EXP • tk_menor_igual EXP
-   69    | EXP • tk_menorq EXP
-   70    | EXP • tk_mayor_igual EXP
-   71    | EXP • tk_mayorq EXP
-   72    | EXP • tk_igualq EXP
-   73    | EXP • tk_diferenteq EXP
-   74    | EXP • tk_and EXP
-   75    | EXP • tk_or EXP
-   75    | EXP tk_or EXP •
-   76    | EXP • tk_not EXP
+   69    | EXP • tk_menor_igual EXP
+   70    | EXP • tk_menorq EXP
+   71    | EXP • tk_mayor_igual EXP
+   72    | EXP • tk_mayorq EXP
+   73    | EXP • tk_igualq EXP
+   74    | EXP • tk_diferenteq EXP
+   75    | EXP • tk_and EXP
+   76    | EXP • tk_or EXP
+   76    | EXP tk_or EXP •
+   77    | EXP • tk_not EXP
 
     suma            desplazar e ir al estado 115
     menos           desplazar e ir al estado 116
@@ -2675,9 +2681,9 @@ Estado 162
     tk_and          desplazar e ir al estado 126
     tk_not          desplazar e ir al estado 128
 
-    modulo          [reduce usando la regla 75 (EXP)]
-    tk_mayor_igual  [reduce usando la regla 75 (EXP)]
-    $default        reduce usando la regla 75 (EXP)
+    modulo          [reduce usando la regla 76 (EXP)]
+    tk_mayor_igual  [reduce usando la regla 76 (EXP)]
+    $default        reduce usando la regla 76 (EXP)
 
 
 Estado 163
@@ -2687,16 +2693,16 @@ Estado 163
    65    | EXP • mult EXP
    66    | EXP • div EXP
    67    | EXP • modulo EXP
-   68    | EXP • tk_menor_igual EXP
-   69    | EXP • tk_menorq EXP
-   70    | EXP • tk_mayor_igual EXP
-   71    | EXP • tk_mayorq EXP
-   72    | EXP • tk_igualq EXP
-   73    | EXP • tk_diferenteq EXP
-   74    | EXP • tk_and EXP
-   75    | EXP • tk_or EXP
-   76    | EXP • tk_not EXP
-   76    | EXP tk_not EXP •
+   69    | EXP • tk_menor_igual EXP
+   70    | EXP • tk_menorq EXP
+   71    | EXP • tk_mayor_igual EXP
+   72    | EXP • tk_mayorq EXP
+   73    | EXP • tk_igualq EXP
+   74    | EXP • tk_diferenteq EXP
+   75    | EXP • tk_and EXP
+   76    | EXP • tk_or EXP
+   77    | EXP • tk_not EXP
+   77    | EXP tk_not EXP •
 
     suma            desplazar e ir al estado 115
     menos           desplazar e ir al estado 116
@@ -2711,9 +2717,9 @@ Estado 163
     tk_mayorq       desplazar e ir al estado 125
     tk_not          desplazar e ir al estado 128
 
-    modulo          [reduce usando la regla 76 (EXP)]
-    tk_mayor_igual  [reduce usando la regla 76 (EXP)]
-    $default        reduce usando la regla 76 (EXP)
+    modulo          [reduce usando la regla 77 (EXP)]
+    tk_mayor_igual  [reduce usando la regla 77 (EXP)]
+    $default        reduce usando la regla 77 (EXP)
 
 
 Estado 164
@@ -2732,15 +2738,15 @@ Estado 165
    65    | EXP • mult EXP
    66    | EXP • div EXP
    67    | EXP • modulo EXP
-   68    | EXP • tk_menor_igual EXP
-   69    | EXP • tk_menorq EXP
-   70    | EXP • tk_mayor_igual EXP
-   71    | EXP • tk_mayorq EXP
-   72    | EXP • tk_igualq EXP
-   73    | EXP • tk_diferenteq EXP
-   74    | EXP • tk_and EXP
-   75    | EXP • tk_or EXP
-   76    | EXP • tk_not EXP
+   69    | EXP • tk_menor_igual EXP
+   70    | EXP • tk_menorq EXP
+   71    | EXP • tk_mayor_igual EXP
+   72    | EXP • tk_mayorq EXP
+   73    | EXP • tk_igualq EXP
+   74    | EXP • tk_diferenteq EXP
+   75    | EXP • tk_and EXP
+   76    | EXP • tk_or EXP
+   77    | EXP • tk_not EXP
 
     suma            desplazar e ir al estado 115
     menos           desplazar e ir al estado 116
@@ -2768,15 +2774,15 @@ Estado 166
    65    | EXP • mult EXP
    66    | EXP • div EXP
    67    | EXP • modulo EXP
-   68    | EXP • tk_menor_igual EXP
-   69    | EXP • tk_menorq EXP
-   70    | EXP • tk_mayor_igual EXP
-   71    | EXP • tk_mayorq EXP
-   72    | EXP • tk_igualq EXP
-   73    | EXP • tk_diferenteq EXP
-   74    | EXP • tk_and EXP
-   75    | EXP • tk_or EXP
-   76    | EXP • tk_not EXP
+   69    | EXP • tk_menor_igual EXP
+   70    | EXP • tk_menorq EXP
+   71    | EXP • tk_mayor_igual EXP
+   72    | EXP • tk_mayorq EXP
+   73    | EXP • tk_igualq EXP
+   74    | EXP • tk_diferenteq EXP
+   75    | EXP • tk_and EXP
+   76    | EXP • tk_or EXP
+   77    | EXP • tk_not EXP
 
     suma            desplazar e ir al estado 115
     menos           desplazar e ir al estado 116
@@ -2811,15 +2817,15 @@ Estado 168
    65    | EXP • mult EXP
    66    | EXP • div EXP
    67    | EXP • modulo EXP
-   68    | EXP • tk_menor_igual EXP
-   69    | EXP • tk_menorq EXP
-   70    | EXP • tk_mayor_igual EXP
-   71    | EXP • tk_mayorq EXP
-   72    | EXP • tk_igualq EXP
-   73    | EXP • tk_diferenteq EXP
-   74    | EXP • tk_and EXP
-   75    | EXP • tk_or EXP
-   76    | EXP • tk_not EXP
+   69    | EXP • tk_menor_igual EXP
+   70    | EXP • tk_menorq EXP
+   71    | EXP • tk_mayor_igual EXP
+   72    | EXP • tk_mayorq EXP
+   73    | EXP • tk_igualq EXP
+   74    | EXP • tk_diferenteq EXP
+   75    | EXP • tk_and EXP
+   76    | EXP • tk_or EXP
+   77    | EXP • tk_not EXP
 
     suma            desplazar e ir al estado 115
     menos           desplazar e ir al estado 116
@@ -2846,15 +2852,15 @@ Estado 169
    65    | EXP • mult EXP
    66    | EXP • div EXP
    67    | EXP • modulo EXP
-   68    | EXP • tk_menor_igual EXP
-   69    | EXP • tk_menorq EXP
-   70    | EXP • tk_mayor_igual EXP
-   71    | EXP • tk_mayorq EXP
-   72    | EXP • tk_igualq EXP
-   73    | EXP • tk_diferenteq EXP
-   74    | EXP • tk_and EXP
-   75    | EXP • tk_or EXP
-   76    | EXP • tk_not EXP
+   69    | EXP • tk_menor_igual EXP
+   70    | EXP • tk_menorq EXP
+   71    | EXP • tk_mayor_igual EXP
+   72    | EXP • tk_mayorq EXP
+   73    | EXP • tk_igualq EXP
+   74    | EXP • tk_diferenteq EXP
+   75    | EXP • tk_and EXP
+   76    | EXP • tk_or EXP
+   77    | EXP • tk_not EXP
 
     suma            desplazar e ir al estado 115
     menos           desplazar e ir al estado 116
@@ -2881,15 +2887,15 @@ Estado 170
    65    | EXP • mult EXP
    66    | EXP • div EXP
    67    | EXP • modulo EXP
-   68    | EXP • tk_menor_igual EXP
-   69    | EXP • tk_menorq EXP
-   70    | EXP • tk_mayor_igual EXP
-   71    | EXP • tk_mayorq EXP
-   72    | EXP • tk_igualq EXP
-   73    | EXP • tk_diferenteq EXP
-   74    | EXP • tk_and EXP
-   75    | EXP • tk_or EXP
-   76    | EXP • tk_not EXP
+   69    | EXP • tk_menor_igual EXP
+   70    | EXP • tk_menorq EXP
+   71    | EXP • tk_mayor_igual EXP
+   72    | EXP • tk_mayorq EXP
+   73    | EXP • tk_igualq EXP
+   74    | EXP • tk_diferenteq EXP
+   75    | EXP • tk_and EXP
+   76    | EXP • tk_or EXP
+   77    | EXP • tk_not EXP
 
     suma            desplazar e ir al estado 115
     menos           desplazar e ir al estado 116
@@ -2916,15 +2922,15 @@ Estado 171
    65    | EXP • mult EXP
    66    | EXP • div EXP
    67    | EXP • modulo EXP
-   68    | EXP • tk_menor_igual EXP
-   69    | EXP • tk_menorq EXP
-   70    | EXP • tk_mayor_igual EXP
-   71    | EXP • tk_mayorq EXP
-   72    | EXP • tk_igualq EXP
-   73    | EXP • tk_diferenteq EXP
-   74    | EXP • tk_and EXP
-   75    | EXP • tk_or EXP
-   76    | EXP • tk_not EXP
+   69    | EXP • tk_menor_igual EXP
+   70    | EXP • tk_menorq EXP
+   71    | EXP • tk_mayor_igual EXP
+   72    | EXP • tk_mayorq EXP
+   73    | EXP • tk_igualq EXP
+   74    | EXP • tk_diferenteq EXP
+   75    | EXP • tk_and EXP
+   76    | EXP • tk_or EXP
+   77    | EXP • tk_not EXP
 
     suma            desplazar e ir al estado 115
     menos           desplazar e ir al estado 116
@@ -3027,21 +3033,21 @@ Estado 174
 
 Estado 175
 
-   33 FOR: res_FOR tk_PARA DECLARAR ';' EXP • ';' INCREMENTO tk_PARC tk_LLAVA LIST_INST tk_LLAVC
+   33 FOR: res_FOR tk_PARA DECLARAR ';' EXP • ';' ASIGNAR tk_PARC tk_LLAVA LIST_INST tk_LLAVC
    63 EXP: EXP • suma EXP
    64    | EXP • menos EXP
    65    | EXP • mult EXP
    66    | EXP • div EXP
    67    | EXP • modulo EXP
-   68    | EXP • tk_menor_igual EXP
-   69    | EXP • tk_menorq EXP
-   70    | EXP • tk_mayor_igual EXP
-   71    | EXP • tk_mayorq EXP
-   72    | EXP • tk_igualq EXP
-   73    | EXP • tk_diferenteq EXP
-   74    | EXP • tk_and EXP
-   75    | EXP • tk_or EXP
-   76    | EXP • tk_not EXP
+   69    | EXP • tk_menor_igual EXP
+   70    | EXP • tk_menorq EXP
+   71    | EXP • tk_mayor_igual EXP
+   72    | EXP • tk_mayorq EXP
+   73    | EXP • tk_igualq EXP
+   74    | EXP • tk_diferenteq EXP
+   75    | EXP • tk_and EXP
+   76    | EXP • tk_or EXP
+   77    | EXP • tk_not EXP
 
     suma            desplazar e ir al estado 115
     menos           desplazar e ir al estado 116
@@ -3225,11 +3231,11 @@ Estado 187
 
 Estado 188
 
-   33 FOR: res_FOR tk_PARA DECLARAR ';' EXP ';' • INCREMENTO tk_PARC tk_LLAVA LIST_INST tk_LLAVC
+   33 FOR: res_FOR tk_PARA DECLARAR ';' EXP ';' • ASIGNAR tk_PARC tk_LLAVA LIST_INST tk_LLAVC
 
     id  desplazar e ir al estado 193
 
-    INCREMENTO  ir al estado 194
+    ASIGNAR  ir al estado 194
 
 
 Estado 189
@@ -3247,15 +3253,15 @@ Estado 190
    65    | EXP • mult EXP
    66    | EXP • div EXP
    67    | EXP • modulo EXP
-   68    | EXP • tk_menor_igual EXP
-   69    | EXP • tk_menorq EXP
-   70    | EXP • tk_mayor_igual EXP
-   71    | EXP • tk_mayorq EXP
-   72    | EXP • tk_igualq EXP
-   73    | EXP • tk_diferenteq EXP
-   74    | EXP • tk_and EXP
-   75    | EXP • tk_or EXP
-   76    | EXP • tk_not EXP
+   69    | EXP • tk_menor_igual EXP
+   70    | EXP • tk_menorq EXP
+   71    | EXP • tk_mayor_igual EXP
+   72    | EXP • tk_mayorq EXP
+   73    | EXP • tk_igualq EXP
+   74    | EXP • tk_diferenteq EXP
+   75    | EXP • tk_and EXP
+   76    | EXP • tk_or EXP
+   77    | EXP • tk_not EXP
 
     suma            desplazar e ir al estado 115
     menos           desplazar e ir al estado 116
@@ -3297,16 +3303,16 @@ Estado 192
 
 Estado 193
 
-   44 INCREMENTO: id • mas_mas
-   45           | id • menos_menos
+   23 ASIGNAR: id • '=' EXP
+   24        | id • tk_LLAVA EXP tk_LLAVC '=' tk_LLAVA EXP tk_LLAVC
 
-    mas_mas      desplazar e ir al estado 59
-    menos_menos  desplazar e ir al estado 60
+    tk_LLAVA  desplazar e ir al estado 58
+    '='       desplazar e ir al estado 61
 
 
 Estado 194
 
-   33 FOR: res_FOR tk_PARA DECLARAR ';' EXP ';' INCREMENTO • tk_PARC tk_LLAVA LIST_INST tk_LLAVC
+   33 FOR: res_FOR tk_PARA DECLARAR ';' EXP ';' ASIGNAR • tk_PARC tk_LLAVA LIST_INST tk_LLAVC
 
     tk_PARC  desplazar e ir al estado 201
 
@@ -3377,7 +3383,7 @@ Estado 200
 
 Estado 201
 
-   33 FOR: res_FOR tk_PARA DECLARAR ';' EXP ';' INCREMENTO tk_PARC • tk_LLAVA LIST_INST tk_LLAVC
+   33 FOR: res_FOR tk_PARA DECLARAR ';' EXP ';' ASIGNAR tk_PARC • tk_LLAVA LIST_INST tk_LLAVC
 
     tk_LLAVA  desplazar e ir al estado 207
 
@@ -3451,7 +3457,7 @@ Estado 206
 
 Estado 207
 
-   33 FOR: res_FOR tk_PARA DECLARAR ';' EXP ';' INCREMENTO tk_PARC tk_LLAVA • LIST_INST tk_LLAVC
+   33 FOR: res_FOR tk_PARA DECLARAR ';' EXP ';' ASIGNAR tk_PARC tk_LLAVA • LIST_INST tk_LLAVC
 
     error         desplazar e ir al estado 28
     id            desplazar e ir al estado 29
@@ -3554,7 +3560,7 @@ Estado 210
 Estado 211
 
     6 LIST_INST: LIST_INST • INSTRUCTION
-   33 FOR: res_FOR tk_PARA DECLARAR ';' EXP ';' INCREMENTO tk_PARC tk_LLAVA LIST_INST • tk_LLAVC
+   33 FOR: res_FOR tk_PARA DECLARAR ';' EXP ';' ASIGNAR tk_PARC tk_LLAVA LIST_INST • tk_LLAVC
 
     error         desplazar e ir al estado 28
     id            desplazar e ir al estado 29
@@ -3604,15 +3610,15 @@ Estado 213
    65    | EXP • mult EXP
    66    | EXP • div EXP
    67    | EXP • modulo EXP
-   68    | EXP • tk_menor_igual EXP
-   69    | EXP • tk_menorq EXP
-   70    | EXP • tk_mayor_igual EXP
-   71    | EXP • tk_mayorq EXP
-   72    | EXP • tk_igualq EXP
-   73    | EXP • tk_diferenteq EXP
-   74    | EXP • tk_and EXP
-   75    | EXP • tk_or EXP
-   76    | EXP • tk_not EXP
+   69    | EXP • tk_menor_igual EXP
+   70    | EXP • tk_menorq EXP
+   71    | EXP • tk_mayor_igual EXP
+   72    | EXP • tk_mayorq EXP
+   73    | EXP • tk_igualq EXP
+   74    | EXP • tk_diferenteq EXP
+   75    | EXP • tk_and EXP
+   76    | EXP • tk_or EXP
+   77    | EXP • tk_not EXP
 
     suma            desplazar e ir al estado 115
     menos           desplazar e ir al estado 116
@@ -3633,7 +3639,7 @@ Estado 213
 
 Estado 214
 
-   33 FOR: res_FOR tk_PARA DECLARAR ';' EXP ';' INCREMENTO tk_PARC tk_LLAVA LIST_INST tk_LLAVC •
+   33 FOR: res_FOR tk_PARA DECLARAR ';' EXP ';' ASIGNAR tk_PARC tk_LLAVA LIST_INST tk_LLAVC •
 
     $default  reduce usando la regla 33 (FOR)
 
