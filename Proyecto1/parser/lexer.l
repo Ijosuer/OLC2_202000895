@@ -53,8 +53,8 @@ DECIMAL ({NUMERO})"."({NUMERO})
 
 
 \/\*(.|\n)*?\*\/      ; /* comentarios de multi linea */
-
-[ \t\v\r\n\f]             ; /* caracteres en blanco */
+\n                      {loc.lines(yyleng); loc.step();}
+[ \t\v\r\f]             ; /* caracteres en blanco */
     /* Lexemas */
     /* defincion moderna
         token::ID ID sin caracteres especiales

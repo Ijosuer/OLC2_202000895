@@ -84,7 +84,7 @@
 %left tk_diferenteq tk_igualq
 %left tk_menorq tk_mayorq tk_menor_igual 
 %left suma menos
-%left mult div 
+%left mult div modulo
 /* %left tk_PARA tk_PARC */
 
 /* instancia de la clase que creamos */
@@ -160,7 +160,7 @@ LIST_FUNC: LIST_FUNC FUNC
 
 MAIN : tk_void rmain tk_PARA tk_PARC tk_LLAVA LIST_INST tk_LLAVC
 {
-    $$ = new func_main(0, 0, $1, $6);
+    $$ = new func_main(@1.begin.line,@1.begin.column, $1, $6);
     
 }
 ;
@@ -194,21 +194,21 @@ INSTRUCTION : PRINT ';' { $$ = $1; }
 ;
 
 DECLARAR: TYPES id  {std::cout<<"Declarando "<<$2<<std::endl; 
-                            $$ = new declaracion(0,0,$1,$2,new primitive(0,0,$1,"",0,0.0,0));
+                            $$ = new declaracion(@1.begin.line,@1.begin.column,$1,$2,new primitive(@1.begin.line,@1.begin.column,$1,"",0,0.0,0));
                     }
         | TYPES id '=' EXP {std::cout<<"Declarando con valor a "<<$2<<std::endl;
-                            $$ = new declaracion(0,0,$1,$2,$4);
+                            $$ = new declaracion(@1.begin.line,@1.begin.column,$1,$2,$4);
                             }
 ;
 
-ASIGNAR:  id '=' EXP {std::cout<<"Asignando valor a "<<$1<<std::endl; $$ = new asignacion(0,0,$1,$3);}
+ASIGNAR:  id '=' EXP {std::cout<<"Asignando valor a "<<$1<<std::endl; $$ = new asignacion(@1.begin.line,@1.begin.column,$1,$3);}
         | id tk_LLAVA  EXP tk_LLAVC '=' tk_LLAVA  EXP tk_LLAVC {std::cout<<"Asignando valor vector a: "<<$1<<std::endl;} 
 
 ;
 
 // IF
-IF  : res_IF tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC ELIF_LIST ELSE {$$ = new func_if(0,0,$3,$6,$8,$9);}
-    | res_IF tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC ELSE {$$ = new func_if(0,0,$3,$6,nullptr,$8);}
+IF  : res_IF tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC ELIF_LIST ELSE {$$ = new func_if(@1.begin.line,@1.begin.column,$3,$6,$8,$9);}
+    | res_IF tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC ELSE {$$ = new func_if(@1.begin.line,@1.begin.column,$3,$6,nullptr,$8);}
 ;
 
 ELIF_LIST: ELIF_LIST ELIF { $1->newInst($2); $$=$1; }
@@ -217,7 +217,7 @@ ELIF_LIST: ELIF_LIST ELIF { $1->newInst($2); $$=$1; }
 
 ELIF: res_ELSE res_IF tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC
         {
-            $$ = new func_if(0,0,$4,$7, nullptr, nullptr);
+            $$ = new func_if(@1.begin.line,@1.begin.column,$4,$7, nullptr, nullptr);
         }
 ;
 
@@ -226,11 +226,11 @@ ELSE: res_ELSE tk_LLAVA LIST_INST tk_LLAVC { $$=$3; }
 ;
 
 // While
-WHILE: res_WHILE tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC {$$ = new func_while(0,0,$3,$6);}
+WHILE: res_WHILE tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC {$$ = new func_while(@1.begin.line,@1.begin.column,$3,$6);}
 ;
         
 // For
-FOR:  res_FOR tk_PARA DECLARAR ';' EXP ';' ASIGNAR tk_PARC tk_LLAVA LIST_INST tk_LLAVC {$$ = new func_for(0,0,$3,$5,$7,$10);}
+FOR:  res_FOR tk_PARA DECLARAR ';' EXP ';' ASIGNAR tk_PARC tk_LLAVA LIST_INST tk_LLAVC {$$ = new func_for(@1.begin.line,@1.begin.column,$3,$5,$7,$10);}
 ;
 
 // Break - Continue
@@ -249,27 +249,27 @@ VECTOR: res_VECTOR tk_menorq TYPES tk_mayorq id '=' tk_CORCHA LISTAEXP tk_CORCHC
       | id '.' res_size tk_PARA  tk_PARC {std::cout<<"VECTOR.size "<<std::endl;}
 ;
 
-PRINT : PRINTF tk_PARA EXP tk_PARC { $$ = new print(0,0,$3); }
+PRINT : PRINTF tk_PARA LISTAEXP tk_PARC { $$ = new print(@1.begin.line,@1.begin.column,$3); }
 ;
 
 INCREMENTO: id mas_mas  {std::cout<<"masmas "<<std::endl;}
             | id menos_menos {std::cout<<"menosmenos "<<std::endl;}
 ;
 
-FUNC: TYPES id tk_PARA LISTPARAM tk_PARC tk_LLAVA LIST_INST tk_LLAVC {$$=new function(0,0,$1,$2,$4,$7);}
-    | TYPES id tk_PARA tk_PARC tk_LLAVA LIST_INST tk_LLAVC {$$=new function(0,0,$1,$2,nullptr,$6);}
+FUNC: TYPES id tk_PARA LISTPARAM tk_PARC tk_LLAVA LIST_INST tk_LLAVC {$$=new function(@1.begin.line,@1.begin.column,$1,$2,$4,$7);}
+    | TYPES id tk_PARA tk_PARC tk_LLAVA LIST_INST tk_LLAVC {$$=new function(@1.begin.line,@1.begin.column,$1,$2,nullptr,$6);}
 ;
 
-CALL_EXP : id tk_PARA LISTAEXP tk_PARC { $$ = new call_exp(0,0,$1,$3); }
-       | id tk_PARA tk_PARC { $$ = new call_exp(0,0,$1,nullptr); }
+CALL_EXP : id tk_PARA LISTAEXP tk_PARC { $$ = new call_exp(@1.begin.line,@1.begin.column,$1,$3); }
+       | id tk_PARA tk_PARC { $$ = new call_exp(@1.begin.line,@1.begin.column,$1,nullptr); }
 ;
 
-LLAMADAF: id tk_PARA LISTAEXP tk_PARC {$$= new call_inst(0,0,$1,$3);}
-        | id tk_PARA tk_PARC {$$= new call_inst(0,0,$1,nullptr);}
+LLAMADAF: id tk_PARA LISTAEXP tk_PARC {$$= new call_inst(@1.begin.line,@1.begin.column,$1,$3);}
+        | id tk_PARA tk_PARC {$$= new call_inst(@1.begin.line,@1.begin.column,$1,nullptr);}
 ;
 
-RETORNO: res_RETURN EXP {$$= new inst_return(0,0,$2);}
-        |  res_RETURN {$$= new inst_return(0,0,nullptr);}
+RETORNO: res_RETURN EXP {$$= new inst_return(@1.begin.line,@1.begin.column,$2);}
+        |  res_RETURN {$$= new inst_return(@1.begin.line,@1.begin.column,nullptr);}
 ;
 
 TYPES :tk_int { $$ = INTEGER; }
@@ -302,37 +302,40 @@ LISTPARAM: LISTPARAM ','  TYPES id
         }
 ;
 
-EXP : EXP suma EXP { $$ = new operation(0, 0, $1, $3, "+");}
-    | EXP menos EXP { $$ = new operation(0, 0, $1, $3, "-"); }
-    | EXP mult EXP { $$ = new operation(0, 0, $1, $3, "*"); }
-    | EXP div EXP { $$ = new operation(0, 0, $1, $3, "/"); }
-    | EXP modulo EXP { $$ = new operation(0, 0, $1, $3, "%"); }
+EXP : EXP suma EXP { $$ = new operation(@1.begin.line,@1.begin.column, $1, $3, "+");}
+    | EXP menos EXP { $$ = new operation(@1.begin.line,@1.begin.column, $1, $3, "-"); }
+    | EXP mult EXP { $$ = new operation(@1.begin.line,@1.begin.column, $1, $3, "*"); }
+    | EXP div EXP { $$ = new operation(@1.begin.line,@1.begin.column, $1, $3, "/"); }
+    | EXP modulo EXP { $$ = new operation(@1.begin.line,@1.begin.column, $1, $3, "%"); }
     | tk_PARA EXP tk_PARC { $$ = $2; }
-    | EXP tk_menor_igual EXP { $$ = new operation(0, 0, $1, $3, "<="); }
-    | EXP tk_menorq EXP { $$ = new operation(0, 0, $1, $3, "<"); }
-    | EXP tk_mayor_igual EXP { $$ = new operation(0, 0, $1, $3, ">="); }
-    | EXP tk_mayorq EXP { $$ = new operation(0, 0, $1, $3, ">"); }
-    | EXP tk_igualq EXP { $$ = new operation(0, 0, $1, $3, "=="); }
-    | EXP tk_diferenteq EXP { $$ = new operation(0, 0, $1, $3, "!="); }
-    | EXP tk_and EXP { $$ = new operation(0, 0, $1, $3, "&&"); }
-    | EXP tk_or EXP { $$ = new operation(0, 0, $1, $3, "||"); }
-    | EXP tk_not EXP { $$ = new operation(0, 0, $1, $3, "!"); }
+    | EXP tk_menor_igual EXP { $$ = new operation(@1.begin.line,@1.begin.column, $1, $3, "<="); }
+    | EXP tk_menorq EXP { $$ = new operation(@1.begin.line,@1.begin.column, $1, $3, "<"); }
+    | EXP tk_mayor_igual EXP { $$ = new operation(@1.begin.line,@1.begin.column, $1, $3, ">="); }
+    | EXP tk_mayorq EXP { $$ = new operation(@1.begin.line,@1.begin.column, $1, $3, ">"); }
+    | EXP tk_igualq EXP { $$ = new operation(@1.begin.line,@1.begin.column, $1, $3, "=="); }
+    | EXP tk_diferenteq EXP { $$ = new operation(@1.begin.line,@1.begin.column, $1, $3, "!="); }
+    | EXP tk_and EXP { $$ = new operation(@1.begin.line,@1.begin.column, $1, $3, "&&"); }
+    | EXP tk_or EXP { $$ = new operation(@1.begin.line,@1.begin.column, $1, $3, "||"); }
+    | res_atof tk_PARA EXP tk_PARC {$$ = new operation(@1.begin.line,@1.begin.column, $3, $3, "atof");}
+    | res_atoi tk_PARA EXP tk_PARC {$$ = new operation(@1.begin.line,@1.begin.column, $3, $3, "atoi");}
+    | res_iota tk_PARA EXP tk_PARC {$$ = new operation(@1.begin.line,@1.begin.column, $3, $3, "iota");}
+    | tk_not EXP { $$ = new operation(@1.begin.line,@1.begin.column, $2, $2, "!"); }
     | PRIMITIVE { $$ = $1;}
     | CALL_EXP
     // | CALL_EXP suma CALL_EXP
 ;
 
-PRIMITIVE : NUMERO {  int num = stoi($1); $$ = new primitive(0,0,INTEGER, "",num,0.0,false);}
+PRIMITIVE : NUMERO {  int num = stoi($1); $$ = new primitive(@1.begin.line,@1.begin.column,INTEGER, "",num,0.0,false);}
         | CADENA
         {
             std::string str1 = $1.erase(0,1);
             std::string str2 = str1.erase(str1.length()-1,1);
-            $$ = new primitive(0,0,STRING,str2,0,0.0, false);
+            $$ = new primitive(@1.begin.line,@1.begin.column,STRING,str2,0,0.0, false);
         }
-        | id   {$$ = new access(0,0,$1);}
-        | DECIMAL   {float num = stof($1); $$ = new primitive(0,0,FLOAT, "",0,num,false);}
-        | tk_true   { $$ = new primitive(0,0,BOOL,"",0,0.0,true); }
-        | tk_false  { $$ = new primitive(0,0,BOOL,"",0,0.0,false); }
+        | id   {$$ = new access(@1.begin.line,@1.begin.column,$1);}
+        | DECIMAL   {float num = stof($1); $$ = new primitive(@1.begin.line,@1.begin.column,FLOAT, "",0,num,false);}
+        | tk_true   { $$ = new primitive(@1.begin.line,@1.begin.column,BOOL,"",0,0.0,true); }
+        | tk_false  { $$ = new primitive(@1.begin.line,@1.begin.column,BOOL,"",0,0.0,false); }
         | res_mean tk_PARA id tk_PARC {std::cout<<"Media de: "<<$3<<std::endl;}
         | res_median tk_PARA id tk_PARC {std::cout<<"Mediana de: "<<$3<<std::endl;}
         | res_mode tk_PARA id tk_PARC {std::cout<<"Moda de: "<<$3<<std::endl;}

@@ -72,6 +72,7 @@ void MainWindow::on_pushButton_clicked()
         msg->setText(QString::fromStdString(analizador.Salida));
         msg->exec();
         ui->Consola->setText(QString::fromStdString(Root->ConsoleOut));
+//        ui->Consola->setText(QString::fromStdString(Root->GraphOut));
     }
     else
     {

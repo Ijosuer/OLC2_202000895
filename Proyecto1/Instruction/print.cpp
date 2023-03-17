@@ -1,6 +1,6 @@
 #include "print.hpp"
 
-print::print(int line, int col, expression *valor)
+print::print(int line, int col, list_expression *valor)
 {
     Line = line;
     Col = col;
@@ -10,31 +10,37 @@ print::print(int line, int col, expression *valor)
 void print::ejecutar(environment *env, ast *tree)
 {
     symbol sym (Line,Col,"",NULO,nullptr);
-    sym = Valor->ejecutar(env, tree);
-//    std::string* a = (std::string*)sym.Value;
-//    std::cout<<a<<std::endl;
-    switch (sym.Tipo) {
-    case STRING:
-        tree->ConsoleOut += *static_cast<std::string*>(sym.Value)+"\n";
-        break;
-    case INTEGER:
-        std::cout<<"ACA EN INT"<<std::endl;
-        tree->ConsoleOut += std::to_string(*static_cast<int*>(sym.Value))+ "\n";
-        break;
-    case BOOL:
-        if(*static_cast<bool*>(sym.Value)){
-            tree->ConsoleOut += "true\n";
-        }
-        else
-        {
-            tree->ConsoleOut += "false\n";
-        }
-        break;
-    case FLOAT:
-        tree->ConsoleOut+=std::to_string(*static_cast<float*>(sym.Value))+ "\n";
-        break;
-    default:
-        break;
-    }
 
+    // Iterar la cantidad de expresiones
+    for (int var = 0; var < Valor->ListExp.size(); ++var) {
+        sym = Valor->ListExp[var]->ejecutar(env, tree);
+
+//    std::string* a = (std::string*)sym.Value;
+    // std::cout<<"SIZE: "<<Valor->ListExp.size()<<std::endl;
+    
+        // Verificar el tipo de las expresiones
+        switch (sym.Tipo) {
+        case STRING:
+            tree->ConsoleOut += *static_cast<std::string*>(sym.Value)+" ";
+            break;
+        case INTEGER:
+            tree->ConsoleOut += std::to_string(*static_cast<int*>(sym.Value))+" ";
+            break;
+        case BOOL:
+            if(*static_cast<bool*>(sym.Value)){
+                tree->ConsoleOut += "true ";
+            }
+            else
+            {
+                tree->ConsoleOut += "false ";
+            }
+            break;
+        case FLOAT:
+            tree->ConsoleOut+=std::to_string(*static_cast<float*>(sym.Value))+ " ";
+            break;
+        default:
+            break;
+        }
+    }
+    tree->ConsoleOut+="\n";
 }

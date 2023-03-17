@@ -15,7 +15,7 @@ void func_for::ejecutar(environment *env, ast *tree)
     environment *new_env = new environment(env, "FOR") ;
     Sentencia1->ejecutar(new_env,tree); //Ejecutando declaracion
     symbol sym = Condition->ejecutar(new_env,tree);
-    Sentencia2->ejecutar(new_env,tree); //Ejecutando declaracion
+    Sentencia2->ejecutar(new_env,tree); //Ejecutando asignacion 
     if (sym.Tipo == BOOL)
     {
       int cont =0;
@@ -32,7 +32,6 @@ void func_for::ejecutar(environment *env, ast *tree)
         }
         else
         {
-          // delete new_env;
           break;
         }
         // Volver a ejecutar condicion en el entorno anterior

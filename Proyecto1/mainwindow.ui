@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>713</width>
-    <height>643</height>
+    <height>637</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -123,7 +123,7 @@ QScrollBar::handle:vertical {
       <x>10</x>
       <y>390</y>
       <width>691</width>
-      <height>211</height>
+      <height>201</height>
      </rect>
     </property>
     <property name="styleSheet">

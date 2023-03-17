@@ -1,6 +1,6 @@
 #ifndef PRINT_HPP
 #define PRINT_HPP
-#include "Interfaces/expression.hpp"
+#include "Expression/list_expression.hpp"
 #include "Interfaces/instruction.hpp"
 
 class print : public instruction
@@ -8,9 +8,9 @@ class print : public instruction
 public:
     int Line;
     int Col;
-    expression *Valor;
+    list_expression *Valor;
 
-    print(int line, int col, expression *valor);
+    print(int line, int col, list_expression *valor);
     void ejecutar(environment *env, ast *tree) override;
 };
 

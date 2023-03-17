@@ -14,13 +14,7 @@ symbol operation::ejecutar(environment *env, ast *tree)
     symbol op1 = this->Op_izq->ejecutar(env, tree);
     symbol op2 = this->Op_der->ejecutar(env, tree);
 
-    // std::cout<<"==================================="<<std::endl;
-    // std::cout<<*static_cast<int*>(op1.Value);
-    // std::cout<<Operator;
-    // std::cout<<*static_cast<int*>(op2.Value)<<std::endl;
-
-    // std::cout<<"loock1: "<<op1.Tipo<<std::endl;
-    // std::cout<<"loock2: "<<op2.Tipo<<std::endl;
+    ?
 
 
     //matriz dominante: esta matriz retorna el tipo dominante entre dos operandos
@@ -83,6 +77,9 @@ symbol operation::ejecutar(environment *env, ast *tree)
                 std::string *val2 = (std::string *)op2.Value;
                 std::string result = val1 + *val2;
                 sym = symbol(Line,Col,"",Dominante,&result);
+                std::string *a = new std::string;
+                *a = *static_cast<std::string*>(sym.Value);
+                sym.Value = a;
             }
             else if(op2.Tipo == INTEGER)
             {
@@ -92,6 +89,9 @@ symbol operation::ejecutar(environment *env, ast *tree)
                 std::string *val1 = (std::string *)op1.Value;
                 std::string result =*val1+ val2 ;
                 sym = symbol(Line,Col,"",Dominante,&result);
+                std::string *a = new std::string;
+                *a = *static_cast<std::string*>(sym.Value);
+                sym.Value = a;
             }
             else
             {
@@ -101,6 +101,9 @@ symbol operation::ejecutar(environment *env, ast *tree)
                 std::string *val2 = (std::string *)op2.Value;
                 std::string result = val1->append(*val2);
                 sym = symbol(Line,Col,"",op1.Tipo,&result);
+                std::string *a = new std::string;
+                *a = *static_cast<std::string*>(sym.Value);
+                sym.Value = a;
             }
         }
         else if(Dominante == FLOAT)
@@ -427,13 +430,30 @@ symbol operation::ejecutar(environment *env, ast *tree)
         {
             if(op1.Tipo == BOOL || op2.Tipo == BOOL)
             {
-            int result = *static_cast<bool*>(op1.Value) % *static_cast<bool*>(op2.Value);
-            sym = symbol(Line,Col,"",Dominante,&result);
+                bool val1 = (bool*)op1.Value;
+                bool val2 = (bool*)op2.Value;
+                int result = val1 % val2;
+                sym = symbol(Line,Col,"",Dominante,&result);
+                int *a = new int;
+                *a = *static_cast<int*>(sym.Value);
+                sym.Value = a;
             }
             else
             {
-            int result = *static_cast<int*>(op1.Value) % *static_cast<int*>(op2.Value);
-            sym = symbol(Line,Col,"",Dominante,&result);
+                int *val1 = (int *)op1.Value;
+                int *val2 = (int *)op2.Value;
+                int *a = new int;
+                if(*val2 != 0)
+                {
+                    int result = *val1 % *val2;
+                    sym = symbol(Line,Col,"",Dominante,&result);
+                    *a = *static_cast<int*>(sym.Value);
+                    sym.Value = a;
+                }
+                else
+                {
+                    tree->ErrorOut+="Error: No se puede hacer MOD por 0";
+                }
             }
         }else{
             tree->ErrorOut+=("Error: tipo incorrecto para modulo");
@@ -567,6 +587,9 @@ symbol operation::ejecutar(environment *env, ast *tree)
             bool *val2 = (bool *)op2.Value;
             int result = *val1 && *val2;
             sym = symbol(Line,Col,"",BOOL,&result);
+            bool *a = new bool;
+            *a = *static_cast<bool*>(sym.Value);
+            sym.Value = a;
         }
         else
         {
@@ -581,10 +604,123 @@ symbol operation::ejecutar(environment *env, ast *tree)
             bool *val2 = (bool *)op2.Value;
             int result = *val1 || *val2;
             sym = symbol(Line,Col,"",BOOL,&result);
+            bool *a = new bool;
+            *a = *static_cast<bool*>(sym.Value);
+            sym.Value = a;
         }
         else
         {
             tree->ErrorOut+="Error: tipo incorrecto en exp logica";
+        }
+    }
+    else if (Operator == "!")
+    {
+        if(op2.Tipo == BOOL)
+        {
+            // bool *val1 = (bool *)op1.Value;
+            bool *val2 = (bool *)op2.Value;
+            int result = !*val2;
+            sym = symbol(Line,Col,"",BOOL,&result);
+            bool *a = new bool;
+            *a = *static_cast<bool*>(sym.Value);
+            sym.Value = a;
+        }
+        else
+        {
+            tree->ErrorOut+="Error: tipo incorrecto en exp logica";
+        }
+    }
+    else if (Operator == "atoi")
+    {
+        if(op2.Tipo == STRING)
+        {
+            // bool *val1 = (bool *)op1.Value;
+            std::string *val2 = (std::string *)op2.Value;
+            try {
+                int result = std::stoi(*val2);
+                sym = symbol(Line,Col,"",INTEGER,&result);
+                int *a = new int;
+                *a = *static_cast<int*>(sym.Value);
+                sym.Value = a;
+            } catch (const std::invalid_argument& e) {
+                std::cerr << "Error: la cadena no representa un número válido." << std::endl;
+            }
+        }
+        else
+        {
+            tree->ErrorOut+="Error [atoi]: tipo incorrecto en atoi";
+        }
+    }
+    else if (Operator == "atof")
+    {
+        if(op2.Tipo == STRING)
+        {
+            // bool *val1 = (bool *)op1.Value;
+            std::string *val2 = (std::string *)op2.Value;
+            try {
+                float result = std::stof(*val2);
+                sym = symbol(Line,Col,"",FLOAT,&result);
+                float *a = new float;
+                *a = *static_cast<float*>(sym.Value);
+                sym.Value = a;
+            } catch (const std::invalid_argument& e) {
+                std::cerr << "Error [atof]: la cadena no representa un número válido." << std::endl;
+            }
+        }
+        else
+        {
+            tree->ErrorOut+="Error [atof]: tipo incorrecto en atof";
+        }
+    }
+    else if (Operator == "iota")
+    {
+        if(op2.Tipo == INTEGER)
+        {
+            try {
+                int *val2 = (int*)op2.Value;
+                std::string result = std::to_string(*val2);
+                sym = symbol(Line,Col,"",STRING,&result);
+                std::string *a = new std::string;
+                *a = *static_cast<std::string*>(sym.Value);
+                sym.Value = a;
+            } catch (const std::invalid_argument& e) {
+                std::cerr << "Error [atoi]: El número no es válido." << std::endl;
+            }
+        }
+        else if(op2.Tipo == FLOAT)
+        {
+            try {
+                float *val2 = (float*)op2.Value;
+                std::string result = std::to_string(*val2);
+                sym = symbol(Line,Col,"",STRING,&result);
+                std::string *a = new std::string;
+                *a = *static_cast<std::string*>(sym.Value);
+                sym.Value = a;
+            } catch (const std::invalid_argument& e) {
+                std::cerr << "Error [atoi]: El número no es válido." << std::endl;
+            }
+        }
+        else if(op2.Tipo == BOOL)
+        {
+            bool *val2 = (bool*)op2.Value;
+            std::string result = "";
+            try {
+                if (*val2 == false) {
+                    result = "false";
+                }else{
+                    result = "true";
+                }
+                sym = symbol(Line,Col,"",STRING,&result);
+                std::string *a = new std::string;
+                *a = *static_cast<std::string*>(sym.Value);
+                sym.Value = a;
+            } catch (const std::invalid_argument& e) {
+                std::cerr << "Error [atoi]: El número no es válido." << std::endl;
+            }
+        }
+        else
+        {
+            tree->ErrorOut+="Error [atoi]: tipo incorrecto en atof";
         }
     }
     return sym;

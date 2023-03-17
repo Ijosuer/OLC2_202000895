@@ -15,6 +15,7 @@ public:
 
     declaracion(int line, int col, TipoDato tipo, std::string Id, expression *valor);
     void ejecutar(environment *env, ast *tree) override;
+    std::string getvalor(symbol);
 };
 
 #endif // DECLARACION_HPP

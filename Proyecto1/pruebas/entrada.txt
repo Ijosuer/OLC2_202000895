@@ -26,6 +26,7 @@ if(3>=4){
 }
 
 //Instruccion while
+
 while(3+3>0){
     printf("hi");
 }
