@@ -44,6 +44,8 @@
     #include "../Expression/call_exp.hpp"
     #include "../Expression/map_struct_dec.hpp"
     #include "../Expression/list_expression.hpp"
+    #include "../Expression/array_exp.hpp"
+
     #include "../Environment/type.h"
     #include "../Interfaces/expression.hpp"
 
@@ -60,6 +62,7 @@
     #include "../Instruction/func_return.hpp"
     #include "../Instruction/call_inst.hpp"
     #include "../Instruction/func_for.hpp"
+    #include "../Instruction/incremento.hpp"
 
 }
 
@@ -231,6 +234,7 @@ WHILE: res_WHILE tk_PARA EXP tk_PARC tk_LLAVA LIST_INST tk_LLAVC {$$ = new func_
         
 // For
 FOR:  res_FOR tk_PARA DECLARAR ';' EXP ';' ASIGNAR tk_PARC tk_LLAVA LIST_INST tk_LLAVC {$$ = new func_for(@1.begin.line,@1.begin.column,$3,$5,$7,$10);}
+    | res_FOR tk_PARA DECLARAR ';' EXP ';' INCREMENTO tk_PARC tk_LLAVA LIST_INST tk_LLAVC {$$ = new func_for(@1.begin.line,@1.begin.column,$3,$5,$7,$10);}
 ;
 
 // Break - Continue
@@ -240,7 +244,7 @@ CONT: res_CONTINUE {std::cout<<"continue"<<std::endl;}
 ;
 
 // Vector
-VECTOR: res_VECTOR tk_menorq TYPES tk_mayorq id '=' tk_CORCHA LISTAEXP tk_CORCHC {std::cout<<"VECTOR con valores "<<std::endl;}
+VECTOR: res_VECTOR tk_menorq TYPES tk_mayorq id '=' tk_LLAVA LISTAEXP tk_LLAVC {$$ = new declaracion(0,0,$3,$5,new array_exp(0,0,$3,$8));}
       | res_VECTOR tk_menorq TYPES tk_mayorq id {std::cout<<"VECTOR empty "<<std::endl;}
       | id '.' res_pushB tk_PARA EXP tk_PARC {std::cout<<"VECTOR.pushB "<<std::endl;}
       | id '.' res_pushF tk_PARA EXP tk_PARC {std::cout<<"VECTOR.pushF "<<std::endl;}
@@ -252,8 +256,9 @@ VECTOR: res_VECTOR tk_menorq TYPES tk_mayorq id '=' tk_CORCHA LISTAEXP tk_CORCHC
 PRINT : PRINTF tk_PARA LISTAEXP tk_PARC { $$ = new print(@1.begin.line,@1.begin.column,$3); }
 ;
 
-INCREMENTO: id mas_mas  {std::cout<<"masmas "<<std::endl;}
-            | id menos_menos {std::cout<<"menosmenos "<<std::endl;}
+INCREMENTO: id mas_mas  {$$ = new incremento(0,0,$1,"++");}
+            | id menos_menos {$$ = new incremento(0,0,$1,"--");
+                             }
 ;
 
 FUNC: TYPES id tk_PARA LISTPARAM tk_PARC tk_LLAVA LIST_INST tk_LLAVC {$$=new function(@1.begin.line,@1.begin.column,$1,$2,$4,$7);}
@@ -320,6 +325,7 @@ EXP : EXP suma EXP { $$ = new operation(@1.begin.line,@1.begin.column, $1, $3, "
     | res_atoi tk_PARA EXP tk_PARC {$$ = new operation(@1.begin.line,@1.begin.column, $3, $3, "atoi");}
     | res_iota tk_PARA EXP tk_PARC {$$ = new operation(@1.begin.line,@1.begin.column, $3, $3, "iota");}
     | tk_not EXP { $$ = new operation(@1.begin.line,@1.begin.column, $2, $2, "!"); }
+    | tk_LLAVA LISTAEXP tk_LLAVC { $$ = new array_exp(0,0,NULO,$2); }
     | PRIMITIVE { $$ = $1;}
     | CALL_EXP
     // | CALL_EXP suma CALL_EXP

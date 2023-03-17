@@ -22,6 +22,7 @@ Environment/ast.cpp \
     Expression/list_expression.cpp \
     Expression/map_struct_dec.cpp \
     Expression/primitive.cpp \
+    Expression/array_exp.cpp \
     Instruction/func_main.cpp \
     Instruction/list_instruction.cpp \
     Instruction/print.cpp \
@@ -33,6 +34,7 @@ Environment/ast.cpp \
     Instruction/func_return.cpp \
     Instruction/function.cpp \
     Instruction/func_for.cpp \
+    Instruction/incremento.cpp \
     Interfaces/expression.cpp \
     Interfaces/expression.cpp \
     Interfaces/instruction.cpp \
@@ -55,6 +57,7 @@ HEADERS += \
    Expression/map_struct_dec.hpp \
    Expression/operation.hpp \
    Expression/primitive.hpp \
+   Expression/array_exp.hpp \
    Instruction/func_main.hpp \
    Instruction/list_instruction.hpp \
    Instruction/print.hpp \
@@ -66,6 +69,7 @@ HEADERS += \
    Instruction/func_return.hpp \
    Instruction/function.hpp \
    Instruction/func_for.hpp \
+   Instruction/incremento.hpp \
    Interfaces/expression.hpp \
    Interfaces/expression.hpp \
    Interfaces/instruction.hpp \

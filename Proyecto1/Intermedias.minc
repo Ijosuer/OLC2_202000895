@@ -166,10 +166,10 @@ void main()
 
     for  (int i = 0; i <= 9; i++)
 	{
-        string output = "";
-        for (int j = 0; j <= (10 - i); j++)
+        string output = " ";
+       /* for (int j = 0; j <= (10 - i); j++)
 		{
-        }
+        }*/
 
         for (int k = 0; k <= i; k++)
 		{
@@ -186,7 +186,7 @@ void main()
 
     for  (int i = 0; i <= 9; i++)
     {
-        string output = "";
+        string output = " ";
     for (int j = 0; j <= (10 - i); j++)
     {
         output = output + " ";

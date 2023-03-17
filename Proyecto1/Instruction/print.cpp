@@ -24,6 +24,7 @@ void print::ejecutar(environment *env, ast *tree)
             tree->ConsoleOut += *static_cast<std::string*>(sym.Value)+" ";
             break;
         case INTEGER:
+            tree->ConsoleOut+="NEL";
             tree->ConsoleOut += std::to_string(*static_cast<int*>(sym.Value))+" ";
             break;
         case BOOL:
@@ -38,9 +39,88 @@ void print::ejecutar(environment *env, ast *tree)
         case FLOAT:
             tree->ConsoleOut+=std::to_string(*static_cast<float*>(sym.Value))+ " ";
             break;
-        default:
+        case VECTOR:
+            tree->ConsoleOut+="ACA";
+            QVector<symbol> *Arr = (QVector<symbol>*)sym.Value;
+            QVector<symbol> result = *Arr;
+            tree->ConsoleOut += ArrayToString(result);
             break;
         }
     }
     tree->ConsoleOut+="\n";
+}
+std::string print::ArrayToString(QVector<symbol> Array)
+{
+    std::string strBuffer = "[";
+    int contIndex = 0;
+    for(int i=0; i < Array.size(); ++i){
+        contIndex++;
+        if(Array[i].Tipo == VECTOR)
+        {
+            if(contIndex < Array.size())
+            {
+                strBuffer += ArrayToString(*static_cast<QVector<symbol>*>(Array[i].Value)) + ",";
+            }
+            else
+            {
+                strBuffer += ArrayToString(*static_cast<QVector<symbol>*>(Array[i].Value));
+            }
+
+        }
+        else
+        {
+            if(Array[i].Tipo == STRING)
+            {
+                if(contIndex < Array.size())
+                {
+                    strBuffer += *static_cast<std::string*>(Array[i].Value) + ",";
+                }
+                else
+                {
+                    strBuffer += *static_cast<std::string*>(Array[i].Value);
+                }
+
+            }
+            else if(Array[i].Tipo == INTEGER)
+            {
+                if(contIndex < Array.size())
+                {
+                    strBuffer += std::to_string(*static_cast<int*>(Array[i].Value)) + ",";
+                }
+                else
+                {
+                    strBuffer += std::to_string(*static_cast<int*>(Array[i].Value));
+                }
+
+            }
+            else if(Array[i].Tipo == BOOL)
+            {
+                if(contIndex < Array.size())
+                {
+                    if(*static_cast<bool*>(Array[i].Value))
+                    {
+                        strBuffer += "true,";
+                    }
+                    else
+                    {
+                        strBuffer += "false,";
+                    }
+                }
+                else
+                {
+                    if(*static_cast<bool*>(Array[i].Value))
+                    {
+                        strBuffer += "true";
+                    }
+                    else
+                    {
+                        strBuffer += "false";
+                    }
+                }
+
+            }
+        }
+    }
+    strBuffer += "]\n";
+    return strBuffer;
 }

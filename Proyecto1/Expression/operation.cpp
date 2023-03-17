@@ -14,7 +14,13 @@ symbol operation::ejecutar(environment *env, ast *tree)
     symbol op1 = this->Op_izq->ejecutar(env, tree);
     symbol op2 = this->Op_der->ejecutar(env, tree);
 
-    ?
+    // std::cout<<"==================================="<<std::endl;
+    // std::cout<<*static_cast<int*>(op1.Value);
+    // std::cout<<Operator;
+    //     std::cout<<*static_cast<int*>(op2.Value)<<std::endl;
+
+    // std::cout<<"loock1: "<<op1.Tipo<<std::endl;
+    // std::cout<<"loock2: "<<op2.Tipo<<std::endl;
 
 
     //matriz dominante: esta matriz retorna el tipo dominante entre dos operandos
@@ -84,7 +90,7 @@ symbol operation::ejecutar(environment *env, ast *tree)
             else if(op2.Tipo == INTEGER)
             {
                 int d = *static_cast<int*>(op2.Value);
-                std::cout<<d<<std::endl;
+                // std::cout<<d<<std::endl;
                 std::string val2 = std::to_string(d);
                 std::string *val1 = (std::string *)op1.Value;
                 std::string result =*val1+ val2 ;
@@ -402,7 +408,7 @@ symbol operation::ejecutar(environment *env, ast *tree)
                 {
                     if (*static_cast<bool*>(op1.Value)<= 0)
                     {
-                        std::cout<<"ENTRA"<<std::endl;
+                        // std::cout<<"ENTRA"<<std::endl;
                         float result = 0.0;
                         sym = symbol(Line,Col,"",Dominante,&result);
                         float *a = new float;
@@ -473,7 +479,7 @@ symbol operation::ejecutar(environment *env, ast *tree)
         {
             //se reporta un error
             tree->ErrorOut += "Error: tipo incorrecto para menor q";
-            std::cout<<Dominante<<std::endl;
+            // std::cout<<Dominante<<std::endl;
         }
     }
     else if(Operator == ">")

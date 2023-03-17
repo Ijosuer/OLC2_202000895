@@ -21,6 +21,7 @@ public:
     symbol GetVariable(std::string id,environment *env, ast *tree);
     func_symbol GetFunc(std::string id, environment *env, ast *tree);
     void ActualizarVariable(std::string id,environment *env, symbol valor ,ast *tree);
+    void aument(std::string id,environment *env, std::string operador ,ast *tree);
 
 };
 

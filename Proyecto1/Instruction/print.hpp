@@ -12,6 +12,7 @@ public:
 
     print(int line, int col, list_expression *valor);
     void ejecutar(environment *env, ast *tree) override;
+    std::string ArrayToString(QVector<symbol> Array);
 };
 
 #endif // PRINT_HPP

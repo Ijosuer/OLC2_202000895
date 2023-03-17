@@ -120,6 +120,42 @@ void environment::ActualizarVariable(std::string id,environment *env, symbol val
         }
     }
     
-    // env->Tabla[id].Value = valor->Value;
-    // Tabla[id].Value = valor->Value;
+}
+
+void environment::aument(std::string id,environment *env, std::string operador, ast *tree)
+{
+    environment tmpEnv = *env;
+    symbol sym (0,0,"",NULO,nullptr);
+    for(;;)
+    {
+        if(env->Tabla.find(id) == env->Tabla.end())
+        {
+            if(env->Anterior == nullptr)
+            {
+                break;
+            }
+            else
+            {
+                env = env->Anterior;
+            }
+        }
+        else
+        {
+            sym = env->Tabla[id];
+            if (operador == "++") {
+                if (sym.Tipo == INTEGER) {
+                    int *a = new int;
+                    int result =*static_cast<int*>(sym.Value)+1;
+                    sym.Value = static_cast<int*>(&result);
+                    *a = *static_cast<int*>(sym.Value);
+                    sym.Value = a;
+                    env->Tabla[id]= sym;
+                }
+            }else{
+                tree->ErrorOut+="Error en el aumento";
+            }
+            break;
+        }
+    }
+    
 }

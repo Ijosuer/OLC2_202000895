@@ -72,6 +72,9 @@ void MainWindow::on_pushButton_clicked()
         msg->setText(QString::fromStdString(analizador.Salida));
         msg->exec();
         ui->Consola->setText(QString::fromStdString(Root->ConsoleOut));
+        // for (auto iterador = GlobalEnv->Tabla.begin(); iterador!= GlobalEnv->Tabla.end(); ++iterador) {
+        //     std::cout << "Nombre: " << iterador->first << ", Edad: " << iterador->second.Value << std::endl;
+        // }
 //        ui->Consola->setText(QString::fromStdString(Root->GraphOut));
     }
     else

@@ -30,17 +30,20 @@ void declaracion::ejecutar(environment *env, ast *tree)
         }
         env->SaveVariable(sym, Id, tree);
     }
-//    else if(Tipo == INTEGER && sym.Tipo == FLOAT)
-//    {
-//        float *var = static_cast<float*>(sym.Value);
+    else if (sym.Tipo == VECTOR) {
+        env->SaveVariable(sym, Id, tree);
+    }
+                                                            //    else if(Tipo == INTEGER && sym.Tipo == FLOAT)
+                                                            //    {
+                                                            //        float *var = static_cast<float*>(sym.Value);
 
-//        int i = trunc(*var);
+                                                            //        int i = trunc(*var);
 
-//        std::cout<<i<<std::endl;
-//        sym.Value = static_cast<void*>(&i);
-//        std::cout << "El valor del puntero genérico es: " <<static_cast<int*>(sym.Value) << std::endl;
-//        env->SaveVariable(sym, Id, tree);
-//    }
+                                                            //        std::cout<<i<<std::endl;
+                                                            //        sym.Value = static_cast<void*>(&i);
+                                                            //        std::cout << "El valor del puntero genérico es: " <<static_cast<int*>(sym.Value) << std::endl;
+                                                            //        env->SaveVariable(sym, Id, tree);
+                                                            //    }
     else
     {
         std::cout<<"Tipo: "<<Tipo<<std::endl;

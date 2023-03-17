@@ -26,7 +26,7 @@ void func_while::ejecutar(environment *env, ast *tree)
         }
         else
         {
-          delete new_env;
+//          delete new_env;
           break;
         }
         cont+=1;
