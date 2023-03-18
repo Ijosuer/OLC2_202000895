@@ -64,6 +64,7 @@
     #include "../Instruction/call_inst.hpp"
     #include "../Instruction/func_for.hpp"
     #include "../Instruction/incremento.hpp"
+    #include "../Instruction/vector.hpp"
 
 }
 
@@ -245,10 +246,11 @@ CONT: res_CONTINUE {std::cout<<"continue"<<std::endl;}
 ;
 
 // Vector
-VECTOR: res_VECTOR tk_menorq TYPES tk_mayorq id '=' tk_LLAVA LISTAEXP tk_LLAVC {$$ = new declaracion(0,0,$3,$5,new array_exp(0,0,$3,$8));}
+VECTOR: res_VECTOR tk_menorq TYPES tk_mayorq id '=' tk_CORCHA LISTAEXP tk_CORCHC {$$ = new declaracion(0,0,$3,$5,new array_exp(0,0,$3,$8));}
       | res_VECTOR tk_menorq TYPES tk_mayorq id {std::cout<<"VECTOR empty "<<std::endl;}
-      | id '.' res_get tk_PARA EXP tk_PARC {std::cout<<"VECTOR.get "<<std::endl;}
-      | id '.' res_remove tk_PARA EXP tk_PARC {std::cout<<"VECTOR.remove "<<std::endl;}
+      | id '.' res_pushF tk_PARA EXP tk_PARC {$$ = new vector(0,0,new access(0,0,$1),$5,"push_front");}
+      | id '.' res_pushB tk_PARA EXP tk_PARC {$$ = new vector(0,0,new access(0,0,$1),$5,"push_back");}
+      | id '.' res_remove tk_PARA EXP tk_PARC {$$ = new vector(0,0,new access(0,0,$1),$5,"remove");}
 ;
 PRINT : PRINTF tk_PARA LISTAEXP tk_PARC { $$ = new print(@1.begin.line,@1.begin.column,$3); }
 ;
@@ -323,9 +325,8 @@ EXP : EXP suma EXP { $$ = new operation(@1.begin.line,@1.begin.column, $1, $3, "
     | res_iota tk_PARA EXP tk_PARC {$$ = new operation(@1.begin.line,@1.begin.column, $3, $3, "iota");}
     | tk_not EXP { $$ = new operation(@1.begin.line,@1.begin.column, $2, $2, "!"); }
     | tk_LLAVA LISTAEXP tk_LLAVC { $$ = new array_exp(0,0,NULO,$2); }
-    | id '.' res_size tk_PARA  tk_PARC {std::cout<<"VECTOR.size "<<std::endl; $$ = new array_access(0,0,new access(0,0,$1),nullptr,"size");}
-    | id '.' res_pushF tk_PARA EXP tk_PARC {$$ = new array_access(0,0,new access(0,0,$1),$5,"push_front");}
-    | id '.' res_pushB tk_PARA EXP tk_PARC {$$ = new array_access(0,0,new access(0,0,$1),$5,"push_back");}
+    | id '.' res_size tk_PARA  tk_PARC {$$ = new array_access(0,0,new access(0,0,$1),nullptr,"size");}
+    | id '.' res_get tk_PARA EXP tk_PARC {$$ = new array_access(0,0,new access(0,0,$1),$5,"get");}
     | id tk_CORCHA EXP tk_CORCHC {$$ = new array_access(0,0,new access(0,0,$1),$3,"");}
     | PRIMITIVE { $$ = $1;}
     | CALL_EXP
@@ -343,9 +344,9 @@ PRIMITIVE : NUMERO {  int num = stoi($1); $$ = new primitive(@1.begin.line,@1.be
         | DECIMAL   {float num = stof($1); $$ = new primitive(@1.begin.line,@1.begin.column,FLOAT, "",0,num,false);}
         | tk_true   { $$ = new primitive(@1.begin.line,@1.begin.column,BOOL,"",0,0.0,true); }
         | tk_false  { $$ = new primitive(@1.begin.line,@1.begin.column,BOOL,"",0,0.0,false); }
-        | res_mean tk_PARA id tk_PARC {std::cout<<"Media de: "<<$3<<std::endl;}
-        | res_median tk_PARA id tk_PARC {std::cout<<"Mediana de: "<<$3<<std::endl;}
-        | res_mode tk_PARA id tk_PARC {std::cout<<"Moda de: "<<$3<<std::endl;}
+        | res_mean tk_PARA id tk_PARC {$$ = new array_access(0,0,new access(0,0,$3),nullptr,"mean");}
+        | res_median tk_PARA id tk_PARC {$$ = new array_access(0,0,new access(0,0,$3),nullptr,"median");}
+        | res_mode tk_PARA id tk_PARC {$$ = new array_access(0,0,new access(0,0,$3),nullptr,"moda");}
 ;
 
 %%

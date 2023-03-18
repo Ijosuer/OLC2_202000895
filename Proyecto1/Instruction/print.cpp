@@ -24,7 +24,6 @@ void print::ejecutar(environment *env, ast *tree)
             tree->ConsoleOut += *static_cast<std::string*>(sym.Value)+" ";
             break;
         case INTEGER:
-            tree->ConsoleOut+="NEL";
             tree->ConsoleOut += std::to_string(*static_cast<int*>(sym.Value))+" ";
             break;
         case BOOL:
@@ -40,7 +39,6 @@ void print::ejecutar(environment *env, ast *tree)
             tree->ConsoleOut+=std::to_string(*static_cast<float*>(sym.Value))+ " ";
             break;
         case VECTOR:
-            tree->ConsoleOut+="ACA";
             QVector<symbol> *Arr = (QVector<symbol>*)sym.Value;
             QVector<symbol> result = *Arr;
             tree->ConsoleOut += ArrayToString(result);

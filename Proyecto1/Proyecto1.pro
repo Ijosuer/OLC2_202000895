@@ -36,6 +36,7 @@ Environment/ast.cpp \
     Instruction/function.cpp \
     Instruction/func_for.cpp \
     Instruction/incremento.cpp \
+    Instruction/vector.cpp \
     Interfaces/expression.cpp \
     Interfaces/expression.cpp \
     Interfaces/instruction.cpp \
@@ -72,6 +73,7 @@ HEADERS += \
    Instruction/function.hpp \
    Instruction/func_for.hpp \
    Instruction/incremento.hpp \
+   Instruction/vector.hpp \
    Interfaces/expression.hpp \
    Interfaces/expression.hpp \
    Interfaces/instruction.hpp \
