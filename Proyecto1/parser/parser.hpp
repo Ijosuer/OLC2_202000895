@@ -61,6 +61,7 @@
     #include "../Expression/map_struct_dec.hpp"
     #include "../Expression/list_expression.hpp"
     #include "../Expression/array_exp.hpp"
+    #include "../Expression/array_access.hpp"
 
     #include "../Environment/type.h"
     #include "../Interfaces/expression.hpp"
@@ -81,7 +82,7 @@
     #include "../Instruction/incremento.hpp"
 
 
-#line 85 "parser.hpp"
+#line 86 "parser.hpp"
 
 
 # include <cstdlib> // std::abort
@@ -216,7 +217,7 @@
 #endif
 
 namespace yy {
-#line 220 "parser.hpp"
+#line 221 "parser.hpp"
 
 
 
@@ -2480,7 +2481,7 @@ switch (yykind)
     /// Constants.
     enum
     {
-      yylast_ = 911,     ///< Last index in yytable_.
+      yylast_ = 927,     ///< Last index in yytable_.
       yynnts_ = 28,  ///< Number of nonterminal symbols.
       yyfinal_ = 12 ///< Termination state number.
     };
@@ -2865,7 +2866,7 @@ switch (yykind)
 
 
 } // yy
-#line 2869 "parser.hpp"
+#line 2870 "parser.hpp"
 
 
 
