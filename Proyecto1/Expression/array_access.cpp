@@ -112,6 +112,7 @@ symbol array_access::ejecutar(environment *env, ast *tree)
             }else{
                 sym = result[*val];
             }
+
             return sym;
         }
         else {

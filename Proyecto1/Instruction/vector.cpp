@@ -38,8 +38,6 @@ void vector::ejecutar(environment *env, ast *tree)
     else if (Funcion == "asignar") {
         sym = Valor->ejecutar(env, tree);
         QVector<symbol> *vec = (QVector<symbol>*)symArr.Value;
-//        int *val = (int *)symInd.Value;
-//        void * a = new void*;
         for (auto it = vec->begin(); it != vec->end(); ++it) {
             if (std::distance(vec->begin(), it) == *static_cast<int*>(symInd.Value)) {
                 reinterpret_cast<int*>((*it).Value)[0] = *static_cast<int*>(sym.Value);

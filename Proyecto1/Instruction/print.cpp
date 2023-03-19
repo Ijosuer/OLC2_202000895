@@ -11,12 +11,12 @@ void print::ejecutar(environment *env, ast *tree)
 {
     symbol sym (Line,Col,"",NULO,nullptr);
 
+    std::cout<<"SIZE: "<<Valor->ListExp.size()<<std::endl;
     // Iterar la cantidad de expresiones
     for (int var = 0; var < Valor->ListExp.size(); ++var) {
         sym = Valor->ListExp[var]->ejecutar(env, tree);
 
 //    std::string* a = (std::string*)sym.Value;
-    // std::cout<<"SIZE: "<<Valor->ListExp.size()<<std::endl;
     
         // Verificar el tipo de las expresiones
         switch (sym.Tipo) {

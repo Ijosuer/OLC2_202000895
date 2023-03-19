@@ -24,6 +24,8 @@ Environment/ast.cpp \
     Expression/primitive.cpp \
     Expression/array_exp.cpp \
     Expression/array_access.cpp \
+    Expression/matriz_access.cpp \
+    Expression/matriz_exp.cpp \
     Expression/struct_access.cpp \
     Instruction/func_main.cpp \
     Instruction/list_instruction.cpp \
@@ -62,6 +64,8 @@ HEADERS += \
    Expression/primitive.hpp \
    Expression/array_exp.hpp \
    Expression/array_access.hpp \
+   Expression/matriz_access.hpp \
+   Expression/matriz_exp.hpp \
    Expression/struct_access.hpp \
    Instruction/func_main.hpp \
    Instruction/list_instruction.hpp \

@@ -63,6 +63,8 @@
     #include "../Expression/list_expression.hpp"
     #include "../Expression/array_exp.hpp"
     #include "../Expression/array_access.hpp"
+    #include "../Expression/matriz_exp.hpp"
+    #include "../Expression/matriz_access.hpp"
 
     #include "../Environment/type.h"
     #include "../Interfaces/expression.hpp"
@@ -82,9 +84,10 @@
     #include "../Instruction/func_for.hpp"
     #include "../Instruction/incremento.hpp"
     #include "../Instruction/vector.hpp"
+    #include "../Instruction/matriz.hpp"
 
 
-#line 88 "parser.hpp"
+#line 91 "parser.hpp"
 
 
 # include <cstdlib> // std::abort
@@ -219,7 +222,7 @@
 #endif
 
 namespace yy {
-#line 223 "parser.hpp"
+#line 226 "parser.hpp"
 
 
 
@@ -437,6 +440,7 @@ namespace yy {
       // BREAK
       // CONT
       // VECTOR
+      // MATRIZ
       // PRINT
       // INCREMENTO
       // FUNC
@@ -713,17 +717,18 @@ namespace yy {
         S_BREAK = 76,                            // BREAK
         S_CONT = 77,                             // CONT
         S_VECTOR = 78,                           // VECTOR
-        S_PRINT = 79,                            // PRINT
-        S_INCREMENTO = 80,                       // INCREMENTO
-        S_FUNC = 81,                             // FUNC
-        S_CALL_EXP = 82,                         // CALL_EXP
-        S_LLAMADAF = 83,                         // LLAMADAF
-        S_RETORNO = 84,                          // RETORNO
-        S_TYPES = 85,                            // TYPES
-        S_LISTAEXP = 86,                         // LISTAEXP
-        S_LISTPARAM = 87,                        // LISTPARAM
-        S_EXP = 88,                              // EXP
-        S_PRIMITIVE = 89                         // PRIMITIVE
+        S_MATRIZ = 79,                           // MATRIZ
+        S_PRINT = 80,                            // PRINT
+        S_INCREMENTO = 81,                       // INCREMENTO
+        S_FUNC = 82,                             // FUNC
+        S_CALL_EXP = 83,                         // CALL_EXP
+        S_LLAMADAF = 84,                         // LLAMADAF
+        S_RETORNO = 85,                          // RETORNO
+        S_TYPES = 86,                            // TYPES
+        S_LISTAEXP = 87,                         // LISTAEXP
+        S_LISTPARAM = 88,                        // LISTPARAM
+        S_EXP = 89,                              // EXP
+        S_PRIMITIVE = 90                         // PRIMITIVE
       };
     };
 
@@ -785,6 +790,7 @@ namespace yy {
       case symbol_kind::S_BREAK: // BREAK
       case symbol_kind::S_CONT: // CONT
       case symbol_kind::S_VECTOR: // VECTOR
+      case symbol_kind::S_MATRIZ: // MATRIZ
       case symbol_kind::S_PRINT: // PRINT
       case symbol_kind::S_INCREMENTO: // INCREMENTO
       case symbol_kind::S_FUNC: // FUNC
@@ -1050,6 +1056,7 @@ switch (yykind)
       case symbol_kind::S_BREAK: // BREAK
       case symbol_kind::S_CONT: // CONT
       case symbol_kind::S_VECTOR: // VECTOR
+      case symbol_kind::S_MATRIZ: // MATRIZ
       case symbol_kind::S_PRINT: // PRINT
       case symbol_kind::S_INCREMENTO: // INCREMENTO
       case symbol_kind::S_FUNC: // FUNC
@@ -2183,7 +2190,7 @@ switch (yykind)
 
 
     /// Stored state numbers (used for stacks).
-    typedef unsigned char state_type;
+    typedef short state_type;
 
     /// The arguments of the error message.
     int yy_syntax_error_arguments_ (const context& yyctx,
@@ -2483,8 +2490,8 @@ switch (yykind)
     /// Constants.
     enum
     {
-      yylast_ = 987,     ///< Last index in yytable_.
-      yynnts_ = 28,  ///< Number of nonterminal symbols.
+      yylast_ = 1004,     ///< Last index in yytable_.
+      yynnts_ = 29,  ///< Number of nonterminal symbols.
       yyfinal_ = 12 ///< Termination state number.
     };
 
@@ -2584,6 +2591,7 @@ switch (yykind)
       case symbol_kind::S_BREAK: // BREAK
       case symbol_kind::S_CONT: // CONT
       case symbol_kind::S_VECTOR: // VECTOR
+      case symbol_kind::S_MATRIZ: // MATRIZ
       case symbol_kind::S_PRINT: // PRINT
       case symbol_kind::S_INCREMENTO: // INCREMENTO
       case symbol_kind::S_FUNC: // FUNC
@@ -2721,6 +2729,7 @@ switch (yykind)
       case symbol_kind::S_BREAK: // BREAK
       case symbol_kind::S_CONT: // CONT
       case symbol_kind::S_VECTOR: // VECTOR
+      case symbol_kind::S_MATRIZ: // MATRIZ
       case symbol_kind::S_PRINT: // PRINT
       case symbol_kind::S_INCREMENTO: // INCREMENTO
       case symbol_kind::S_FUNC: // FUNC
@@ -2868,7 +2877,7 @@ switch (yykind)
 
 
 } // yy
-#line 2872 "parser.hpp"
+#line 2881 "parser.hpp"
 
 
 

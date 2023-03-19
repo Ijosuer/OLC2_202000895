@@ -192,11 +192,20 @@ void environment::aument(std::string id,environment *env, std::string operador, 
                     sym.Value = a;
                     env->Tabla[id]= sym;
                 }
+            else if (operador == "--") {
+                if (sym.Tipo == INTEGER) {
+                    int *a = new int;
+                    int result =*static_cast<int*>(sym.Value)-1;
+                    sym.Value = static_cast<int*>(&result);
+                    *a = *static_cast<int*>(sym.Value);
+                    sym.Value = a;
+                    env->Tabla[id]= sym;
+                }
             }else{
                 tree->ErrorOut+="Error en el aumento";
             }
             break;
         }
     }
-    
+    }
 }

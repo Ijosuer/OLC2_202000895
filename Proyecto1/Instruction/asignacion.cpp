@@ -22,7 +22,6 @@ void asignacion::ejecutar(environment *env, ast *tree)
     // std::cout<<"El valor a asignar es: "<<*static_cast<int*>(sym.Value)<<std::endl;
     if (vec_sym.Tipo == INTEGER)
     {
-        std::cout<<"ENTRA ASIGG VECTOR"<<std::endl;
         env->ActualizarVariable(Id,env,vec_sym,tree);
         return;
     }

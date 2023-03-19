@@ -47,6 +47,8 @@
     #include "../Expression/list_expression.hpp"
     #include "../Expression/array_exp.hpp"
     #include "../Expression/array_access.hpp"
+    #include "../Expression/matriz_exp.hpp"
+    #include "../Expression/matriz_access.hpp"
 
     #include "../Environment/type.h"
     #include "../Interfaces/expression.hpp"
@@ -66,6 +68,7 @@
     #include "../Instruction/func_for.hpp"
     #include "../Instruction/incremento.hpp"
     #include "../Instruction/vector.hpp"
+    #include "../Instruction/matriz.hpp"
 
 }
 
@@ -119,6 +122,7 @@
 %type<instruction*> FOR
 %type<instruction*> INCREMENTO
 %type<instruction*> VECTOR
+%type<instruction*> MATRIZ
 %type<instruction*> FUNC
 %type<instruction*> LLAMADAF
 %type<instruction*> RETORNO
@@ -190,6 +194,7 @@ INSTRUCTION : PRINT ';' { $$ = $1; }
             | DECLARAR ';' {$$=$1;}
             | ASIGNAR ';' {$$=$1;}
             | VECTOR ';' {$$=$1;}
+            | MATRIZ ';' {$$=$1;}
             | BREAK ';' {$$=$1;}
             | CONT ';' {$$=$1;}
             | RETORNO ';'  {$$=$1;}
@@ -254,9 +259,15 @@ VECTOR: res_VECTOR tk_menorq TYPES tk_mayorq id '=' tk_CORCHA LISTAEXP tk_CORCHC
       | id '.' res_pushB tk_PARA EXP tk_PARC {$$ = new vector(0,0,new access(0,0,$1),$5,"push_back",nullptr);}
       | id '.' res_remove tk_PARA EXP tk_PARC {$$ = new vector(0,0,new access(0,0,$1),$5,"remove",nullptr);}
       | id tk_CORCHA  EXP tk_CORCHC '=' id tk_CORCHA  EXP tk_CORCHC 
-        {$$ = new vector(0,0,new access(0,0,$1),$3,"asignar",new array_access(0,0,new access(0,0,$1),$8,"get"));}
+        {$$ = new vector(0,0,new access(0,0,$1),$3,"asignar",new array_access(0,0,new access(0,0,$6),$8,"get"));}
       | id tk_CORCHA  EXP tk_CORCHC '=' EXP {$$ = new vector(0,0,new access(0,0,$1),$3,"asignar",$6);}
 ;
+//      int    a [           1       ]
+MATRIZ: TYPES id tk_CORCHA EXP tk_CORCHC '=' tk_CORCHA LISTAEXP tk_CORCHC {std::cout<<"matriz[]"<<std::endl; $$ = new declaracion(0,0,$1,$2,new matriz_exp(0,0,$4,$1,$8));}
+      | TYPES id tk_CORCHA EXP tk_CORCHC tk_CORCHA EXP tk_CORCHC '=' EXP {std::cout<<"matriz [][]"<<std::endl;}
+
+;
+
 PRINT : PRINTF tk_PARA LISTAEXP tk_PARC { $$ = new print(@1.begin.line,@1.begin.column,$3); }
 ;
 
@@ -381,4 +392,7 @@ void yy::Parser::error(const yy::location& l, const std::string& m)
 {
     std::cerr << l << ": " << m << std::endl;
 }
+
+
+
 

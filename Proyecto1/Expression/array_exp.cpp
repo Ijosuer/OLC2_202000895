@@ -18,7 +18,6 @@ symbol array_exp::ejecutar(environment *env, ast *tree)
     for(int i=0; i < ExpList->ListExp.size(); ++i){
         tmp = ExpList->ListExp[i]->ejecutar(env,tree);
         if (tmp.Tipo == Tipo) {
-
             Arr.push_back(ExpList->ListExp[i]->ejecutar(env, tree));
         }else{
             tree->ErrorOut+="Error en los tipos del ARRAY";
