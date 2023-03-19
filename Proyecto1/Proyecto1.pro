@@ -24,6 +24,7 @@ Environment/ast.cpp \
     Expression/primitive.cpp \
     Expression/array_exp.cpp \
     Expression/array_access.cpp \
+    Expression/struct_access.cpp \
     Instruction/func_main.cpp \
     Instruction/list_instruction.cpp \
     Instruction/print.cpp \
@@ -61,6 +62,7 @@ HEADERS += \
    Expression/primitive.hpp \
    Expression/array_exp.hpp \
    Expression/array_access.hpp \
+   Expression/struct_access.hpp \
    Instruction/func_main.hpp \
    Instruction/list_instruction.hpp \
    Instruction/print.hpp \

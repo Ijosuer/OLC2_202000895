@@ -33,6 +33,19 @@ void environment::SaveFunc(func_symbol funcSym, std::string id, ast *tree)
     }
 }
 
+void environment::SaveStruct(map<std::string, TipoDato> tabla, std::string id, ast *tree)
+{
+    if (TablaStructs.find(id) == TablaStructs.end())
+    {
+        TablaStructs[id] = tabla;
+    }
+    else
+    {
+        //se reporta un error
+        tree->ErrorOut += "Ya existe el struct "+id;
+    }
+}
+
 symbol environment::GetVariable(std::string id, environment *env, ast *tree)
 {
     bool flag = false;
@@ -95,6 +108,34 @@ func_symbol environment::GetFunc(std::string id, environment *env, ast *tree)
 
     }
     return sym_func;
+}
+
+map<std::string, TipoDato> environment::GetStruct(std::string id, environment *env, ast *tree)
+{
+    map<std::string, TipoDato> sym_struct;
+    environment tmpEnv = *env;
+
+    for( ; ;)
+    {
+        if (tmpEnv.TablaStructs.find(id) == tmpEnv.TablaStructs.end())
+        {
+            if(tmpEnv.Anterior == nullptr)
+            {
+                break;
+            }
+            else
+            {
+                tmpEnv = *tmpEnv.Anterior;
+            }
+        }
+        else
+        {
+            sym_struct = tmpEnv.TablaStructs[id];
+            break;
+        }
+
+    }
+    return sym_struct;
 }
 
 void environment::ActualizarVariable(std::string id,environment *env, symbol valor, ast *tree)

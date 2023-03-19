@@ -59,6 +59,7 @@
     #include "../Expression/operation.hpp"
     #include "../Expression/call_exp.hpp"
     #include "../Expression/map_struct_dec.hpp"
+    #include "../Expression/struct_access.hpp"
     #include "../Expression/list_expression.hpp"
     #include "../Expression/array_exp.hpp"
     #include "../Expression/array_access.hpp"
@@ -83,7 +84,7 @@
     #include "../Instruction/vector.hpp"
 
 
-#line 87 "parser.hpp"
+#line 88 "parser.hpp"
 
 
 # include <cstdlib> // std::abort
@@ -218,7 +219,7 @@
 #endif
 
 namespace yy {
-#line 222 "parser.hpp"
+#line 223 "parser.hpp"
 
 
 
@@ -2238,7 +2239,7 @@ switch (yykind)
     // YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
     // positive, shift that token.  If negative, reduce the rule whose
     // number is the opposite.  If YYTABLE_NINF, syntax error.
-    static const unsigned char yytable_[];
+    static const short yytable_[];
 
     static const short yycheck_[];
 
@@ -2482,7 +2483,7 @@ switch (yykind)
     /// Constants.
     enum
     {
-      yylast_ = 934,     ///< Last index in yytable_.
+      yylast_ = 987,     ///< Last index in yytable_.
       yynnts_ = 28,  ///< Number of nonterminal symbols.
       yyfinal_ = 12 ///< Termination state number.
     };
@@ -2867,7 +2868,7 @@ switch (yykind)
 
 
 } // yy
-#line 2871 "parser.hpp"
+#line 2872 "parser.hpp"
 
 
 

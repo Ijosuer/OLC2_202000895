@@ -11,7 +11,8 @@ public:
     expression *Array;
     expression *Index;
     std::string Funcion;
-    vector(int,int, expression*, expression*, std::string);
+    expression *Valor;
+    vector(int,int, expression*, expression*, std::string, expression*);
     void ejecutar(environment *env, ast *tree) override;
 };
 

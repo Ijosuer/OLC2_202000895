@@ -43,6 +43,7 @@
     #include "../Expression/operation.hpp"
     #include "../Expression/call_exp.hpp"
     #include "../Expression/map_struct_dec.hpp"
+    #include "../Expression/struct_access.hpp"
     #include "../Expression/list_expression.hpp"
     #include "../Expression/array_exp.hpp"
     #include "../Expression/array_access.hpp"
@@ -121,8 +122,11 @@
 %type<instruction*> FUNC
 %type<instruction*> LLAMADAF
 %type<instruction*> RETORNO
+%type<instruction*> STRUCT_DECLARATION;
+%type<instruction*> STRUCT_CREATION;
 %type<TipoDato> TYPES
 %type<map_struct_dec*> LISTPARAM
+%type<map_struct_dec*> DEC_LIST
 %type<list_expression*> LISTAEXP
 
 
@@ -205,9 +209,7 @@ DECLARAR: TYPES id  {std::cout<<"Declarando "<<$2<<std::endl;
                             $$ = new declaracion(@1.begin.line,@1.begin.column,$1,$2,$4);
                             }
 ;
-
-ASIGNAR:  id '=' EXP {std::cout<<"Asignando valor a "<<$1<<std::endl; $$ = new asignacion(@1.begin.line,@1.begin.column,$1,$3);}
-        | id tk_LLAVA  EXP tk_LLAVC '=' tk_LLAVA  EXP tk_LLAVC {std::cout<<"Asignando valor vector a: "<<$1<<std::endl;} 
+ASIGNAR:  id '=' EXP {$$ = new asignacion(@1.begin.line,@1.begin.column,$1,$3, nullptr);}
 
 ;
 
@@ -248,9 +250,12 @@ CONT: res_CONTINUE {std::cout<<"continue"<<std::endl;}
 // Vector
 VECTOR: res_VECTOR tk_menorq TYPES tk_mayorq id '=' tk_CORCHA LISTAEXP tk_CORCHC {$$ = new declaracion(0,0,$3,$5,new array_exp(0,0,$3,$8));}
       | res_VECTOR tk_menorq TYPES tk_mayorq id {std::cout<<"VECTOR empty "<<std::endl;}
-      | id '.' res_pushF tk_PARA EXP tk_PARC {$$ = new vector(0,0,new access(0,0,$1),$5,"push_front");}
-      | id '.' res_pushB tk_PARA EXP tk_PARC {$$ = new vector(0,0,new access(0,0,$1),$5,"push_back");}
-      | id '.' res_remove tk_PARA EXP tk_PARC {$$ = new vector(0,0,new access(0,0,$1),$5,"remove");}
+      | id '.' res_pushF tk_PARA EXP tk_PARC {$$ = new vector(0,0,new access(0,0,$1),$5,"push_front",nullptr);}
+      | id '.' res_pushB tk_PARA EXP tk_PARC {$$ = new vector(0,0,new access(0,0,$1),$5,"push_back",nullptr);}
+      | id '.' res_remove tk_PARA EXP tk_PARC {$$ = new vector(0,0,new access(0,0,$1),$5,"remove",nullptr);}
+      | id tk_CORCHA  EXP tk_CORCHC '=' id tk_CORCHA  EXP tk_CORCHC 
+        {$$ = new vector(0,0,new access(0,0,$1),$3,"asignar",new array_access(0,0,new access(0,0,$1),$8,"get"));}
+      | id tk_CORCHA  EXP tk_CORCHC '=' EXP {$$ = new vector(0,0,new access(0,0,$1),$3,"asignar",$6);}
 ;
 PRINT : PRINTF tk_PARA LISTAEXP tk_PARC { $$ = new print(@1.begin.line,@1.begin.column,$3); }
 ;
@@ -274,6 +279,26 @@ LLAMADAF: id tk_PARA LISTAEXP tk_PARC {$$= new call_inst(@1.begin.line,@1.begin.
 
 RETORNO: res_RETURN EXP {$$= new inst_return(@1.begin.line,@1.begin.column,$2);}
         |  res_RETURN {$$= new inst_return(@1.begin.line,@1.begin.column,nullptr);}
+;
+
+STRUCT_DECLARATION: res_struct id tk_LLAVA DEC_LIST tk_LLAVC {$$ = new struct_dec(0,0,$4,$2); }
+;
+
+STRUCT_CREATION : res_struct id id '=' tk_LLAVA LISTAEXP tk_LLAVC 
+                {
+                    $$ = new create_struct(0,0,$2,$3,$6);
+                }
+;
+DEC_LIST : DEC_LIST TYPES id ';' 
+        {
+            $1->newMap($3,$2);
+            $$ = $1;
+        }
+        | TYPES id ';' 
+        {   
+            $$ = new map_struct_dec();
+            $$->newMap($2, $1);
+        }
 ;
 
 TYPES :tk_int { $$ = INTEGER; }

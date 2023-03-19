@@ -10,8 +10,9 @@ public:
     int Col;
     std::string Id;
     expression *Valor;
+    expression *Valor2;
 
-    asignacion(int line, int col, std::string Id, expression *valor);
+    asignacion(int line, int col, std::string Id, expression *valor, expression *valor2);
     void ejecutar(environment *env, ast *tree) override;
 };
 

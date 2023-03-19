@@ -1,11 +1,12 @@
 #include "asignacion.hpp"
 
-asignacion::asignacion(int line, int col, std::string id, expression *valor)
+asignacion::asignacion(int line, int col, std::string id, expression *valor , expression *val2)
 {
   this->Line = line;
   this->Col = col;
   this->Id = id;
   this->Valor = valor; 
+  this->Valor2 = val2; 
 }
 
 void asignacion::ejecutar(environment *env, ast *tree)
@@ -15,8 +16,17 @@ void asignacion::ejecutar(environment *env, ast *tree)
     symbol temp (0,0,"",NULO,nullptr);
     temp = env->GetVariable(Id,env, tree); //Devuelve un simbolo
 
+    symbol vec_sym (0,0,"",NULO,nullptr);
+    vec_sym = this->Valor2->ejecutar(env,tree);
     // std::cout<<"EL tipo de la variable es: "<<temp.Tipo<<" "<<"Valor actual es: "<<*static_cast<int*>(temp.Value)<<std::endl;
     // std::cout<<"El valor a asignar es: "<<*static_cast<int*>(sym.Value)<<std::endl;
+    if (vec_sym.Tipo == INTEGER)
+    {
+        std::cout<<"ENTRA ASIGG VECTOR"<<std::endl;
+        env->ActualizarVariable(Id,env,vec_sym,tree);
+        return;
+    }
+    
     if(sym.Tipo == temp.Tipo)
     {
         if (sym.Tipo == INTEGER)

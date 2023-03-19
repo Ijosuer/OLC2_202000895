@@ -200,3 +200,44 @@ void main()
 
     }
 }
+//---------------------
+//STRUCTSSSSSS
+//---------------------
+void main()
+{
+
+
+struct StructArr {
+    int datos;
+}
+
+struct CentroTuristico {
+    string nombre;
+}
+
+struct Carro {
+    string placa;
+    string color;
+    string tipo;
+}
+
+struct Personaje {
+    string nombre;
+    int edad;
+    string descripcion;
+    //Carro carro_;
+    //StructArr numeros;
+}
+
+CentroTuristico nuevo_centro(string nombre)
+{
+        int a;
+        return centro_turistico;
+}
+
+    printf("*******************STRUCTS");
+
+    printf("*******************CREANDO STRUCTS COMPUESTO");
+
+
+}
