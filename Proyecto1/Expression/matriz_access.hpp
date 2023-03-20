@@ -8,10 +8,10 @@ public:
     int Line;
     int Col;
     expression *Array;
-    expression *Index1;
-    expression *Index2;
-    std::string Funcion;
-    matriz_access(int,int, expression*,expression*, expression*, std::string);
+    expression *Index;
+//    expression *Index2;
+//    std::string Funcion;
+    matriz_access(int,int, expression*,expression*);
     symbol ejecutar(environment *env, ast *tree) override;
 };
 

@@ -124,6 +124,9 @@ symbol array_access::ejecutar(environment *env, ast *tree)
     {
         QVector<symbol> *Arr = (QVector<symbol>*)symArr.Value;
         QVector<symbol> result = *Arr;
+//        for (int i = 0; i < 3; ++i) {
+//            std::cout<<"i:"<<i<<" ="<<*static_cast<int*>(Arr->at(i).Value)<<std::endl;
+//        }
         int *val = (int *)symInd.Value;
         sym = result[*val];
     }

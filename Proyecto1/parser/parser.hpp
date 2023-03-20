@@ -424,6 +424,7 @@ namespace yy {
       // CALL_EXP
       // EXP
       // PRIMITIVE
+      // LIST_ARR
       char dummy2[sizeof (expression*)];
 
       // START
@@ -728,7 +729,8 @@ namespace yy {
         S_LISTAEXP = 87,                         // LISTAEXP
         S_LISTPARAM = 88,                        // LISTPARAM
         S_EXP = 89,                              // EXP
-        S_PRIMITIVE = 90                         // PRIMITIVE
+        S_PRIMITIVE = 90,                        // PRIMITIVE
+        S_LIST_ARR = 91                          // LIST_ARR
       };
     };
 
@@ -772,6 +774,7 @@ namespace yy {
       case symbol_kind::S_CALL_EXP: // CALL_EXP
       case symbol_kind::S_EXP: // EXP
       case symbol_kind::S_PRIMITIVE: // PRIMITIVE
+      case symbol_kind::S_LIST_ARR: // LIST_ARR
         value.move< expression* > (std::move (that.value));
         break;
 
@@ -1038,6 +1041,7 @@ switch (yykind)
       case symbol_kind::S_CALL_EXP: // CALL_EXP
       case symbol_kind::S_EXP: // EXP
       case symbol_kind::S_PRIMITIVE: // PRIMITIVE
+      case symbol_kind::S_LIST_ARR: // LIST_ARR
         value.template destroy< expression* > ();
         break;
 
@@ -2490,8 +2494,8 @@ switch (yykind)
     /// Constants.
     enum
     {
-      yylast_ = 1004,     ///< Last index in yytable_.
-      yynnts_ = 29,  ///< Number of nonterminal symbols.
+      yylast_ = 1002,     ///< Last index in yytable_.
+      yynnts_ = 30,  ///< Number of nonterminal symbols.
       yyfinal_ = 12 ///< Termination state number.
     };
 
@@ -2573,6 +2577,7 @@ switch (yykind)
       case symbol_kind::S_CALL_EXP: // CALL_EXP
       case symbol_kind::S_EXP: // EXP
       case symbol_kind::S_PRIMITIVE: // PRIMITIVE
+      case symbol_kind::S_LIST_ARR: // LIST_ARR
         value.copy< expression* > (YY_MOVE (that.value));
         break;
 
@@ -2711,6 +2716,7 @@ switch (yykind)
       case symbol_kind::S_CALL_EXP: // CALL_EXP
       case symbol_kind::S_EXP: // EXP
       case symbol_kind::S_PRIMITIVE: // PRIMITIVE
+      case symbol_kind::S_LIST_ARR: // LIST_ARR
         value.move< expression* > (YY_MOVE (s.value));
         break;
 
@@ -2877,7 +2883,7 @@ switch (yykind)
 
 
 } // yy
-#line 2881 "parser.hpp"
+#line 2887 "parser.hpp"
 
 
 

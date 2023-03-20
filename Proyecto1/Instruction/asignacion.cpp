@@ -17,7 +17,7 @@ void asignacion::ejecutar(environment *env, ast *tree)
     temp = env->GetVariable(Id,env, tree); //Devuelve un simbolo
 
     symbol vec_sym (0,0,"",NULO,nullptr);
-    vec_sym = this->Valor2->ejecutar(env,tree);
+    if(Valor2 != nullptr)vec_sym = this->Valor2->ejecutar(env,tree);
     // std::cout<<"EL tipo de la variable es: "<<temp.Tipo<<" "<<"Valor actual es: "<<*static_cast<int*>(temp.Value)<<std::endl;
     // std::cout<<"El valor a asignar es: "<<*static_cast<int*>(sym.Value)<<std::endl;
     if (vec_sym.Tipo == INTEGER)
