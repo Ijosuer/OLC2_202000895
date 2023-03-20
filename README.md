@@ -15,13 +15,13 @@
 
 | Carné     | Nombre                              |
 | --------- | ----------------------------------- |
-| 201504220 | Josue Rolando Gramajo Roldan        |
+| 202000895 | Josue Rolando Gramajo Roldan        |
 ---
 
 ## Documentación
 
 # MANUAL DE USUARIO
-##miniOlC
+## mini OL🅒 
 mini OL🅒 IDE es un entorno de desarrollo que provee las herramientas para la escritura de
 programas en lenguaje mini OL🅒. Este IDE nos da la posibilidad de visualizar tanto la
 salida en consola de la ejecución del archivo fuente como los diversos reportes de la
