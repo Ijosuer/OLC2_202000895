@@ -12,8 +12,9 @@ public:
     TipoDato Tipo;
     std::string Id;
     expression *Valor;
+    expression *Index;
 
-    declaracion(int line, int col, TipoDato tipo, std::string Id, expression *valor);
+    declaracion(int line, int col, TipoDato tipo, std::string Id, expression *valor, expression*);
     void ejecutar(environment *env, ast *tree) override;
     std::string getvalor(symbol);
 };

@@ -40,6 +40,8 @@ Environment/ast.cpp \
     Instruction/func_for.cpp \
     Instruction/incremento.cpp \
     Instruction/vector.cpp \
+    Instruction/dec_struct.cpp \
+    Instruction/create_struct.cpp \
     Interfaces/expression.cpp \
     Interfaces/expression.cpp \
     Interfaces/instruction.cpp \
@@ -80,6 +82,8 @@ HEADERS += \
    Instruction/func_for.hpp \
    Instruction/incremento.hpp \
    Instruction/vector.hpp \
+   Instruction/dec_struct.hpp \
+   Instruction/create_struct.hpp \
    Interfaces/expression.hpp \
    Interfaces/expression.hpp \
    Interfaces/instruction.hpp \

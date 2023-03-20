@@ -1,12 +1,14 @@
 #include "declaracion.hpp"
+//#include "qdebug.h"
 
-declaracion::declaracion(int line, int col, TipoDato tipo, std::string id, expression *valor)
+declaracion::declaracion(int line, int col, TipoDato tipo, std::string id, expression *valor, expression* val)
 {
     Line = line;
     Col = col;
     Tipo = tipo;
     Id = id;
     Valor = valor;
+    Index = val;
 }
 void declaracion::ejecutar(environment *env, ast *tree)
 {
@@ -31,7 +33,15 @@ void declaracion::ejecutar(environment *env, ast *tree)
         env->SaveVariable(sym, Id, tree);
     }
     else if (sym.Tipo == VECTOR) {
-        env->SaveVariable(sym, Id, tree);
+        symbol indice = Index->ejecutar(env, tree);
+        std::cout<<"indice: "<<*static_cast<int*>(indice.Value)<<std::endl;
+        QVector<symbol> *Arr = (QVector<symbol>*)sym.Value;
+        std::cout<<"Filas "<< Arr->size()<<std::endl;
+        if (*static_cast<int*>(indice.Value) == Arr->size()) {
+            env->SaveVariable(sym, Id, tree);
+        }else {
+            tree->ErrorOut+="Error valor de indice";
+        }
     }
                                                             //    else if(Tipo == INTEGER && sym.Tipo == FLOAT)
                                                             //    {

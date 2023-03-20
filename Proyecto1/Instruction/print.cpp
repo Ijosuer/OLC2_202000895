@@ -11,7 +11,7 @@ void print::ejecutar(environment *env, ast *tree)
 {
     symbol sym (Line,Col,"",NULO,nullptr);
 
-    std::cout<<"SIZE: "<<Valor->ListExp.size()<<std::endl;
+    // std::cout<<"SIZE: "<<Valor->ListExp.size()<<std::endl;
     // Iterar la cantidad de expresiones
     for (int var = 0; var < Valor->ListExp.size(); ++var) {
         sym = Valor->ListExp[var]->ejecutar(env, tree);
@@ -24,23 +24,20 @@ void print::ejecutar(environment *env, ast *tree)
             tree->ConsoleOut += *static_cast<std::string*>(sym.Value)+" ";
             break;
         case INTEGER:
-            tree->ConsoleOut += std::to_string(*static_cast<int*>(sym.Value))+" ";
+//            tree->ConsoleOut += std::to_string(*static_cast<int*>(sym.Value))+" ";
+            tree->ErrorOut+="Error: No es posible imprimir un INT \n";
             break;
         case BOOL:
-            if(*static_cast<bool*>(sym.Value)){
-                tree->ConsoleOut += "true ";
-            }
-            else
-            {
-                tree->ConsoleOut += "false ";
-            }
+            tree->ErrorOut+="Error: No es posible imprimir un BOOLEAN\n";
             break;
         case FLOAT:
-            tree->ConsoleOut+=std::to_string(*static_cast<float*>(sym.Value))+ " ";
+            tree->ErrorOut+="Error: No es posible imprimir un FLOAT\n";
+//            tree->ConsoleOut+=std::to_string(*static_cast<float*>(sym.Value))+ " ";
             break;
         case VECTOR:
-           tree->ConsoleOut+="Salida ";
-           tree->ConsoleOut += std::to_string(*static_cast<int*>(sym.Value))+" ";
+            tree->ErrorOut+="Error: No es posible imprimir un VECTOR\n";
+//           tree->ConsoleOut+="Salida ";
+//           tree->ConsoleOut += std::to_string(*static_cast<int*>(sym.Value))+" ";
 
             // QVector<symbol> *Arr = (QVector<symbol>*)sym.Value;
             // QVector<symbol> result = *Arr;

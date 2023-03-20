@@ -85,9 +85,11 @@
     #include "../Instruction/incremento.hpp"
     #include "../Instruction/vector.hpp"
     #include "../Instruction/matriz.hpp"
+    #include "../Instruction/create_struct.hpp"
+    #include "../Instruction/dec_struct.hpp"
 
 
-#line 91 "parser.hpp"
+#line 93 "parser.hpp"
 
 
 # include <cstdlib> // std::abort
@@ -222,7 +224,7 @@
 #endif
 
 namespace yy {
-#line 226 "parser.hpp"
+#line 228 "parser.hpp"
 
 
 
@@ -447,17 +449,21 @@ namespace yy {
       // FUNC
       // LLAMADAF
       // RETORNO
+      // STRUCT_DECLARATION
+      // STRUCT_CREATION
       char dummy4[sizeof (instruction*)];
 
       // LISTAEXP
       char dummy5[sizeof (list_expression*)];
 
+      // LIST_STRUC
       // LIST_FUNC
       // LIST_INST
       // ELIF_LIST
       // ELSE
       char dummy6[sizeof (list_instruction*)];
 
+      // DEC_LIST
       // LISTPARAM
       char dummy7[sizeof (map_struct_dec*)];
 
@@ -703,34 +709,38 @@ namespace yy {
         S_61_ = 61,                              // '.'
         S_YYACCEPT = 62,                         // $accept
         S_START = 63,                            // START
-        S_LIST_FUNC = 64,                        // LIST_FUNC
-        S_MAIN = 65,                             // MAIN
-        S_LIST_INST = 66,                        // LIST_INST
-        S_INSTRUCTION = 67,                      // INSTRUCTION
-        S_DECLARAR = 68,                         // DECLARAR
-        S_ASIGNAR = 69,                          // ASIGNAR
-        S_IF = 70,                               // IF
-        S_ELIF_LIST = 71,                        // ELIF_LIST
-        S_ELIF = 72,                             // ELIF
-        S_ELSE = 73,                             // ELSE
-        S_WHILE = 74,                            // WHILE
-        S_FOR = 75,                              // FOR
-        S_BREAK = 76,                            // BREAK
-        S_CONT = 77,                             // CONT
-        S_VECTOR = 78,                           // VECTOR
-        S_MATRIZ = 79,                           // MATRIZ
-        S_PRINT = 80,                            // PRINT
-        S_INCREMENTO = 81,                       // INCREMENTO
-        S_FUNC = 82,                             // FUNC
-        S_CALL_EXP = 83,                         // CALL_EXP
-        S_LLAMADAF = 84,                         // LLAMADAF
-        S_RETORNO = 85,                          // RETORNO
-        S_TYPES = 86,                            // TYPES
-        S_LISTAEXP = 87,                         // LISTAEXP
-        S_LISTPARAM = 88,                        // LISTPARAM
-        S_EXP = 89,                              // EXP
-        S_PRIMITIVE = 90,                        // PRIMITIVE
-        S_LIST_ARR = 91                          // LIST_ARR
+        S_LIST_STRUC = 64,                       // LIST_STRUC
+        S_LIST_FUNC = 65,                        // LIST_FUNC
+        S_MAIN = 66,                             // MAIN
+        S_LIST_INST = 67,                        // LIST_INST
+        S_INSTRUCTION = 68,                      // INSTRUCTION
+        S_DECLARAR = 69,                         // DECLARAR
+        S_ASIGNAR = 70,                          // ASIGNAR
+        S_IF = 71,                               // IF
+        S_ELIF_LIST = 72,                        // ELIF_LIST
+        S_ELIF = 73,                             // ELIF
+        S_ELSE = 74,                             // ELSE
+        S_WHILE = 75,                            // WHILE
+        S_FOR = 76,                              // FOR
+        S_BREAK = 77,                            // BREAK
+        S_CONT = 78,                             // CONT
+        S_VECTOR = 79,                           // VECTOR
+        S_MATRIZ = 80,                           // MATRIZ
+        S_PRINT = 81,                            // PRINT
+        S_INCREMENTO = 82,                       // INCREMENTO
+        S_FUNC = 83,                             // FUNC
+        S_CALL_EXP = 84,                         // CALL_EXP
+        S_LLAMADAF = 85,                         // LLAMADAF
+        S_RETORNO = 86,                          // RETORNO
+        S_STRUCT_DECLARATION = 87,               // STRUCT_DECLARATION
+        S_STRUCT_CREATION = 88,                  // STRUCT_CREATION
+        S_DEC_LIST = 89,                         // DEC_LIST
+        S_TYPES = 90,                            // TYPES
+        S_LISTAEXP = 91,                         // LISTAEXP
+        S_LISTPARAM = 92,                        // LISTPARAM
+        S_EXP = 93,                              // EXP
+        S_PRIMITIVE = 94,                        // PRIMITIVE
+        S_LIST_ARR = 95                          // LIST_ARR
       };
     };
 
@@ -799,6 +809,8 @@ namespace yy {
       case symbol_kind::S_FUNC: // FUNC
       case symbol_kind::S_LLAMADAF: // LLAMADAF
       case symbol_kind::S_RETORNO: // RETORNO
+      case symbol_kind::S_STRUCT_DECLARATION: // STRUCT_DECLARATION
+      case symbol_kind::S_STRUCT_CREATION: // STRUCT_CREATION
         value.move< instruction* > (std::move (that.value));
         break;
 
@@ -806,6 +818,7 @@ namespace yy {
         value.move< list_expression* > (std::move (that.value));
         break;
 
+      case symbol_kind::S_LIST_STRUC: // LIST_STRUC
       case symbol_kind::S_LIST_FUNC: // LIST_FUNC
       case symbol_kind::S_LIST_INST: // LIST_INST
       case symbol_kind::S_ELIF_LIST: // ELIF_LIST
@@ -813,6 +826,7 @@ namespace yy {
         value.move< list_instruction* > (std::move (that.value));
         break;
 
+      case symbol_kind::S_DEC_LIST: // DEC_LIST
       case symbol_kind::S_LISTPARAM: // LISTPARAM
         value.move< map_struct_dec* > (std::move (that.value));
         break;
@@ -1066,6 +1080,8 @@ switch (yykind)
       case symbol_kind::S_FUNC: // FUNC
       case symbol_kind::S_LLAMADAF: // LLAMADAF
       case symbol_kind::S_RETORNO: // RETORNO
+      case symbol_kind::S_STRUCT_DECLARATION: // STRUCT_DECLARATION
+      case symbol_kind::S_STRUCT_CREATION: // STRUCT_CREATION
         value.template destroy< instruction* > ();
         break;
 
@@ -1073,6 +1089,7 @@ switch (yykind)
         value.template destroy< list_expression* > ();
         break;
 
+      case symbol_kind::S_LIST_STRUC: // LIST_STRUC
       case symbol_kind::S_LIST_FUNC: // LIST_FUNC
       case symbol_kind::S_LIST_INST: // LIST_INST
       case symbol_kind::S_ELIF_LIST: // ELIF_LIST
@@ -1080,6 +1097,7 @@ switch (yykind)
         value.template destroy< list_instruction* > ();
         break;
 
+      case symbol_kind::S_DEC_LIST: // DEC_LIST
       case symbol_kind::S_LISTPARAM: // LISTPARAM
         value.template destroy< map_struct_dec* > ();
         break;
@@ -2245,7 +2263,7 @@ switch (yykind)
     static const short yypgoto_[];
 
     // YYDEFGOTO[NTERM-NUM].
-    static const unsigned char yydefgoto_[];
+    static const short yydefgoto_[];
 
     // YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
     // positive, shift that token.  If negative, reduce the rule whose
@@ -2494,9 +2512,9 @@ switch (yykind)
     /// Constants.
     enum
     {
-      yylast_ = 1002,     ///< Last index in yytable_.
-      yynnts_ = 30,  ///< Number of nonterminal symbols.
-      yyfinal_ = 12 ///< Termination state number.
+      yylast_ = 1022,     ///< Last index in yytable_.
+      yynnts_ = 34,  ///< Number of nonterminal symbols.
+      yyfinal_ = 16 ///< Termination state number.
     };
 
 
@@ -2602,6 +2620,8 @@ switch (yykind)
       case symbol_kind::S_FUNC: // FUNC
       case symbol_kind::S_LLAMADAF: // LLAMADAF
       case symbol_kind::S_RETORNO: // RETORNO
+      case symbol_kind::S_STRUCT_DECLARATION: // STRUCT_DECLARATION
+      case symbol_kind::S_STRUCT_CREATION: // STRUCT_CREATION
         value.copy< instruction* > (YY_MOVE (that.value));
         break;
 
@@ -2609,6 +2629,7 @@ switch (yykind)
         value.copy< list_expression* > (YY_MOVE (that.value));
         break;
 
+      case symbol_kind::S_LIST_STRUC: // LIST_STRUC
       case symbol_kind::S_LIST_FUNC: // LIST_FUNC
       case symbol_kind::S_LIST_INST: // LIST_INST
       case symbol_kind::S_ELIF_LIST: // ELIF_LIST
@@ -2616,6 +2637,7 @@ switch (yykind)
         value.copy< list_instruction* > (YY_MOVE (that.value));
         break;
 
+      case symbol_kind::S_DEC_LIST: // DEC_LIST
       case symbol_kind::S_LISTPARAM: // LISTPARAM
         value.copy< map_struct_dec* > (YY_MOVE (that.value));
         break;
@@ -2741,6 +2763,8 @@ switch (yykind)
       case symbol_kind::S_FUNC: // FUNC
       case symbol_kind::S_LLAMADAF: // LLAMADAF
       case symbol_kind::S_RETORNO: // RETORNO
+      case symbol_kind::S_STRUCT_DECLARATION: // STRUCT_DECLARATION
+      case symbol_kind::S_STRUCT_CREATION: // STRUCT_CREATION
         value.move< instruction* > (YY_MOVE (s.value));
         break;
 
@@ -2748,6 +2772,7 @@ switch (yykind)
         value.move< list_expression* > (YY_MOVE (s.value));
         break;
 
+      case symbol_kind::S_LIST_STRUC: // LIST_STRUC
       case symbol_kind::S_LIST_FUNC: // LIST_FUNC
       case symbol_kind::S_LIST_INST: // LIST_INST
       case symbol_kind::S_ELIF_LIST: // ELIF_LIST
@@ -2755,6 +2780,7 @@ switch (yykind)
         value.move< list_instruction* > (YY_MOVE (s.value));
         break;
 
+      case symbol_kind::S_DEC_LIST: // DEC_LIST
       case symbol_kind::S_LISTPARAM: // LISTPARAM
         value.move< map_struct_dec* > (YY_MOVE (s.value));
         break;
@@ -2883,7 +2909,7 @@ switch (yykind)
 
 
 } // yy
-#line 2887 "parser.hpp"
+#line 2913 "parser.hpp"
 
 
 
