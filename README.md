@@ -20,4 +20,4 @@
 ## Documentación
 
 # MANUAL DE USUARIO
-##miniOl<b>C</b>
+##miniOlC
