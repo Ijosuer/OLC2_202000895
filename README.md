@@ -1,3 +1,4 @@
+#OLC2_N
 ---
 
 **Universidad de San Carlos de Guatemala**
@@ -21,3 +22,7 @@
 
 # MANUAL DE USUARIO
 ##miniOlC
+mini OL🅒 IDE es un entorno de desarrollo que provee las herramientas para la escritura de
+programas en lenguaje mini OL🅒. Este IDE nos da la posibilidad de visualizar tanto la
+salida en consola de la ejecución del archivo fuente como los diversos reportes de la
+aplicación que se explican más adelante.
