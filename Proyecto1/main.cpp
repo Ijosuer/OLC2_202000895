@@ -46,7 +46,7 @@ void leer(){
     //ejecuta el analizador
     OCL2Calc::ParserCtx analizador;
     //Leemos el archivo de entrada
-    QString entrada = read_file(":/pruebas/entrada.txt");
+    QString entrada = read_file(":/pruebas/entrada2.txt");
     //    qDebug()<<entrada;
     analizador.Analizar(entrada.toStdString());
     std::cout<<analizador.Salida<<std::endl;
@@ -55,7 +55,7 @@ void leer(){
 int main(int argc, char *argv[])
 {
 
-//    ejecutar();
+//    leer();
 //    return 0;
 
     QApplication a(argc, argv);

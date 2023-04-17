@@ -20,14 +20,15 @@ symbol matriz_exp::ejecutar(environment *env, ast *tree)
     map<std::string, TipoDato>::iterator i;
     for(int i=0; i < ExpList->ListExp.size(); ++i){
         tmp = ExpList->ListExp[i]->ejecutar(env,tree);
-        if (tmp.Tipo == INTEGER || tmp.Tipo == VECTOR) {
+        if (tmp.Tipo == INTEGER || tmp.Tipo == VECTOR || tmp.Tipo == STRING || tmp.Tipo == BOOL || tmp.Tipo == FLOAT) {
 
             Arr.push_back(ExpList->ListExp[i]->ejecutar(env, tree));
         }else{
-            tree->ErrorOut+="Error en los tipos del ARRAY";
+            tree->ErrorOut+="Error en los tipos de la matriz";
             break;
         }
     }
+    std::cout<<"EXP\n";
     this->ArrTemp = Arr;
     sym = symbol(Line, Col, "", VECTOR, &ArrTemp);
     return sym;

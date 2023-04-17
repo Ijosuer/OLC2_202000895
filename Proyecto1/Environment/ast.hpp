@@ -12,7 +12,11 @@ public:
     std::string GraphOut;
     bool EliFlag;
     bool ifReturn;
+//    bool flagm;
     QVector<symbol> ListReturn;
+    QVector<symbol> TablaReporte;
+    QVector<std::string> TablaReporteEntorno;
+    QVector<std::string> idNodos;
     ast();
 };
 

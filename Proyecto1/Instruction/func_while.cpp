@@ -30,6 +30,7 @@ void func_while::ejecutar(environment *env, ast *tree)
           break;
         }
         cont+=1;
+        // std::cout<<cont<<std::endl;
         // Volver a ejecutar condicion en el entorno anterior
         sym = Condition->ejecutar(env,tree);
       }

@@ -11,7 +11,7 @@ struct_access::struct_access(int line,int col, expression* structexp, std::strin
 symbol struct_access::ejecutar(environment *env, ast *tree)
 {
     symbol sym (0,0,"",NULO,nullptr);
-
+//   std::cout<<"Entra en acceso struct"<<std::endl;
     //recuperar struct
     symbol symStruct = StructExp->ejecutar(env, tree);
     environment *envStruct = (environment *)symStruct.Value;

@@ -15,11 +15,11 @@ void func_for::ejecutar(environment *env, ast *tree)
     environment *new_env = new environment(env, "FOR") ;
     Sentencia1->ejecutar(new_env,tree); //Ejecutando declaracion
     symbol sym = Condition->ejecutar(new_env,tree);
-    Sentencia2->ejecutar(new_env,tree); //Ejecutando asignacion 
+    // Sentencia2->ejecutar(new_env,tree); //Ejecutando asignacion 
     if (sym.Tipo == BOOL)
     {
       int cont =0;
-        std::cout<<"entra a ejecutar"<<std::endl;
+//        std::cout<<"entra a ejecutar"<<std::endl;
       while (true && cont < 1000)
       {
         // Crear entorno de FOR

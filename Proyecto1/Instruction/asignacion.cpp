@@ -6,9 +6,29 @@ asignacion::asignacion(int line, int col, std::string id, expression *valor , ex
   this->Col = col;
   this->Id = id;
   this->Valor = valor; 
-  this->Valor2 = val2; 
+  this->Valor2 = val2;
 }
 
+std::string getvalor(symbol sym)
+{
+    if (sym.Tipo == INTEGER)
+    {
+        return std::to_string(*static_cast<int*>(sym.Value));
+    }
+    else if (sym.Tipo == BOOL)
+    {
+        return std::to_string(*static_cast<bool*>(sym.Value));
+    }
+    else if (sym.Tipo == FLOAT)
+    {
+        return std::to_string(*static_cast<float*>(sym.Value));
+    }
+    else
+    {
+        return*static_cast<std::string*>(sym.Value);
+    }
+
+}
 void asignacion::ejecutar(environment *env, ast *tree)
 {
     symbol sym (0,0,"",NULO,nullptr);
@@ -55,6 +75,14 @@ void asignacion::ejecutar(environment *env, ast *tree)
         
         // env->Tabla[Id] = sym;
         env->ActualizarVariable(this->Id,env,sym,tree);
+        std::string nameNodo = "instruccion_"+std::to_string(this->Line)+"_"+std::to_string(this->Col)+"_";
+        std::string val = getvalor(sym);
+        tree->idNodos.push_back(nameNodo);
+        tree->GraphOut+=nameNodo+"[label=\"<Instruccion> Asignacion\"];\n";
+        tree->GraphOut+=nameNodo+"1[label=\"<Id>\\n"+(this->Id)+"\"];\n";
+        tree->GraphOut+=nameNodo+"2[label=\"<Valor>\\n"+(val)+"\"];\n";
+        tree->GraphOut+=nameNodo+"->"+nameNodo+"1;\n";
+        tree->GraphOut+=nameNodo+"->"+nameNodo+"2;\n";
     }
     else
     {

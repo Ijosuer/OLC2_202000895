@@ -40,9 +40,9 @@ void main()
             printf("SEGUNDO IF CORRECTO");
         }
     }
-	else if (aux <= 3) 
-	{
-        printf("PRIMER IF INCORRECTO");
+    else if (aux <= 3)
+    {
+    printf("PRIMER IF INCORRECTO");
         if (true && (aux == 1)) 
 		{
             printf("SEGUNDO IF INCORRECTO");
@@ -56,8 +56,8 @@ void main()
             printf("SEGUNDO IF CORRECTO");
         } 
     }
-	else if (aux == a)
-	{
+    else if (aux == a)
+    {
         printf("PRIMER IF INCORRECTO");
         if (true && (aux == 1))
 		{
@@ -95,7 +95,7 @@ void main()
             index = (index / 2) - 1;
         } 
 
-        printf(index);
+        printf(iota(index));
     }
 
     printf("");
@@ -103,7 +103,8 @@ void main()
     printf("================================WHILE-2================================");
     printf("=======================================================================");
 
-    index = -2;
+    index = 0;
+    index = index - 2;
     index = index + 1;
 
     while (index != 12)
@@ -117,7 +118,7 @@ void main()
 		{
             printf("**********  ***************  ******                 ******                 ******              **********");
         }
-		else if (index >= 3 && index <= 5)
+                else if (index > 3 && index < 5)
 		{
             printf("**********  ***************  ******  *********************  *************  ******  **********************");
         }
@@ -125,7 +126,7 @@ void main()
 		{
             printf("**********  ***************  ******                 ******                 ******  **********************");
         }
-		else if (index >= 7 && index <= 9)
+                else if (index > 7 && index < 9)
 		{
             printf("**********  ***************  ********************   ******  *************  ******  **********************");
         }
@@ -135,6 +136,7 @@ void main()
         } 
     }
 
+    /*
     printf("");
     printf("=======================================================================");
     printf("=============================TRANSFERENCIA=============================");
@@ -159,26 +161,7 @@ void main()
     }
 
     printf("Se debió imprimir");
-
-    printf("");
-    printf("=======================================================================");
-    printf("==================================FOR==================================");
-    printf("=======================================================================");
-
-    for  (int i = 0; i <= 9; i++)
-	{
-        string output = " ";
-       /* for (int j = 0; j <= (10 - i); j++)
-		{
-        }*/
-
-        for (int k = 0; k <= i; k++)
-		{
-            output = output + "* ";
-        }
-        printf(output);
-
-    }
+    */
 
     printf("");
     printf("=======================================================================");
@@ -201,6 +184,10 @@ void main()
 
     }
 }
+
+
+
+
 //---------------------
 //STRUCTSSSSSS
 //---------------------
@@ -239,6 +226,118 @@ CentroTuristico nuevo_centro(string nombre)
     printf("*******************STRUCTS");
 
     printf("*******************CREANDO STRUCTS COMPUESTO");
+
+
+}
+
+
+
+
+
+void main(){
+
+    int index = 0;
+    index = index -2;
+
+    index = index + 1;
+    while (index != 12){
+
+        int index = 0;
+        index = index + 1;
+
+
+        if (index == 0 || index == 1 || index == 11 || index == 12){
+            System.out.println("*********************************************************************************************************");
+        }
+        else if (index == 2)
+        {
+            System.out.println("********** *************** ****** ****** ****** **********");
+        }
+
+
+        else if (index >= 3 && index <= 5)
+        {
+            System.out.println("********** *************** ****** ********************* ************* ****** **********************");
+        }
+        else if (index == 6)
+        {
+             System.out.println("********** *************** ****** ****** ****** **********************");
+        }
+        else if (index >= 7 && index <= 9)
+        {
+            System.out.println("********** *************** ******************** ****** ************* ****** **********************");
+        }
+        else if (index == 10)
+        {
+            System.out.println("********** ****** ****** ************* ****** **********");
+        }
+    }
+}
+
+
+/* algoritmo insercion */
+
+
+void ordInsercion(vector<int> arr)
+
+
+{
+    int n = arr.size();
+    int key = 0;
+    int j = 0;
+    for(int i = 1; i < n; i++){
+        key = arr[i];
+        j = i - 1;
+
+        while(j>=0 && arr[j] > key){
+            arr[j+1] = arr[j];
+            j--;
+        }
+        arr[j+1] = key;
+
+    }
+
+}
+
+
+/* algoritmo insercion */
+void ordInsercion(vector<int> arr)
+{
+    int i = 0;
+    int j = 0;
+    int aux = 0;
+
+    i = 1;
+    while (i < arr.size())
+        {
+        j = i;
+        aux = arr[i];
+
+        while (j > 0 && aux < arr[j-1])
+                {
+            arr[j] = arr[j - 1];
+            j = j - 1;
+        }
+
+        arr[j] = aux;
+        i = i + 1;
+    }
+}
+
+
+
+
+void main () {
+
+
+vector<int> arr3 = [90, 3, 40, 10, 8, 5];
+
+
+printArray(arr3);
+
+
+//ordInsercion(arr3);
+
 
 
 }

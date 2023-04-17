@@ -30,17 +30,31 @@ void declaracion::ejecutar(environment *env, ast *tree)
             *a = *static_cast<bool*>(sym.Value);
             sym.Value = a;
         }
+        sym.Id = Id;
+        tree->TablaReporte.push_back(sym);
+        tree->TablaReporteEntorno.push_back(env->Id);
         env->SaveVariable(sym, Id, tree);
     }
     else if (sym.Tipo == VECTOR) {
-        symbol indice = Index->ejecutar(env, tree);
-        std::cout<<"indice: "<<*static_cast<int*>(indice.Value)<<std::endl;
-        QVector<symbol> *Arr = (QVector<symbol>*)sym.Value;
-        std::cout<<"Filas "<< Arr->size()<<std::endl;
-        if (*static_cast<int*>(indice.Value) == Arr->size()) {
+        if (Index == nullptr) {
+            sym.Id = Id;
             env->SaveVariable(sym, Id, tree);
-        }else {
-            tree->ErrorOut+="Error valor de indice";
+            tree->TablaReporte.push_back(sym);
+            tree->TablaReporteEntorno.push_back(env->Id);
+        }else{
+
+            symbol indice = Index->ejecutar(env, tree);
+    //        std::cout<<"indice: "<<*static_cast<int*>(indice.Value)<<std::endl;
+            QVector<symbol> *Arr = (QVector<symbol>*)sym.Value;
+    //        std::cout<<"Filas "<< Arr->size()<<std::endl;
+            if (*static_cast<int*>(indice.Value) == Arr->size()) {
+                sym.Id = Id;
+                env->SaveVariable(sym, Id, tree);
+                tree->TablaReporte.push_back(sym);
+                tree->TablaReporteEntorno.push_back(env->Id);
+            }else {
+                tree->ErrorOut+="Error valor de indice";
+            }
         }
     }
                                                             //    else if(Tipo == INTEGER && sym.Tipo == FLOAT)
@@ -61,15 +75,16 @@ void declaracion::ejecutar(environment *env, ast *tree)
         //se reporta un error
         tree->ErrorOut += "Error: el tipo es incorrecto\n";
     }
-    std::string nameNodo = "instrucccion_"+std::to_string(this->Line)+"_"+std::to_string(this->Col)+"_";
-//    std::string val = getvalor(sym);
-//    tree->GraphOut+=nameNodo+"[label=\"<Instruccion> Declaracion\"];\n";
-//    tree->GraphOut+=nameNodo+"1[label=\"<Tipo>\\n"+std::to_string(this->Tipo)+"\"];\n";
-//    tree->GraphOut+=nameNodo+"2[label=\"<Nombre>\\n"+(this->Id)+"\"];\n";
-//    tree->GraphOut+=nameNodo+"3[label=\"<Valor>\\n"+(val)+"\"];\n";
-//    tree->GraphOut+=nameNodo+"->"+nameNodo+"1;\n";
-//    tree->GraphOut+=nameNodo+"->"+nameNodo+"2;\n";
-//    tree->GraphOut+=nameNodo+"->"+nameNodo+"3;\n";
+     std::string nameNodo = "instruccion_"+std::to_string(this->Line)+"_"+std::to_string(this->Col)+"_";
+     std::string val = getvalor(sym);
+     tree->idNodos.push_back(nameNodo);
+     tree->GraphOut+=nameNodo+"[label=\"<Instruccion> Declaracion\"];\n";
+     tree->GraphOut+=nameNodo+"1[label=\"<Tipo>\\n"+std::to_string(this->Tipo)+"\"];\n";
+     tree->GraphOut+=nameNodo+"2[label=\"<Id>\\n"+(this->Id)+"\"];\n";
+     tree->GraphOut+=nameNodo+"3[label=\"<Valor>\\n"+(val)+"\"];\n";
+     tree->GraphOut+=nameNodo+"->"+nameNodo+"1;\n";
+     tree->GraphOut+=nameNodo+"->"+nameNodo+"2;\n";
+     tree->GraphOut+=nameNodo+"->"+nameNodo+"3;\n";
 }
 std::string
 declaracion::getvalor(symbol sym)
@@ -77,6 +92,14 @@ declaracion::getvalor(symbol sym)
     if (sym.Tipo == INTEGER)
     {
         return std::to_string(*static_cast<int*>(sym.Value));
+    }
+    else if (sym.Tipo == BOOL)
+    {
+        return std::to_string(*static_cast<bool*>(sym.Value));
+    }
+    else if (sym.Tipo == FLOAT)
+    {
+        return std::to_string(*static_cast<float*>(sym.Value));
     }
     else
     {

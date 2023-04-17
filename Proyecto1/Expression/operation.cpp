@@ -472,8 +472,11 @@ symbol operation::ejecutar(environment *env, ast *tree)
         {
             int *val1 = (int *)op1.Value;
             int *val2 = (int *)op2.Value;
-            int result = *val1 < *val2;
+            bool result = *val1 < *val2;
             sym = symbol(Line,Col,"",BOOL,&result);
+            bool *a= new bool;
+            *a = *static_cast<bool*>(sym.Value);
+            sym.Value = a;
         }
         else
         {
@@ -488,8 +491,12 @@ symbol operation::ejecutar(environment *env, ast *tree)
         {
             int *val1 = (int *)op1.Value;
             int *val2 = (int *)op2.Value;
-            int result = *val1 > *val2;
+            bool result = *val1 > *val2;
             sym = symbol(Line,Col,"",BOOL,&result);
+            bool *a= new bool;
+            *a = *static_cast<bool*>(sym.Value);
+            sym.Value = a;
+            
         }
         else
         {
@@ -503,8 +510,11 @@ symbol operation::ejecutar(environment *env, ast *tree)
         {
             int *val1 = (int *)op1.Value;
             int *val2 = (int *)op2.Value;
-            int result = *val1 <= *val2;
+            bool result = *val1 <= *val2;
             sym = symbol(Line,Col,"",BOOL,&result);
+            bool *a = new bool;
+            *a = *static_cast<bool*>(sym.Value);
+            sym.Value = a;
         }
         else
         {
@@ -518,8 +528,11 @@ symbol operation::ejecutar(environment *env, ast *tree)
         {
             int *val1 = (int *)op1.Value;
             int *val2 = (int *)op2.Value;
-            int result = *val1 >= *val2;
+            bool result = *val1 >= *val2;
             sym = symbol(Line,Col,"",BOOL,&result);
+            bool *a = new bool;
+            *a = *static_cast<bool*>(sym.Value);
+            sym.Value = a;
         }
         else
         {
@@ -533,22 +546,34 @@ symbol operation::ejecutar(environment *env, ast *tree)
         {
             int *val1 = (int *)op1.Value;
             int *val2 = (int *)op2.Value;
-            int result = *val1 != *val2;
+            bool result = *val1 != *val2;
             sym = symbol(Line,Col,"",BOOL,&result);
+            bool *a = new bool;
+            *a = *static_cast<bool*>(sym.Value);
+            sym.Value = a;
+            // std::cout<<result<<std::endl;
         }
         else if(Dominante == STRING)
         {
             std::string *val1 = (std::string *)op1.Value;
             std::string *val2 = (std::string *)op2.Value;
-            int result = *val1 != *val2;
+            bool result = *val1 != *val2;
             sym = symbol(Line,Col,"",BOOL,&result);
+            bool *a = new bool;
+            *a = *static_cast<bool*>(sym.Value);
+            sym.Value = a;
+            // std::cout<<result<<std::endl;
         }
         else if(Dominante == BOOL)
         {
             bool *val1 = (bool *)op1.Value;
             bool *val2 = (bool *)op2.Value;
-            int result = *val1 != *val2;
+            bool result = *val1 != *val2;
             sym = symbol(Line,Col,"",BOOL,&result);
+            bool *a = new bool;
+            *a = *static_cast<bool*>(sym.Value);
+            sym.Value = a;
+            // std::cout<<result<<std::endl;
         }
         else
         {
@@ -562,22 +587,45 @@ symbol operation::ejecutar(environment *env, ast *tree)
         {
             int *val1 = (int *)op1.Value;
             int *val2 = (int *)op2.Value;
-            int result = *val1 == *val2;
+            bool result = *val1 == *val2;
             sym = symbol(Line,Col,"",BOOL,&result);
+            bool *a = new bool;
+            *a = *static_cast<bool*>(sym.Value);
+            sym.Value = a;
+            // std::cout<<result<<std::endl;
         }
         else if(Dominante == STRING)
         {
             std::string *val1 = (std::string *)op1.Value;
             std::string *val2 = (std::string *)op2.Value;
-            int result = *val1 == *val2;
+            bool result = *val1 == *val2;
             sym = symbol(Line,Col,"",BOOL,&result);
+            bool *a = new bool;
+            *a = *static_cast<bool*>(sym.Value);
+            sym.Value = a;
+            // std::cout<<result<<std::endl;
         }
         else if(Dominante == BOOL)
         {
             bool *val1 = (bool *)op1.Value;
             bool *val2 = (bool *)op2.Value;
-            int result = *val1 == *val2;
+            bool result = *val1 == *val2;
             sym = symbol(Line,Col,"",BOOL,&result);
+            bool *a = new bool;
+            *a = *static_cast<bool*>(sym.Value);
+            sym.Value = a;
+            // std::cout<<result<<std::endl;
+        }
+        else if(Dominante == FLOAT)
+        {
+            float *val1 = (float *)op1.Value;
+            float *val2 = (float *)op2.Value;
+            bool result = *val1 == *val2;
+            sym = symbol(Line,Col,"",BOOL,&result);
+            bool *a = new bool;
+            *a = *static_cast<bool*>(sym.Value);
+            sym.Value = a;
+            // std::cout<<result<<std::endl;
         }
         else
         {
@@ -587,15 +635,20 @@ symbol operation::ejecutar(environment *env, ast *tree)
     }
     else if (Operator == "&&")
     {
-        if(op1.Tipo == BOOL && op2.Tipo == BOOL)
+        if(op1.Tipo == BOOL || op2.Tipo == BOOL)
         {
+//            std::cout<<op1.Tipo<<" Ambos son bool "<<op2.Tipo<<std::endl;
             bool *val1 = (bool *)op1.Value;
             bool *val2 = (bool *)op2.Value;
-            int result = *val1 && *val2;
+//            std::cout<<*static_cast<int*>(op1.Value)<<" && "<<*static_cast<int*>(op2.Value)<<std::endl;
+//            std::cout<<*val1<<" && "<<*val2<<std::endl;
+            bool result = *val1 == true && *val2 == true;
+            // if(*val1 && *val2 == true){result = 1;}else{result = 0;};
             sym = symbol(Line,Col,"",BOOL,&result);
             bool *a = new bool;
             *a = *static_cast<bool*>(sym.Value);
             sym.Value = a;
+//            std::cout<<"RESULTADO: "<<*static_cast<bool*>(sym.Value)<<std::endl;
         }
         else
         {
@@ -604,15 +657,16 @@ symbol operation::ejecutar(environment *env, ast *tree)
     }
     else if (Operator == "||")
     {
-        if(op1.Tipo == BOOL && op2.Tipo == BOOL)
+        if(op1.Tipo == BOOL || op2.Tipo == BOOL)
         {
             bool *val1 = (bool *)op1.Value;
             bool *val2 = (bool *)op2.Value;
-            int result = *val1 || *val2;
+            bool result = *val1==true || *val2==true;
             sym = symbol(Line,Col,"",BOOL,&result);
             bool *a = new bool;
             *a = *static_cast<bool*>(sym.Value);
             sym.Value = a;
+//            std::cout<<"RESULTADO: "<<*static_cast<bool*>(sym.Value)<<std::endl;
         }
         else
         {
@@ -625,7 +679,7 @@ symbol operation::ejecutar(environment *env, ast *tree)
         {
             // bool *val1 = (bool *)op1.Value;
             bool *val2 = (bool *)op2.Value;
-            int result = !*val2;
+            bool result = !*val2;
             sym = symbol(Line,Col,"",BOOL,&result);
             bool *a = new bool;
             *a = *static_cast<bool*>(sym.Value);
@@ -728,6 +782,9 @@ symbol operation::ejecutar(environment *env, ast *tree)
         {
             tree->ErrorOut+="Error [atoi]: tipo incorrecto en atof";
         }
+    }
+    else if (Operator == "negacion") {
+
     }
     return sym;
 }

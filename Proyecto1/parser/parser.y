@@ -136,6 +136,7 @@
 %type<map_struct_dec*> LISTPARAM
 %type<map_struct_dec*> DEC_LIST
 %type<list_expression*> LISTAEXP
+%type<list_expression*> LISTAEXP2
 
 
 /* printer */
@@ -150,6 +151,7 @@ START : MAIN
     {
       ctx.Main = $1;
       ctx.Functions = nullptr;
+      ctx.Structs = nullptr;
         ctx.Salida = "!Ejecución realizada con éxito!";
       $$ = $1;
     }
@@ -157,6 +159,7 @@ START : MAIN
     {
         ctx.Main = $2;
         ctx.Functions = $1;
+      ctx.Structs = nullptr;
         ctx.Salida = "!Ejecución realizada con éxito!";
         $$ = $2;
     }
@@ -164,11 +167,13 @@ START : MAIN
     {
         ctx.Main = $3;
         ctx.Functions = $1;
+      ctx.Structs = $2;
         ctx.Salida = "!Ejecución realizada con éxito!";
         $$ = $3;
     }
     | LIST_STRUC LIST_FUNC MAIN
     {
+      ctx.Structs = $1;
         ctx.Main = $3;
         ctx.Functions = $2;
         ctx.Salida = "!Ejecución realizada con éxito!";
@@ -176,7 +181,9 @@ START : MAIN
     }
     | LIST_STRUC MAIN
     {
+    std::cout<<"ENTRA EN struct y main"<<std::endl;
         ctx.Main = $2;
+      ctx.Structs = $1;
         ctx.Functions = nullptr;
         ctx.Salida = "!Ejecución realizada con éxito!";
         $$ = $2;
@@ -190,7 +197,7 @@ LIST_STRUC: LIST_STRUC STRUCT_DECLARATION
             }
           | STRUCT_DECLARATION
             {
-                $$== new list_instruction();
+                $$=new list_instruction();
                 $$-> newInst($1);
             }
 ;
@@ -238,7 +245,7 @@ INSTRUCTION : PRINT ';' { $$ = $1; }
             | RETORNO ';'  {$$=$1;}
             | INCREMENTO ';' {$$=$1;}
             | LLAMADAF ';' {$$=$1;}
-            | STRUCT_CREATION ';' {$$=$1;}
+            | STRUCT_CREATION {$$=$1;}
             | WHILE  {$$=$1;}
             | FOR  {$$=$1;}
             | IF  {$$=$1;}
@@ -301,9 +308,11 @@ VECTOR: res_VECTOR tk_menorq TYPES tk_mayorq id '=' tk_CORCHA LISTAEXP tk_CORCHC
       | id tk_CORCHA  EXP tk_CORCHC '=' EXP {std::cout<<"[][]"<<std::endl; $$ = new vector(0,0,new access(0,0,$1),$3,"asignar",$6);}
 ;
 //      int    a [           1       ]
-MATRIZ: TYPES id tk_CORCHA EXP tk_CORCHC '=' tk_CORCHA LISTAEXP tk_CORCHC {$$ = new declaracion(0,0,$1,$2,new matriz_exp(0,0,$8),$4);}
+MATRIZ: TYPES id tk_CORCHA EXP tk_CORCHC '=' tk_LLAVA LISTAEXP tk_LLAVC {$$ = new declaracion(0,0,$1,$2,new matriz_exp(0,0,$8),$4);}
       | TYPES id tk_CORCHA EXP tk_CORCHC tk_CORCHA EXP tk_CORCHC '=' EXP
                                                 {$$ = new declaracion(0,0,$1,$2,$10,$4);}
+      | TYPES id tk_CORCHA EXP tk_CORCHC tk_CORCHA EXP tk_CORCHC tk_CORCHA EXP tk_CORCHC '=' EXP
+                                                {$$ = new declaracion(0,0,$1,$2,$13,$4);}
 
 ;
 
@@ -336,8 +345,14 @@ STRUCT_DECLARATION: res_struct id tk_LLAVA DEC_LIST tk_LLAVC
                     }
 ;
 
-STRUCT_CREATION : res_struct id id '=' tk_LLAVA LISTAEXP tk_LLAVC 
+STRUCT_CREATION : res_struct id id '=' tk_LLAVA LISTAEXP tk_LLAVC ';'
                 {
+                    // std::cout<<"ENTRA EN EL STRUCcreation"<<std::endl;
+                    $$ = new create_struct(0,0,$2,$3,$6);
+                }
+                | res_struct id id '=' tk_LLAVA LISTAEXP2 tk_LLAVC ';'
+                {
+                    // std::cout<<"ENTRA EN EL STRUCcreation"<<std::endl;
                     $$ = new create_struct(0,0,$2,$3,$6);
                 }
 ;
@@ -351,6 +366,13 @@ DEC_LIST : DEC_LIST TYPES id ';'
             $$ = new map_struct_dec();
             $$->newMap($2, $1);
         }
+        // | DEC_LIST id id ';' 
+        // {   
+        //     std::cout<<"DEC IDID"<<std::endl;
+        //     // $$ = new map_struct_dec();
+        //     // $$->newMap($2, $1);
+        // }
+        
 ;
 
 TYPES :tk_int { $$ = INTEGER; }
@@ -358,6 +380,7 @@ TYPES :tk_int { $$ = INTEGER; }
     | tk_float { $$ = FLOAT; }
     | tk_bool { $$ = BOOL; }
     |tk_void { $$ = NULO; }
+    |res_VECTOR  tk_menorq TYPES tk_mayorq { $$ = VECTOR; }
 ;
 LISTAEXP: LISTAEXP ',' EXP 
        {
@@ -371,6 +394,18 @@ LISTAEXP: LISTAEXP ',' EXP
         }
 ;
 
+LISTAEXP2: LISTAEXP2 ',' '.' id '=' EXP 
+       {
+            $1->newExp($6);
+            $$ = $1;
+        }
+        | '.' id '=' EXP 
+        {
+            $$ = new list_expression();
+            $$->newExp($4);
+        }
+;
+
 LISTPARAM: LISTPARAM ','  TYPES id
         {
             $1->newMap($4,$3);
@@ -381,9 +416,25 @@ LISTPARAM: LISTPARAM ','  TYPES id
             $$ = new map_struct_dec();
             $$->newMap($2,$1);
         }
+         | TYPES id tk_CORCHA NUMERO tk_CORCHC
+        {
+            $$ = new map_struct_dec();
+            $$->newMap($2,$1);
+        }
+         | TYPES id tk_CORCHA NUMERO tk_CORCHC tk_CORCHA NUMERO tk_CORCHC
+        {
+            $$ = new map_struct_dec();
+            $$->newMap($2,$1);
+        }
+         | TYPES id tk_CORCHA NUMERO tk_CORCHC tk_CORCHA NUMERO tk_CORCHC tk_CORCHA NUMERO tk_CORCHC
+        {
+            $$ = new map_struct_dec();
+            $$->newMap($2,$1);
+        }
 ;
 
-EXP : EXP suma EXP { $$ = new operation(@1.begin.line,@1.begin.column, $1, $3, "+");}
+EXP : menos EXP { $$ = new operation(@1.begin.line,@1.begin.column, $2, $2, "negacion");}
+    | EXP suma EXP { $$ = new operation(@1.begin.line,@1.begin.column, $1, $3, "+");}
     | EXP menos EXP { $$ = new operation(@1.begin.line,@1.begin.column, $1, $3, "-"); }
     | EXP mult EXP { $$ = new operation(@1.begin.line,@1.begin.column, $1, $3, "*"); }
     | EXP div EXP { $$ = new operation(@1.begin.line,@1.begin.column, $1, $3, "/"); }
@@ -401,12 +452,10 @@ EXP : EXP suma EXP { $$ = new operation(@1.begin.line,@1.begin.column, $1, $3, "
     | res_atoi tk_PARA EXP tk_PARC {$$ = new operation(@1.begin.line,@1.begin.column, $3, $3, "atoi");}
     | res_iota tk_PARA EXP tk_PARC {$$ = new operation(@1.begin.line,@1.begin.column, $3, $3, "iota");}
     | tk_not EXP { $$ = new operation(@1.begin.line,@1.begin.column, $2, $2, "!"); }
-    | tk_LLAVA LISTAEXP tk_LLAVC { $$ = new matriz_exp(0,0,$2); }
-    // | tk_LLAVA LISTAEXP tk_LLAVC { std::cout<<"Ahora "<<"{}"<<std::endl;  $$ = new array_exp(0,0,$2);}
+    | tk_LLAVA LISTAEXP tk_LLAVC {$$ = new matriz_exp(0,0,$2); }
     | id '.' res_size tk_PARA  tk_PARC {$$ = new array_access(0,0,new access(0,0,$1),nullptr,"size");}
     | id '.' res_get tk_PARA EXP tk_PARC {$$ = new array_access(0,0,new access(0,0,$1),$5,"get");}
-    // | id tk_CORCHA EXP tk_CORCHC {$$ = new array_access(0,0,new access(0,0,$1),$3,"");}
-    // | id tk_CORCHA EXP tk_CORCHC tk_CORCHA EXP tk_CORCHC {$$ = new array_access(0,0,new access(0,0,$1),$3);}
+    | id '.' id { std::cout<<"ENTRA EN GRAMAR"<<std::endl; $$ = new struct_access(0,0,new access(0,0,$1),$3); }
     | PRIMITIVE { $$ = $1;}
     | CALL_EXP
     // | INCREMENTO
@@ -431,7 +480,6 @@ PRIMITIVE : NUMERO {  int num = stoi($1); $$ = new primitive(@1.begin.line,@1.be
 ;
 
 LIST_ARR : LIST_ARR tk_CORCHA EXP tk_CORCHC { $$ = new array_access(0,0,$1,$3,""); }
-       | LIST_ARR '.' id { $$ = new struct_access(0,0,$1,$3); }
         | id {$$ = new access(0,0,$1); }  
 ;
 %%
@@ -441,7 +489,3 @@ void yy::Parser::error(const yy::location& l, const std::string& m)
 {
     std::cerr << l << ": " << m << std::endl;
 }
-
-
-
-

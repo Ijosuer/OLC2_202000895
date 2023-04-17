@@ -23,7 +23,7 @@ void environment::SaveFunc(func_symbol funcSym, std::string id, ast *tree)
 {
     if (TablaFunctions.find(id) == TablaFunctions.end())
     {
-        std::cout << "guardando: "<<id<<std::endl;
+//        std::cout << "guardando: "<<id<<std::endl;
         TablaFunctions[id] = funcSym;
     }
     else
@@ -35,6 +35,7 @@ void environment::SaveFunc(func_symbol funcSym, std::string id, ast *tree)
 
 void environment::SaveStruct(map<std::string, TipoDato> tabla, std::string id, ast *tree)
 {
+        // std::cout << "guardando: "<<id<<std::endl;
     if (TablaStructs.find(id) == TablaStructs.end())
     {
         TablaStructs[id] = tabla;
@@ -192,7 +193,7 @@ void environment::aument(std::string id,environment *env, std::string operador, 
                     sym.Value = a;
                     env->Tabla[id]= sym;
                 }
-            else if (operador == "--") {
+            }else if (operador == "--") {
                 if (sym.Tipo == INTEGER) {
                     int *a = new int;
                     int result =*static_cast<int*>(sym.Value)-1;
@@ -206,6 +207,5 @@ void environment::aument(std::string id,environment *env, std::string operador, 
             }
             break;
         }
-    }
     }
 }

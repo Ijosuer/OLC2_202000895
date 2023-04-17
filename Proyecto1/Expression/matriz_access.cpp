@@ -19,13 +19,14 @@ symbol matriz_access::ejecutar(environment *env, ast *tree)
 
 //    if(Index1 != nullptr)symInd = Index1->ejecutar(env, tree);
 //    if(Index2 != nullptr)symInd2 = Index2->ejecutar(env, tree);
-
+    std::cout<<"ACCES"<<std::endl;
     //validando tipo array
     if(symArr.Tipo == VECTOR && symInd.Tipo == INTEGER)
     {
         QVector<symbol> *tmp = (QVector<symbol>*)symArr.Value;
         QVector<symbol> result = *tmp;
         int *val = (int *)symInd.Value;
+        std::cout<<*val;
         sym = result[*val];
     }
     return sym;

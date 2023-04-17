@@ -10,6 +10,7 @@ class environment
 {
 public:
     environment *Anterior;
+    bool flagmine =false;
     map<std::string, symbol> Tabla;
     std::string Id;
     map<std::string, func_symbol> TablaFunctions;

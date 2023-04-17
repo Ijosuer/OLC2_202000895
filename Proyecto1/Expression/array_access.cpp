@@ -101,6 +101,7 @@ symbol array_access::ejecutar(environment *env, ast *tree)
             sym.Value = a;
     }
     else if (Funcion == "get") {
+//        std::cout<<"ARRAY getxd\n";
         //validando tipo array
         if(symArr.Tipo == VECTOR && symInd.Tipo == INTEGER)
         {
@@ -108,6 +109,7 @@ symbol array_access::ejecutar(environment *env, ast *tree)
             QVector<symbol> result = *Arr;
             int *val = (int *)symInd.Value;
             if (*val > Arr->size() - 1) {
+
                 tree->ErrorOut+= "Error: INDEX out of range ";
             }else{
                 sym = result[*val];
@@ -122,13 +124,24 @@ symbol array_access::ejecutar(environment *env, ast *tree)
     //validando tipo array
     if(symArr.Tipo == VECTOR && symInd.Tipo == INTEGER)
     {
+
         QVector<symbol> *Arr = (QVector<symbol>*)symArr.Value;
         QVector<symbol> result = *Arr;
 //        for (int i = 0; i < 3; ++i) {
 //            std::cout<<"i:"<<i<<" ="<<*static_cast<int*>(Arr->at(i).Value)<<std::endl;
 //        }
         int *val = (int *)symInd.Value;
-        sym = result[*val];
+//        std::cout<<"val: "<<*val<<std::endl;
+//        sym = result[*val];
+        if(*val < 0){
+//            std::cout<<"acaen index\n";
+//            tree->ErrorOut+="Error: INDEX out of range\n";
+            sym = result[0];
+            return sym;
+        }else{
+//            std::cout<<"ARRAY access\n";
+            sym = result[*val];
+        }
     }
 
     return sym;

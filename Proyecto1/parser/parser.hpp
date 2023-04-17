@@ -454,6 +454,7 @@ namespace yy {
       char dummy4[sizeof (instruction*)];
 
       // LISTAEXP
+      // LISTAEXP2
       char dummy5[sizeof (list_expression*)];
 
       // LIST_STRUC
@@ -737,10 +738,11 @@ namespace yy {
         S_DEC_LIST = 89,                         // DEC_LIST
         S_TYPES = 90,                            // TYPES
         S_LISTAEXP = 91,                         // LISTAEXP
-        S_LISTPARAM = 92,                        // LISTPARAM
-        S_EXP = 93,                              // EXP
-        S_PRIMITIVE = 94,                        // PRIMITIVE
-        S_LIST_ARR = 95                          // LIST_ARR
+        S_LISTAEXP2 = 92,                        // LISTAEXP2
+        S_LISTPARAM = 93,                        // LISTPARAM
+        S_EXP = 94,                              // EXP
+        S_PRIMITIVE = 95,                        // PRIMITIVE
+        S_LIST_ARR = 96                          // LIST_ARR
       };
     };
 
@@ -815,6 +817,7 @@ namespace yy {
         break;
 
       case symbol_kind::S_LISTAEXP: // LISTAEXP
+      case symbol_kind::S_LISTAEXP2: // LISTAEXP2
         value.move< list_expression* > (std::move (that.value));
         break;
 
@@ -1086,6 +1089,7 @@ switch (yykind)
         break;
 
       case symbol_kind::S_LISTAEXP: // LISTAEXP
+      case symbol_kind::S_LISTAEXP2: // LISTAEXP2
         value.template destroy< list_expression* > ();
         break;
 
@@ -2512,9 +2516,9 @@ switch (yykind)
     /// Constants.
     enum
     {
-      yylast_ = 1022,     ///< Last index in yytable_.
-      yynnts_ = 34,  ///< Number of nonterminal symbols.
-      yyfinal_ = 16 ///< Termination state number.
+      yylast_ = 1134,     ///< Last index in yytable_.
+      yynnts_ = 35,  ///< Number of nonterminal symbols.
+      yyfinal_ = 18 ///< Termination state number.
     };
 
 
@@ -2626,6 +2630,7 @@ switch (yykind)
         break;
 
       case symbol_kind::S_LISTAEXP: // LISTAEXP
+      case symbol_kind::S_LISTAEXP2: // LISTAEXP2
         value.copy< list_expression* > (YY_MOVE (that.value));
         break;
 
@@ -2769,6 +2774,7 @@ switch (yykind)
         break;
 
       case symbol_kind::S_LISTAEXP: // LISTAEXP
+      case symbol_kind::S_LISTAEXP2: // LISTAEXP2
         value.move< list_expression* > (YY_MOVE (s.value));
         break;
 
@@ -2909,7 +2915,7 @@ switch (yykind)
 
 
 } // yy
-#line 2913 "parser.hpp"
+#line 2919 "parser.hpp"
 
 
 

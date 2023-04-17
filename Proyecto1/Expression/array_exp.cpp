@@ -26,7 +26,7 @@ symbol array_exp::ejecutar(environment *env, ast *tree)
     }
     this->ArrTemp = Arr;
     sym = symbol(Line, Col, "", VECTOR, &ArrTemp);
-    std::cout<<"ES ACA >>>>"<<*static_cast<int*>( ArrTemp.at(1).Value)<<std::endl;
-    std::cout<<"El sym>>>>"<<*static_cast<int*>( sym.Value)<<std::endl;
+    // std::cout<<"ES ACA >>>>"<<*static_cast<int*>( ArrTemp.at(1).Value)<<std::endl;
+    // std::cout<<"El sym>>>>"<<*static_cast<int*>( sym.Value)<<std::endl;
     return sym;
 }

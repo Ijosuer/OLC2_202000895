@@ -12,7 +12,7 @@ function::function(int line, int col, TipoDato tipo, std::string id, map_struct_
 
 void function::ejecutar(environment *env, ast *tree)
 {
-    std::cout << "Ejecutando la funcion "<< Id << std::endl;
+//    std::cout << "Ejecutando la funcion "<< Id << std::endl;
     func_symbol funcSym = func_symbol(Line, Col, Tipo, Id, ParamList, InstList);
     env->SaveFunc(funcSym, Id, tree);
 }

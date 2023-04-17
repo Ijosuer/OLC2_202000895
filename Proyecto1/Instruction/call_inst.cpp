@@ -26,7 +26,7 @@ void call_inst::ejecutar(environment *env, ast *tree)
     //obtenemos instrucciones guardados
     list_instruction instTemp = *(list_instruction*)sym_func.InstList;
     //validando si la llamada trae parametros
-    std::cout<<ExpList<<std::endl;
+    // std::cout<<ExpList<<std::endl;
     if(ExpList != nullptr)
     {
         //Comparando cantidad de parametros
