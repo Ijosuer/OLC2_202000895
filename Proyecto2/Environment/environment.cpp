@@ -4,13 +4,16 @@ environment::environment(environment *back, std::string id)
 {   
     Anterior = back;
     Id = id;
+    Size = 0;
 }
 
-void environment::SaveVariable(symbol sym, std::string id, ast *tree)
+void environment::SaveVariable(std::string id, TipoDato tipo ,ast *tree)
 {
     if (Tabla.find(id) == Tabla.end())
     {   
+        symbol sym(0,0,id,tipo,Size);
         Tabla[id] = sym;
+        Size += 1;
     }
     else
     {
@@ -49,13 +52,11 @@ void environment::SaveStruct(map<std::string, TipoDato> tabla, std::string id, a
 
 symbol environment::GetVariable(std::string id, environment *env, ast *tree)
 {
-    bool flag = false;
-    symbol sym (0,0,"",NULO,nullptr);
+    symbol sym = *new symbol;
     environment tmpEnv = *env;
 
     for( ; ;)
     {
-
         if (tmpEnv.Tabla.find(id) == tmpEnv.Tabla.end())
         {
             if(tmpEnv.Anterior == nullptr)
@@ -73,16 +74,15 @@ symbol environment::GetVariable(std::string id, environment *env, ast *tree)
                             tmpEnv.Tabla[id].Col,
                             tmpEnv.Tabla[id].Id,
                             tmpEnv.Tabla[id].Tipo,
-                            tmpEnv.Tabla[id].Value);
-            flag = true;
+                            tmpEnv.Tabla[id].Posicion);
             sym = tempSym;
             break;
         }
 
     }
+
     return sym;
 }
-
 func_symbol environment::GetFunc(std::string id, environment *env, ast *tree)
 {
     func_symbol sym_func;
@@ -162,51 +162,4 @@ void environment::ActualizarVariable(std::string id,environment *env, symbol val
         }
     }
     
-}
-
-void environment::aument(std::string id,environment *env, std::string operador, ast *tree)
-{
-    environment tmpEnv = *env;
-    symbol sym (0,0,"",NULO,nullptr);
-    for(;;)
-    {
-        if(env->Tabla.find(id) == env->Tabla.end())
-        {
-            if(env->Anterior == nullptr)
-            {
-                break;
-            }
-            else
-            {
-                env = env->Anterior;
-            }
-        }
-        else
-        {
-            sym = env->Tabla[id];
-            if (operador == "++") {
-                if (sym.Tipo == INTEGER) {
-                    int *a = new int;
-                    int result =*static_cast<int*>(sym.Value)+1;
-                    sym.Value = static_cast<int*>(&result);
-                    *a = *static_cast<int*>(sym.Value);
-                    sym.Value = a;
-                    env->Tabla[id]= sym;
-                }
-            else if (operador == "--") {
-                if (sym.Tipo == INTEGER) {
-                    int *a = new int;
-                    int result =*static_cast<int*>(sym.Value)-1;
-                    sym.Value = static_cast<int*>(&result);
-                    *a = *static_cast<int*>(sym.Value);
-                    sym.Value = a;
-                    env->Tabla[id]= sym;
-                }
-            }else{
-                tree->ErrorOut+="Error en el aumento";
-            }
-            break;
-        }
-    }
-    }
 }

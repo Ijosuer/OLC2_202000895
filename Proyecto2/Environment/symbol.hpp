@@ -10,9 +10,9 @@ public:
     int Col;
     std::string Id;
     TipoDato Tipo;
-    void *Value;
+    int Posicion;
     symbol();
-    symbol(int line, int col, std::string id, TipoDato tipo, void *value);
+    symbol(int line, int col, std::string id, TipoDato tipo, int pos);
 };
 
 #endif // SYMBOL_HPP

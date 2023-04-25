@@ -6,13 +6,13 @@ primitive::primitive(int line, int col, TipoDato tipo, std::string strval, int n
     Tipo = tipo;
     strVal = strval;
     numVal = numval;
-    floatVal = floatbal;
+//    floatVal = floatbal;
     boolVal = boolval;
 }
 
 value primitive::ejecutar(environment *env, ast* tree, generator_code *gen)
 {
-    value val("", false, NULO);
+    value val;
 
     if(Tipo == INTEGER)
     {
@@ -54,6 +54,7 @@ value primitive::ejecutar(environment *env, ast* tree, generator_code *gen)
        {
            gen->AddGoto(falseLabel);
        }
+       val = value("",false,Tipo);
        val.TrueLvl.append(trueLabel);
        val.FalseLvl.append(falseLabel);
     }

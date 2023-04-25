@@ -10,7 +10,7 @@ public:
     TipoDato Tipo;
     std::string strVal;
     int numVal;
-    float floatVal;
+//    float floatVal;
     bool boolVal;
 
     primitive(int, int, TipoDato, std::string, int, float, bool);

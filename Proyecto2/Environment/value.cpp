@@ -1,5 +1,9 @@
 #include "value.hpp"
 
+value::value()
+{
+
+}
 value::value(std::string value, bool istemp, TipoDato tipo)
 {
     Value = value;

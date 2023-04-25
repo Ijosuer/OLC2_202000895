@@ -5,6 +5,7 @@
 #include <QMessageBox>
 #include "parserctx.hpp"
 #include <iostream>
+#include <QClipboard>
 
 using namespace std;
 
@@ -13,6 +14,18 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    // Carga la imagen desde un archivo
+    QPixmap pixmap(":/Archivos/portapapeles.png");
+    // Ajusta el tamaño de la imagen utilizando la función scaled()
+    QPixmap scaledPixmap = pixmap.scaled(QSize(50, 50)); // Cambia los valores 100, 100 por los tamaños deseados
+
+    // Establece la imagen como fondo del botón
+    ui->Clipboard->setIcon(QIcon(scaledPixmap));
+    ui->Clipboard->setIconSize(scaledPixmap.size());
+
+    // Establece los estilos de QPushButton
+    ui->Clipboard->setFlat(true);  // Elimina el estilo de botón predeterminado
 }
 
 MainWindow::~MainWindow()
@@ -24,7 +37,6 @@ MainWindow::~MainWindow()
 void MainWindow::on_pushButton_clicked()
 {
     QMessageBox *msg = new QMessageBox();
-    QMessageBox *msg3 = new QMessageBox();
     //creando entorno global
     environment *GlobalEnv = new environment(NULL, "Global");
     //creando ast
@@ -58,5 +70,16 @@ void MainWindow::on_pushButton_clicked()
         msg->exec();
         ui->Consola->setText(QString::fromStdString(Root->ErrorOut));
     }
+}
+
+void MainWindow::on_Clipboard_clicked(){
+    // Crea un objeto de portapapeles
+    QClipboard *clipboard = QApplication::clipboard();
+
+    // Define el texto que se copiará al portapapeles
+    QString text = ui->Consola->toPlainText();
+
+    // Copia el texto al portapapeles
+    clipboard->setText(text);
 }
 

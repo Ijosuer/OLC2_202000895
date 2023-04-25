@@ -25,6 +25,10 @@ public:
     void AddAssign(std::string target, std::string val);
     void AddComment(std::string val);
     void AddSetHeap(std::string index, std::string value);
+    void AddCall(std::string target);
+    void AddSetStack(std::string index, std::string value);
+    void AddGetHeap(std::string target, std::string index);
+    void AddGetStack(std::string index, std::string target);
     void AddBr();
     void AddPrintf(std::string typePrint, std::string value);
     void GeneratePrintString();

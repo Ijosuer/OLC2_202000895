@@ -1,4 +1,4 @@
-#include "operation.hpp"
+    #include "operation.hpp"
 
 operation::operation(int line, int col, expression *op_izq, expression *op_der, std::string operador){
     Line = line;
@@ -20,7 +20,7 @@ value operation::ejecutar(environment *env, ast *tree, generator_code *gen)
         {INTEGER, FLOAT, STRING, BOOL, NULO},
         {NULO, NULO, NULO, NULO, NULO}
     };
-
+//    std::cout<<"Temp: "<<gen->Temporal<<std::endl;
     std::string newTemp = gen->newTemp();
     if(Operator == "+")
     {

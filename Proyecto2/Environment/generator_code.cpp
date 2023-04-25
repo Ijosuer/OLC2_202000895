@@ -111,6 +111,20 @@ void generator_code::AddComment(std::string val)
 
 }
 
+// Agregando una llamada
+void generator_code::AddCall(std::string target)
+{
+    if(MainCode)
+    {
+        Code.append(target+"();\n");
+    }
+    else
+    {
+        FuncCode.append(target+"();\n");
+    }
+
+}
+
 //set heap
 void generator_code::AddSetHeap(std::string index, std::string value) {
     if (MainCode)
@@ -120,6 +134,42 @@ void generator_code::AddSetHeap(std::string index, std::string value) {
     else
     {
         FuncCode.append("heap[" + index + "] = " + value + ";\n");
+    }
+}
+
+//set heap
+void generator_code::AddSetStack(std::string index, std::string value) {
+    if (MainCode)
+    {
+        Code.append("stack[" + index + "] = " + value + ";\n");
+    }
+    else
+    {
+        FuncCode.append("stack[" + index + "] = " + value + ";\n");
+    }
+}
+
+//get heap
+void generator_code::AddGetHeap(std::string target, std::string index) {
+    if (MainCode)
+    {
+        Code.append(target + " = heap[" + index + "];\n");
+    }
+    else
+    {
+        FuncCode.append(target + " = heap[" + index + "];\n");
+    }
+}
+
+//get stack
+void generator_code::AddGetStack(std::string target, std::string index) {
+    if (MainCode)
+    {
+        Code.append(target + " = stack[" + index + "];\n");
+    }
+    else
+    {
+        FuncCode.append(target + " = stack[" + index + "];\n");
     }
 }
 
@@ -180,19 +230,22 @@ void generator_code::GeneratePrintString()
 void generator_code::GenerateFinalCode()
 {
     //creando cabecera
-    FinalCode += "//****************** Clase 10 ******************\n\n";
+    FinalCode += "//****************** Mini OLC ******************\n\n";
     FinalCode += "#include <stdio.h>\n";
     FinalCode += "float stack[100000];\n";
     FinalCode += "float heap[100000];\n";
     FinalCode += "float P;\n";
     FinalCode += "float H;\n";
     //agregando temporales
-    std::string tmpDec = "float "+TempList[0];
-    for(int i=1; i< TempList.size(); i++){
-        tmpDec += ", "+TempList[i];
+    if (TempList.size() > 0)
+    {
+        std::string tmpDec = "float "+TempList[0];
+        for(int i=1; i< TempList.size(); i++){
+            tmpDec += ", "+TempList[i];
+        }
+        tmpDec += ";\n\n";
+        FinalCode += tmpDec;
     }
-    tmpDec += ";\n\n";
-    FinalCode += tmpDec;
     //agregando funciones
     for(int i=0; i<FuncCode.size(); i++){
         FinalCode += FuncCode[i];
