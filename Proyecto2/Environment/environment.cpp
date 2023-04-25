@@ -7,13 +7,14 @@ environment::environment(environment *back, std::string id)
     Size = 0;
 }
 
-void environment::SaveVariable(std::string id, TipoDato tipo ,ast *tree)
+symbol environment::SaveVariable(std::string id, TipoDato tipo ,ast *tree)
 {
     if (Tabla.find(id) == Tabla.end())
     {   
         symbol sym(0,0,id,tipo,Size);
         Tabla[id] = sym;
         Size += 1;
+        return sym;
     }
     else
     {

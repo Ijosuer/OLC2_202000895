@@ -10,18 +10,40 @@ print::print(int line, int col, expression *valor)
 void print::ejecutar(environment *env, ast *tree, generator_code *gen)
 {
     value result = Valor->ejecutar(env, tree, gen);
-    switch (result.TipoExpresion) {
-    case INTEGER:
+   if(result.TipoExpresion == INTEGER){
+
+        gen->AddComment("----Print Numero----");
         gen->AddPrintf("d", "(int)"+ result.Value);
         gen->AddPrintf("c", "10");
         gen->AddBr();
-        break;
-    case STRING:
+       }
+   else if(result.TipoExpresion == STRING){
+        gen->AddComment("----Print STRING----");
         //llamar a generar printstring
         gen->GeneratePrintString();
         //agregar codigo en el main
-        break;
-    case BOOL:
+        std::string NewTemp1 = gen->newTemp();
+        std::string NewTemp2 = gen->newTemp();
+        int size = env->Size;
+        gen->AddComment("new temporal en pos vacia");
+        gen->AddExpression(NewTemp1, "P", std::to_string(size), "+");
+        gen->AddComment("se deja espacio de retorno");
+        gen->AddExpression(NewTemp1, NewTemp1, "1", "+");
+        gen->AddComment("se coloca string en parametro que se manda");
+        gen->AddSetStack("(int)"+ NewTemp1, result.Value);
+        gen->AddComment("cambio de entorno simulado");
+        gen->AddExpression("P", "P", std::to_string(size), "+");
+        gen->AddComment("Llamada");
+        gen->AddCall("olc3d_printString");
+        gen->AddComment("obtener retorno");
+        gen->AddGetStack(NewTemp2, "(int)P");
+        gen->AddComment("regreso del entorno");
+        gen->AddExpression("P", "P", std::to_string(size), "-");
+        gen->AddComment("salto de linea");
+        gen->AddPrintf("c", "10");
+        gen->AddBr();
+    }
+    else if(result.TipoExpresion == BOOL){
         std::string newLabel = gen->newLabel();
         //add true labels
         for(int i=0; i < result.TrueLvl.size(); i++)
@@ -46,7 +68,6 @@ void print::ejecutar(environment *env, ast *tree, generator_code *gen)
         gen->AddLabel(newLabel);
         gen->AddPrintf("c", "10");
         gen->AddBr();
-        break;
     }
 }
 
