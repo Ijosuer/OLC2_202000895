@@ -11,12 +11,14 @@ asignacion::asignacion(int line, int col, std::string id, expression *valor , ex
 
 void asignacion::ejecutar(environment *env, ast *tree, generator_code* gen)
 {
-    std::cout<<">Execute asignacion"<<std::endl;
-    value sym = this->Valor->ejecutar(env,tree,gen);
-    std::string tmp = gen->newTemp();
-    std::string tmp2 = gen->newTemp();
-    gen->Code+="\t" + tmp + " = heap[(int)" + tmp2 + "];\n";
-    gen->AddPrintf("f",tmp);
-    gen->AddPrintf("c","10");
+    gen->AddComment("Asignación");
+    //buscando variable en entorno
+    symbol sym = env->GetVariable(Id,env, tree);
+    //ejecutando valor
+    value val = Valor->ejecutar(env, tree, gen);
+    //asignando valor
+    gen->AddSetStack(std::to_string(sym.Posicion), val.Value);
+    gen->AddBr();
+
 
 }
