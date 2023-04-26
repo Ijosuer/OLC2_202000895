@@ -12,5 +12,26 @@ func_if::func_if(int line, int col, expression *condition, instruction *block, i
 
 void func_if::ejecutar(environment *env, ast *tree, generator_code *gen)
 {
-     std::cout<<">Execute IF"<<std::endl;
+    gen->AddComment("Ejecutando IF");
+    value val = Condition->ejecutar(env, tree, gen);
+    std::string RetLvl = gen->newLabel();
+//    Agregar etiqutas true
+    for (int i = 0; i < val.TrueLvl.size(); ++i) {
+        gen->AddLabel(val.TrueLvl[i]);
+    }
+    Block->ejecutar(env , tree, gen);
+    gen->AddGoto(RetLvl);
+//    Agregar etiqutas false
+    for (int i = 0; i < val.FalseLvl.size(); ++i) {
+        gen->AddLabel(val.FalseLvl[i]);
+    }
+//    if (ElseIfBlock != nullptr) {
+//        ElseIfBlock->ejecutar(env, tree, gen);
+//    }
+//    gen->AddGoto(RetLvl);
+    if (ElseBlock != nullptr) {
+        ElseBlock->ejecutar(env, tree, gen);
+//        gen->AddGoto(RetLvl);
+    }
+    gen->AddLabel(RetLvl);
 }
