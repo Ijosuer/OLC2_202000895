@@ -20,7 +20,6 @@ value operation::ejecutar(environment *env, ast *tree, generator_code *gen)
         {INTEGER, FLOAT, STRING, BOOL, NULO},
         {NULO, NULO, NULO, NULO, NULO}
     };
-//    std::cout<<"Temp: "<<gen->Temporal<<std::endl;
     std::string newTemp = gen->newTemp();
     if(Operator == "+")
     {
@@ -31,6 +30,13 @@ value operation::ejecutar(environment *env, ast *tree, generator_code *gen)
         {
             gen->AddExpression(newTemp,op1.Value,op2.Value,"+");
             val = value(newTemp, true, Dominante);
+            return val;
+        }
+        else if (Dominante == STRING ) {
+            //String + String
+            value val = gen->GenerateConcatString(op1,op2);
+//            gen->AddComment("Llamar funcion para concatenar str");
+//            gen->Code.append("olc3d_ConcatString(); \n");
             return val;
         }
         else

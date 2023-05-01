@@ -225,6 +225,114 @@ void generator_code::GeneratePrintString()
         PrintStringFlag = false;
     }
 }
+//value generator_code::prueba()
+//{
+//    Natives.append("void olc3d_ConcatString() {\n");
+//    std::string tmp = newTemp();
+//    Natives.append("\t" +tmp+ " = "+" H; \n");
+//    std::string lvlret = newLabel();
+//    std::string lvlexit = newLabel();
+//    //Temporal del str
+//    std::string tmpFirst = newTemp();
+//    Natives.append("\t" +tmpFirst+ " = "+" t2; \n"); //op1,value
+//    Natives.append("\t"+ lvlret+ ": \n");
+//    std::string tmpRet = newTemp();
+//    Natives.append("\t" +tmpRet+ " = heap[(int)"+ tmpFirst +"]; \n");
+//    std::string lvlv = newLabel();
+//    Natives.append("\tif(" + tmpRet + " != -1) goto " + lvlv + ";\n");
+//    Natives.append("\tgoto " + lvlexit+ ";\n");
+//    Natives.append("\t"+ lvlv+ ": \n");
+//    Natives.append("\t heap[(int)H] =" + tmpRet +";\n");
+//    Natives.append("\t H = H + 1; \n");
+//    Natives.append("\t" + tmpFirst + " = " + tmpFirst + " + 1;\n");
+//    Natives.append("\tgoto " + lvlret + ";\n");
+//    //Encuntra -1 en el Heap
+//    Natives.append("\t"+ lvlexit+ ": \n");
+
+//    lvlret = newLabel();
+//    lvlexit = newLabel();
+//    //Temporal del str
+//    tmpFirst = newTemp();
+//    Natives.append("\t" +tmpFirst+ " = "+" t3; \n"); //op1,value
+//    Natives.append("\t"+ lvlret+ ": \n");
+//    tmpRet = newTemp();
+//    Natives.append("\t" +tmpRet+ " = heap[(int)"+ tmpFirst +"]; \n");
+//    lvlv = newLabel();
+//    Natives.append("\tif(" + tmpRet + " != -1) goto " + lvlv + ";\n");
+//    Natives.append("\tgoto " + lvlexit+ ";\n");
+//    Natives.append("\t"+ lvlv+ ": \n");
+//    Natives.append("\t heap[(int)H" "] =" + tmpRet+"; \n");
+//    Natives.append("\t H = H + 1; \n");
+//    Natives.append("\t" + tmpFirst + " = " + tmpFirst + " + 1;\n");
+//    Natives.append("\tgoto " + lvlret + ";\n");
+//    //Encuntra -1 en el Heap
+//    Natives.append("\t"+ lvlexit+ ": \n");
+//    Natives.append("\t heap[(int)H" "] = -1; \n");
+//    Natives.append("\t H = H + 1; \n");
+
+//    Natives.append("\t return; \n");
+//    Natives.append("}\n\n");
+//    return value(tmp,true,STRING);
+//}
+
+
+// Funcion para concatenar Strings
+value generator_code::GenerateConcatString(value op1, value op2)
+{
+    value val;
+    this->AddComment("Concat Strigns");
+    std::string tmp = this->newTemp();
+    this->AddAssign(tmp,"H");
+    this->AddComment("Op izq");
+    //NO AGREGO -1 PORQUE QUIERO CONCATENAR
+    std::string labelRepetir = this->newLabel();
+    std::string labelSalir = this->newLabel();
+    //Temporal del string
+    std::string tmpInicio = this->newTemp();
+    this->AddAssign(tmpInicio, op1.Value);
+    this->AddLabel(labelRepetir);
+    std::string tmpIterar = this->newTemp();
+    this->AddAssign(tmpIterar, "heap[(int)"+tmpInicio+"]");
+    std::string labelTrue = this->newLabel();
+    this->AddIf(tmpIterar,"-1","!=",labelTrue);
+    this->AddGoto(labelSalir);
+    this->AddLabel(labelTrue);
+    this->AddSetHeap("(int)H", tmpIterar);
+    this->AddExpression("H", "H", "1", "+");
+    this->AddExpression(tmpInicio, tmpInicio, "1", "+");
+    this->AddGoto(labelRepetir);
+    //encuentra en el heap -1
+    this->AddLabel(labelSalir);
+    this->AddComment("Op der");
+    //NO AGREGO -1 PORQUE QUIERO CONCATENAR
+    labelRepetir = this->newLabel();
+    labelSalir = this->newLabel();
+    //Temporal del string
+    tmpInicio = this->newTemp();
+    this->AddAssign(tmpInicio, op2.Value);
+    this->AddLabel(labelRepetir);
+    tmpIterar = this->newTemp();
+    this->AddAssign(tmpIterar, "heap[(int)"+tmpInicio+"]");
+    labelTrue = this->newLabel();
+    this->AddIf(tmpIterar,"-1","!=",labelTrue);
+    this->AddGoto(labelSalir);
+    this->AddLabel(labelTrue);
+    this->AddSetHeap("(int)H", tmpIterar);
+    this->AddExpression("H", "H", "1", "+");
+    this->AddExpression(tmpInicio, tmpInicio, "1", "+");
+    this->AddGoto(labelRepetir);
+    //encuentra en el heap -1
+    this->AddLabel(labelSalir);
+
+
+    this->AddSetHeap("(int)H", "-1");
+    this->AddExpression("H", "H", "1", "+");
+    val = value(tmp, true, STRING);
+    return val;
+
+
+}
+
 
 //agregar headers
 void generator_code::GenerateFinalCode()

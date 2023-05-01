@@ -1,6 +1,7 @@
 #ifndef GENERATOR_HPP
 #define GENERATOR_HPP
 #include "QVector"
+#include "value.hpp"
 
 class generator_code
 {
@@ -13,6 +14,7 @@ public:
     QVector<std::string> TempList;
     bool MainCode;
     bool PrintStringFlag;
+    bool ConcatStr;
     std::string FinalCode;
 
     generator_code();
@@ -32,6 +34,8 @@ public:
     void AddBr();
     void AddPrintf(std::string typePrint, std::string value);
     void GeneratePrintString();
+    value prueba ();
+    value GenerateConcatString(value op1, value op2);
     void GenerateFinalCode();
 
 };

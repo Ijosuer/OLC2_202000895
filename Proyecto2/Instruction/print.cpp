@@ -18,6 +18,7 @@ void print::ejecutar(environment *env, ast *tree, generator_code *gen)
         gen->AddBr();
        }
    else if(result.TipoExpresion == STRING){
+        std::cout<<"ENTRA PRINTSTR\n";
         gen->AddComment("----Print STRING----");
         //llamar a generar printstring
         gen->GeneratePrintString();
