@@ -15,7 +15,10 @@ public:
     bool MainCode;
     bool PrintStringFlag;
     bool ConcatStr;
+    bool flag = false;
     std::string FinalCode;
+    std::string auxLvl;
+
 
     generator_code();
     std::string newTemp();
