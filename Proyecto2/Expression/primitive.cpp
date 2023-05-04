@@ -24,6 +24,7 @@ value primitive::ejecutar(environment *env, ast* tree, generator_code *gen)
     }
     else if(Tipo == STRING)
     {
+        gen->AddComment("Add HEAP string");
        //nuevo temporal
        std::string newTemp = gen->newTemp();
        //igualar a Heap Pointer

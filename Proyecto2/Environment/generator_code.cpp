@@ -204,77 +204,59 @@ void generator_code::GeneratePrintString()
     if (PrintStringFlag)
     {
         //generando temporales y etiquetas
-        std::string newTemp1 = newTemp();
-        std::string newTemp2 = newTemp();
-        std::string newTemp3 = newTemp();
-        std::string newLvl1 = newLabel();
-        std::string newLvl2 = newLabel();
-        //se genera la funcion printstring
-        Natives.append("void olc3d_printString() {\n");
-        Natives.append("\t" + newTemp1 + " = P + 1;\n");
-        Natives.append("\t" + newTemp2 + " = stack[(int)" + newTemp1 + "];\n");
-        Natives.append("\t" + newLvl2 + ":\n");
-        Natives.append("\t" + newTemp3 + " = heap[(int)" + newTemp2 + "];\n");
-        Natives.append("\tif(" + newTemp3 + " == -1) goto " + newLvl1 + ";\n");
-        Natives.append("\tprintf(\"%c\", (char)" + newTemp3 + ");\n");
-        Natives.append("\t" + newTemp2 + " = " + newTemp2 + " + 1;\n");
-        Natives.append("\tgoto " + newLvl2 + ";\n");
-        Natives.append("\t" + newLvl1 + ":\n");
-        Natives.append("\treturn;\n");
-        Natives.append("}\n\n");
-        PrintStringFlag = false;
+               std::string newTemp1 = newTemp();
+               std::string newTemp2 = newTemp();
+               std::string newTemp3 = newTemp();
+               std::string newTemp4 = newTemp();
+               std::string newTempAdicional = newTemp();
+
+
+               std::string newLvl1 = newLabel();
+               std::string newLvl2 = newLabel();
+               std::string newLvl3 = newLabel();
+               std::string newLvl4 = newLabel();
+               std::string newLvl5 = newLabel();
+               std::string newLvl6 = newLabel();
+
+
+               //se genera la funcion printstring
+               Natives.append("void olc3d_printString() {\n");
+               Natives.append("\t" + newTemp1 + " = P + 1;\n");
+               Natives.append("\t" + newTemp2 + " = stack[(int)" + newTemp1 + "];\n");
+               Natives.append("\t" + newLvl1 + ":\n");
+               Natives.append("\t" + newTemp3 + " = heap[(int)" + newTemp2 + "];\n");
+               Natives.append("\t" + newTempAdicional + " = " + newTemp2 + " +1 ;\n");
+               //Evaluar siguiente linea -2
+               Natives.append("\t" + newTemp4 + " = heap[(int)" + newTempAdicional + "];\n");
+
+               Natives.append("\tif(" + newTemp3 + " == -2) goto " + newLvl2 + ";\n");
+               Natives.append("\tif(" + newTemp4 + " == -2) goto " + newLvl3 + ";\n");
+               Natives.append("\tif(" + newTemp4 + " == -3) goto " + newLvl6 + ";\n");
+               Natives.append("\tgoto " + newLvl4+ ";\n");
+               Natives.append("\t"+newLvl4+ ":\n");
+
+
+               Natives.append("\tif(" + newTemp3 + " == -1) goto " + newLvl5 + ";\n");
+               Natives.append("\tprintf(\"%c\", (char)" + newTemp3 + ");\n");
+               Natives.append("\t" + newTemp2 + " = " + newTemp2 + " + 1;\n");
+               Natives.append("\tgoto " + newLvl1 + ";\n");
+               Natives.append("\t" + newLvl2 + ":\n");
+               Natives.append("\t" + newTemp2 + " = " + newTemp2 + " + 1;\n");
+               Natives.append("\tgoto " + newLvl1 + ";\n");
+               Natives.append("\t" + newLvl3 + ":\n");
+               Natives.append("\tprintf(\"%i\", (int)" + newTemp3 + ");\n");
+               Natives.append("\t" + newTemp2 + " = " + newTemp2 + " + 1;\n");
+               Natives.append("\tgoto " + newLvl1 + ";\n");
+               Natives.append("\t" + newLvl6 + ":\n");
+               Natives.append("\tprintf(\"%.3f\", (float)" + newTemp3 + ");\n");
+               Natives.append("\t" + newTemp2 + " = " + newTemp2 + " + 1;\n");
+               Natives.append("\tgoto " + newLvl1 + ";\n");
+               Natives.append("\t" + newLvl5 + ":\n");
+               Natives.append("\treturn;\n");
+               Natives.append("}\n\n");
+               PrintStringFlag = false;
     }
 }
-//value generator_code::prueba()
-//{
-//    Natives.append("void olc3d_ConcatString() {\n");
-//    std::string tmp = newTemp();
-//    Natives.append("\t" +tmp+ " = "+" H; \n");
-//    std::string lvlret = newLabel();
-//    std::string lvlexit = newLabel();
-//    //Temporal del str
-//    std::string tmpFirst = newTemp();
-//    Natives.append("\t" +tmpFirst+ " = "+" t2; \n"); //op1,value
-//    Natives.append("\t"+ lvlret+ ": \n");
-//    std::string tmpRet = newTemp();
-//    Natives.append("\t" +tmpRet+ " = heap[(int)"+ tmpFirst +"]; \n");
-//    std::string lvlv = newLabel();
-//    Natives.append("\tif(" + tmpRet + " != -1) goto " + lvlv + ";\n");
-//    Natives.append("\tgoto " + lvlexit+ ";\n");
-//    Natives.append("\t"+ lvlv+ ": \n");
-//    Natives.append("\t heap[(int)H] =" + tmpRet +";\n");
-//    Natives.append("\t H = H + 1; \n");
-//    Natives.append("\t" + tmpFirst + " = " + tmpFirst + " + 1;\n");
-//    Natives.append("\tgoto " + lvlret + ";\n");
-//    //Encuntra -1 en el Heap
-//    Natives.append("\t"+ lvlexit+ ": \n");
-
-//    lvlret = newLabel();
-//    lvlexit = newLabel();
-//    //Temporal del str
-//    tmpFirst = newTemp();
-//    Natives.append("\t" +tmpFirst+ " = "+" t3; \n"); //op1,value
-//    Natives.append("\t"+ lvlret+ ": \n");
-//    tmpRet = newTemp();
-//    Natives.append("\t" +tmpRet+ " = heap[(int)"+ tmpFirst +"]; \n");
-//    lvlv = newLabel();
-//    Natives.append("\tif(" + tmpRet + " != -1) goto " + lvlv + ";\n");
-//    Natives.append("\tgoto " + lvlexit+ ";\n");
-//    Natives.append("\t"+ lvlv+ ": \n");
-//    Natives.append("\t heap[(int)H" "] =" + tmpRet+"; \n");
-//    Natives.append("\t H = H + 1; \n");
-//    Natives.append("\t" + tmpFirst + " = " + tmpFirst + " + 1;\n");
-//    Natives.append("\tgoto " + lvlret + ";\n");
-//    //Encuntra -1 en el Heap
-//    Natives.append("\t"+ lvlexit+ ": \n");
-//    Natives.append("\t heap[(int)H" "] = -1; \n");
-//    Natives.append("\t H = H + 1; \n");
-
-//    Natives.append("\t return; \n");
-//    Natives.append("}\n\n");
-//    return value(tmp,true,STRING);
-//}
-
 
 // Funcion para concatenar Strings
 value generator_code::GenerateConcatString(value op1, value op2)
