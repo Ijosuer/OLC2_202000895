@@ -19,7 +19,7 @@
 ---
 
 ## Documentación
-
+Se recomienda utilizar el IDE <b>QT Creator</b> para manejar el programa, link de tutorial para instalar: https://github.com/AndresRodas/OLC2_PrimerSemestre_2023/tree/main/Clase3.
 # MANUAL DE USUARIO
 ## _Mini OL🅒_ 
 Mini OL🅒 IDE es un entorno de desarrollo que provee las herramientas para la escritura de
