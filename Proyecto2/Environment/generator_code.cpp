@@ -309,6 +309,7 @@ value generator_code::GenerateConcatString(value op1, value op2)
 
     this->AddSetHeap("(int)H", "-1");
     this->AddExpression("H", "H", "1", "+");
+    this->AddComment("SALIENDO");
     val = value(tmp, true, STRING);
     return val;
 

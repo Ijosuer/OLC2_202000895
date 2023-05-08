@@ -9,8 +9,9 @@ public:
     int Col;
     expression *Array;
     expression *Index;
-    // std::string Funcion;
-    array_access(int,int, expression*, expression*);
+
+     std::string Funcion;
+    array_access(int,int, expression*, expression*,std::string);
     value ejecutar(environment *env, ast *tree, generator_code *gen) override;
 };
 

@@ -8,9 +8,9 @@ class print : public instruction
 public:
     int Line;
     int Col;
-    expression *Valor;
+    list_expression *Valor;
 
-    print(int line, int col, expression *valor);
+    print(int line, int col, list_expression *valor);
     void ejecutar(environment *env, ast *tree, generator_code*) override;
     std::string ArrayToString(QVector<symbol> Array);
 };

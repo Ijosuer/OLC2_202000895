@@ -82,7 +82,7 @@
 
 /*tokens*/
 %token <std::string> NUMERO id CADENA DECIMAL suma menos mult div modulo PRINTF tk_void tk_int tk_string tk_float tk_bool tk_PARA tk_PARC rmain tk_LLAVA tk_LLAVC
-%token <std::string> tk_true tk_false tk_igualq tk_diferenteq tk_mayor_igual tk_menor_igual tk_CORCHA tk_CORCHC
+%token <std::string> tk_true tk_false tk_igualq tk_diferenteq tk_mayor_igual tk_menor_igual tk_CORCHA tk_CORCHC tk_nulo
 %token <std::string> tk_menorq tk_mayorq tk_and tk_or tk_not res_IF res_ELSE res_WHILE res_FOR res_BREAK res_CONTINUE res_RETURN res_pushB res_pushF 
 %token <std::string> res_get res_remove res_size res_struct res_mean res_median res_mode res_atoi res_atof res_iota res_VECTOR mas_mas menos_menos
 %token ';' '=' ',' '.'  
@@ -304,7 +304,7 @@ VECTOR: res_VECTOR tk_menorq TYPES tk_mayorq id '=' tk_CORCHA LISTAEXP tk_CORCHC
       | id '.' res_pushB tk_PARA EXP tk_PARC {$$ = new vector(0,0,new access(0,0,$1),$5,"push_back",nullptr);}
       | id '.' res_remove tk_PARA EXP tk_PARC {$$ = new vector(0,0,new access(0,0,$1),$5,"remove",nullptr);}
       | id tk_CORCHA  EXP tk_CORCHC '=' id tk_CORCHA  EXP tk_CORCHC 
-        {$$ = new vector(0,0,new access(0,0,$1),$3,"asignar",new array_access(0,0,new access(0,0,$6),$8));}
+        {$$ = new vector(0,0,new access(0,0,$1),$3,"asignar",new array_access(0,0,new access(0,0,$6),$8,""));}
       | id tk_CORCHA  EXP tk_CORCHC '=' EXP {std::cout<<"[][]"<<std::endl; $$ = new vector(0,0,new access(0,0,$1),$3,"asignar",$6);}
 ;
 //      int    a [           1       ]
@@ -316,7 +316,7 @@ MATRIZ: TYPES id tk_CORCHA EXP tk_CORCHC '=' tk_LLAVA LISTAEXP tk_LLAVC {$$ = ne
 
 ;
 
-PRINT : PRINTF tk_PARA EXP tk_PARC { $$ = new print(@1.begin.line,@1.begin.column,$3); }
+PRINT : PRINTF tk_PARA LISTAEXP tk_PARC { $$ = new print(@1.begin.line,@1.begin.column,$3); }
 ;
 
 INCREMENTO: id mas_mas  {$$ = new incremento(0,0,$1,"++");}
@@ -437,8 +437,8 @@ EXP : EXP suma EXP { $$ = new operation(@1.begin.line,@1.begin.column, $1, $3, "
     | res_iota tk_PARA EXP tk_PARC {$$ = new operation(@1.begin.line,@1.begin.column, $3, $3, "iota");}
     | tk_not EXP { $$ = new operation(@1.begin.line,@1.begin.column, $2, $2, "!"); }
     | tk_LLAVA LISTAEXP tk_LLAVC {$$ = new matriz_exp(0,0,$2); }
-    | id '.' res_size tk_PARA  tk_PARC {$$ = new array_access(0,0,new access(0,0,$1),nullptr);}
-    | id '.' res_get tk_PARA EXP tk_PARC {$$ = new array_access(0,0,new access(0,0,$1),$5);}
+    | id '.' res_size tk_PARA  tk_PARC {$$ = new array_access(0,0,new access(0,0,$1),nullptr,"size");}
+    | id '.' res_get tk_PARA EXP tk_PARC {$$ = new array_access(0,0,new access(0,0,$1),$5,"");}
     | id '.' id { std::cout<<"ENTRA EN GRAMAR"<<std::endl; $$ = new struct_access(0,0,new access(0,0,$1),$3); }
     | PRIMITIVE { $$ = $1;}
     | CALL_EXP
@@ -454,16 +454,17 @@ PRIMITIVE : NUMERO {  int num = stoi($1); $$ = new primitive(@1.begin.line,@1.be
             $$ = new primitive(@1.begin.line,@1.begin.column,STRING,str2,0,0.0, false);
         }
         | id   {$$ = new access(@1.begin.line,@1.begin.column,$1);}
+        | tk_nulo   {$$ = new primitive(@1.begin.line,@1.begin.column,NULO, "",0,0.0,false);}
         | DECIMAL   {float num = stof($1); $$ = new primitive(@1.begin.line,@1.begin.column,FLOAT, "",0,num,false);}
         | tk_true   { $$ = new primitive(@1.begin.line,@1.begin.column,BOOL,"",0,0.0,true); }
         | tk_false  { $$ = new primitive(@1.begin.line,@1.begin.column,BOOL,"",0,0.0,false); }
-        | res_mean tk_PARA id tk_PARC {$$ = new array_access(0,0,new access(0,0,$3),nullptr);}
-        | res_median tk_PARA id tk_PARC {$$ = new array_access(0,0,new access(0,0,$3),nullptr);}
-        | res_mode tk_PARA id tk_PARC {$$ = new array_access(0,0,new access(0,0,$3),nullptr);}
+        | res_mean tk_PARA id tk_PARC {$$ = new array_access(0,0,new access(0,0,$3),nullptr,"");}
+        | res_median tk_PARA id tk_PARC {$$ = new array_access(0,0,new access(0,0,$3),nullptr,"");}
+        | res_mode tk_PARA id tk_PARC {$$ = new array_access(0,0,new access(0,0,$3),nullptr,"");}
         | LIST_ARR {$$=$1;}
 ;
 
-LIST_ARR : LIST_ARR tk_CORCHA EXP tk_CORCHC { $$ = new array_access(0,0,$1,$3); }
+LIST_ARR : LIST_ARR tk_CORCHA EXP tk_CORCHC { $$ = new array_access(0,0,$1,$3,""); }
         | id {$$ = new access(0,0,$1); }  
 ;
 %%

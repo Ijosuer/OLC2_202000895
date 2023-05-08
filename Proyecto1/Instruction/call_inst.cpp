@@ -18,6 +18,7 @@ void call_inst::ejecutar(environment *env, ast *tree)
     func_symbol sym_func = env->GetFunc(Id, env, tree);
     //obtenemos parametros guardados
     map_struct_dec mapStrTemp;
+    
     if (sym_func.ParamList != nullptr)
     {
         mapStrTemp = *(map_struct_dec*)sym_func.ParamList;

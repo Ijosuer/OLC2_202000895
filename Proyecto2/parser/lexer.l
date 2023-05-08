@@ -136,6 +136,7 @@ DECIMAL ({NUMERO})"."({NUMERO})
 "bool"    return Parser::symbol_type( token::tk_bool, loc );
 "true"    return Parser::symbol_type( token::tk_true, loc );
 "false"    return Parser::symbol_type( token::tk_false, loc );
+"NULO"    return Parser::symbol_type( token::tk_nulo, loc );
 
 {ID}  return Parser::make_id(yytext, loc);
 {NUMERO} return Parser::make_NUMERO(yytext, loc);

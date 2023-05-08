@@ -6,7 +6,7 @@ primitive::primitive(int line, int col, TipoDato tipo, std::string strval, int n
     Tipo = tipo;
     strVal = strval;
     numVal = numval;
-//    floatVal = floatbal;
+    floatVal = floatbal;
     boolVal = boolval;
 }
 
@@ -20,7 +20,10 @@ value primitive::ejecutar(environment *env, ast* tree, generator_code *gen)
     }
     else if(Tipo == FLOAT)
     {
-       val = value(std::to_string(numVal),false,Tipo);
+        float numF = floatVal;
+        float* floatv = new float;
+        *floatv = numF;
+        val = *new value(std::to_string(floatVal), false, FLOAT);
     }
     else if(Tipo == STRING)
     {
@@ -49,15 +52,19 @@ value primitive::ejecutar(environment *env, ast* tree, generator_code *gen)
        std::string falseLabel = gen->newLabel();
        if(boolVal)
        {
-           gen->AddGoto(trueLabel);
+        //    gen->AddGoto(trueLabel);
+           val = value("1",false,BOOL);
        }
        else
        {
-           gen->AddGoto(falseLabel);
+        //    gen->AddGoto(falseLabel);
+           val = value("0",false,BOOL);
        }
-       val = value("",false,Tipo);
+//       val = value("",false,Tipo);
        val.TrueLvl.append(trueLabel);
        val.FalseLvl.append(falseLabel);
+    }else{
+        val = value("",false,NULO); 
     }
     return val;
 }

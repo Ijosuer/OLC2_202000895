@@ -21,18 +21,15 @@ void main() {
     printf("El valor de bo1 es: ",iota(bol));
     printf("El valor de cad1 es: ",cad1);
     printf("El valor de cad2 es: ",cad2);
-    printf("El valor de bol2: ",iota(bol2));
-    printf("");
+    printf("El valor de bol2: ",iota(bol2)); 
 	
     int a = 100;
     int b = 100;
     int c = 7;
     bool f = true;
-    float j = 10.0;
-    float k = 10.0;
-
-    printf("");
-    printf("");
+    int j = 100;
+    int k = 100;
+ 
 
     if (a > b || b < c)
     {
@@ -62,33 +59,18 @@ void main() {
         printf(">>>>>> En este lugar deberia de entrar :)");
         valorVerdadero = 50;
     }
-    else if ((f || (valorVerdadero > 50)) && ((resp != 100) && ! ! ! ! ! f))
-    {
-        printf(">>>>>> Aca no deberia de entrar :ccc");
-        valorVerdadero = 70;
-    }
+    
     else
     {
         printf(">>>>>> Aca no deberia de entrar :cccc");
     }
 
-    int x1 = 15;
-
-    if (x1 % 2 == 0)
-    {
-        printf(">>>>> numeroPar ingreso a if verdadero, ", iota(x1), " es par");
-    }
-    else
-    {
-        printf(">>>>> numeroPar ingreso a if falso, ", iota(x1), " no es par");
-    }
-
+    
     int abs1 = 7-11;
     float abs2 = 10.0;
     int raiz1 = 9;
     float raiz2 = 100.0;
-
-    printf("");
+ 
     printf("*************PRUEBA DE EMBEBIDAS");
     printf("valor de b: ",iota(b));
 
@@ -114,8 +96,7 @@ El valor de bol2: true
 
 >>>>>> Esto debería de imprimirse
 >>>>>> Esto debería de imprimirse
->>>>>> En este lugar deberia de entrar :)
->>>>> numeroPar ingreso a if falso, 15 no es par
+>>>>>> En este lugar deberia de entrar :) 
 
 *************PRUEBA DE EMBEBIDAS
 valor de b: 100

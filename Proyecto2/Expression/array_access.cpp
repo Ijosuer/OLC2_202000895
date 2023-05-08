@@ -1,18 +1,30 @@
-#include "array_access.hpp"
+ #include "array_access.hpp"
 
-array_access::array_access(int line, int col, expression *array, expression *index)
+array_access::array_access(int line, int col, expression *array, expression *index,std::string func)
 {
     Line = line;
     Col = col;
     Array = array;
     Index = index;
+    Funcion = func;
 }
 
 value array_access::ejecutar(environment *env, ast *tree, generator_code *gen)
 {
     value tempArray, tempIndex, result;
     tempArray = Array->ejecutar(env, tree, gen);
-    tempIndex = Index->ejecutar(env, tree, gen);
+    if (Index != nullptr) {
+        tempIndex = Index->ejecutar(env, tree, gen);
+    }
+    if (Funcion == "size") {
+        gen->AddComment("SIZE vector");
+        std::string tmp = gen->newTemp();
+        gen->AddGetHeap(tmp, "(int)"+tempArray.Value);
+//        gen->AddPrintf("d","(int)"+tmp);
+        result = value(tmp,true,INTEGER);
+        return result;
+    }else{
+
     //llamada
     gen->AddComment("Accediendo a un arreglo");
     std::string newTmp = gen->newTemp();
@@ -47,4 +59,5 @@ value array_access::ejecutar(environment *env, ast *tree, generator_code *gen)
     gen->AddLabel(lvl3);
     result = value(newTmp2, true, INTEGER);
     return result;
+    }
 }
